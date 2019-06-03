@@ -1,0 +1,12 @@
+{% set r = app.request %}
+<div class="auto__names">
+    <ul>
+        {% for generation in data.autoGenerations %}
+            <li>
+                <a href="/{{ r.get('catalog') }}/{{ r.get('category') }}/{{ r.get('subcategory') ? r.get('subcategory') ~ '/' : '' }}{{ r.get('subsubcategory') ? r.get('subsubcategory') ~ '/' : '' }}auto-{{ data.brand.alias }}/{{ data.alias }}/{{ generation.alias }}">
+                    {{ generation.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

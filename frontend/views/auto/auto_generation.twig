@@ -1,0 +1,59 @@
+{{ set(this, 'title', 'Автозапчасти для ' ~ model.model.brand.name ~ ' ' ~ (model.h1 ? model.h1 : model.name) ~ ' купить в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - лучшие цены в каталоге интернет магазина One Auto') }}
+{{ this.registerMetaTag({'name':'description', 'content': 'В наличиии ' ~ (model.h1 ? model.h1 : model.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' недорого и по доступным ценам. Купить ' ~ (model.h1 ? model.h1 : model.name) ~ ' в каталоге One Auto.'}) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li><a href="{{ path('auto/brand', {'brand': model.model.brand.alias}) }}">{{ model.model.brand.name }}</a></li>
+            <li><a href="{{ path('auto/model', {'brand': model.model.brand.alias, 'model': model.model.alias}) }}">{{ model.model.name }}</a></li>
+            <li>{{ model.name }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__sidebar">
+                {{ use('frontend/widgets/SidebarMenu/SidebarMenu') }}
+                {{ sidebar_menu_widget() }}
+            </div>
+            <!-- /.content__sidebar -->
+            <div class="content__body">
+                <h1> Автозапчасти для {{ model.h1 ? model.h1 : model.name }}</h1>
+
+                <div class="items cat__details">
+                    {% for item in catalog.catalogCategories %}
+                        <div class="item">
+                            <div class="item__cat">
+                                <img src="/userfiles/categories/{{ item.image }}" alt="">
+                                <div class="item__cat-name">
+                                    <a href="{{ path('auto-catalog/products-with-auto', {
+                                        'catalog': catalog.alias,
+                                        'category': item.alias,
+                                        'brand': model.model.brand.alias,
+                                        'model': model.model.alias,
+                                        'generation': model.alias,
+                                        'page': 0 })
+                                    }}">{{ item.name }}</a>
+                                </div>
+                            </div>
+                            <!-- /.item_cat -->
+                        </div>
+                        <!-- /.item -->
+                    {% endfor %}
+                </div>
+                <!-- /.items -->
+
+                {{ use('frontend/widgets/FormOrder/FormOrder') }}
+                {{ form_order_widget() }}
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

@@ -1,0 +1,19 @@
+{% set form = active_form_begin({
+    'action': path('/send/order'),
+    'options': {
+        'class': 'form__order'
+    }
+}) %}
+
+    <div class="form__order-title">Не нашли нужной вам запчасти?</div>
+    <div class="form__order-subtitle">Отправьте запрос на подбор, менеджер перезвонит вам через 8 минут</div>
+
+    {{ form.field(modelForm, 'name', {'options': {'class': 'form-group name'}}).textInput({'placeholder': 'Ваше имя*'}).label(false)| raw }}
+    {{ form.field(modelForm, 'phone', {'options': {'class': 'form-group phone'}}).textInput({'placeholder': 'Телефон*'}).label(false)| raw }}
+
+    {{ form.field(modelForm, 'info', {'options': {'class': 'form-group message'}}).textarea({'placeholder': 'Комментарий'}).label(false)| raw }}
+
+    {{ form.field(modelForm, 'agree', {'options': {'class': 'form-group checked'}}).checkbox().error(false)| raw }}
+    {{ html.submitButton('Отправить запрос', {'class': 'form__order-btn btn__hover'})| raw }}
+
+{{ active_form_end() }}

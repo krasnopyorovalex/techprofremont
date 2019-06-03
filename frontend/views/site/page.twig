@@ -1,0 +1,30 @@
+{{ set(this, 'title', model.name) }}
+{{ this.registerMetaTag({'name':'description', 'content': model.name}) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li>{{ model.name }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__body info__page">
+                <h1>{{ model.name }}</h1>
+
+                <div class="text">
+                    {{ model.text| raw }}
+                </div>
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

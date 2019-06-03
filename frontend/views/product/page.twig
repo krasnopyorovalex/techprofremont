@@ -1,0 +1,81 @@
+{{ set(this, 'title', model.name) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li><a href="/{{ model.subcategory.category.catalog.alias }}">{{ model.subcategory.category.catalog.name }}</a></li>
+            <li><a href="/{{ model.subcategory.category.catalog.alias }}/{{ model.subcategory.category.alias }}">{{ model.subcategory.category.name }}</a></li>
+            <li><a href="{{ model.subcategory.category.catalog.alias }}/{{ model.subcategory.category.alias }}/{{ model.subcategory.alias }}">{{ model.subcategory.name }}</a></li>
+            <li>{{ model.name }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__sidebar">
+                {{ use('frontend/widgets/SidebarMenu/SidebarMenu') }}
+                {{ sidebar_menu_widget({'model': model.catalog}) }}
+            </div>
+            <!-- /.content__sidebar -->
+            <div class="content__body">
+                <h1>{{ model.name }}</h1>
+
+                <div class="origin__numbers">
+                    <div>
+                        <div class="title">Оригинальные номера:</div>
+                        <a href="#">026903015C,</a>
+                        <a href="#">034903015M,</a>
+                        <a href="#">034903016E,</a>
+                        <a href="#">049903027A,</a>
+                        <a href="#">025903023E,</a>
+                        <a href="#">034903015K,</a>
+                        <a href="#">025903023, </a>
+                        <a href="#">034903015D,</a>
+                        <a href="#">035903017AX</a>
+                        <a href="#">025903023D,</a>
+                        <a href="#">026903017BX</a>
+                        <a href="#">035903023B,</a>
+                        <a href="#">073903023A</a>
+                    </div>
+                </div>
+                <!-- /.origin__numbers -->
+
+                <div class="item__row">
+                    <div class="item__col-left">
+                        <img src="/userfiles/{{ model.image ? 'products/' ~ model.image : 'not_photo.jpg' }}" alt="alt">
+                    </div>
+                    <div class="item__col-right">
+                        <div class="name">{{ model.maker }}</div>
+                        <div class="desc">
+                            <ul>
+                                <li><span>Производитель:</span>	<b>{{ model.maker }}</b></li>
+                                <li><span>Артикул:</span> <b>{{ model.articul }}</b></li>
+                                {% for option in model.options %}
+                                    <li><span>{{ option.name }}</span> <b>{{ options[option.id] }}</b></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="price">
+                            Цена:	<span>{{ model.price| number_format(0, ' ', ' ') }} руб.</span>
+                        </div>
+                        <div class="item__availability-btn btn__hover"><a href="#">Узнать о наличии</a></div>
+                    </div>
+                </div>
+                <div class="text">
+                    {{ model.text| raw }}
+                </div>
+
+                {{ use('frontend/widgets/FormOrder/FormOrder') }}
+                {{ form_order_widget() }}
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

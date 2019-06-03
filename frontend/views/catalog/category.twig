@@ -1,0 +1,53 @@
+{{ set(this, 'title', (model.h1 ? model.h1 : model.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - адреса и телефоны сервисных центов, вызов мастера на дом | ТЕХПРОФРЕМОНТ') }}
+{{ this.registerMetaTag({'name':'description', 'content': (model.h1 ? model.h1 : model.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' недорого и по доступным ценам. Большой выбор сервисных центров и частных мастеров, фото, телефоны и отзывы. в каталоге ТЕХПРОФРЕМОНТ.'}) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li><a href="{{ path('site/page', {'alias': model.catalog.alias}) }}">{{ model.catalog.name }}</a></li>
+            <li>{{ model.name }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__sidebar">
+                {{ use('frontend/widgets/SidebarMenu/SidebarMenu') }}
+                {{ sidebar_menu_widget({'model': sidebarMenuLinks}) }}
+            </div>
+            <!-- /.content__sidebar -->
+            <div class="content__body">
+                <h1>{{ model.h1 ? model.h1 : model.name }}</h1>
+
+                {{ use('frontend/widgets/AutoBrands/AutoBrands') }}
+                {{ auto_brands_widget() }}
+
+                <div class="items">
+                    {{ use('frontend/widgets/ProductsListForCategory/ProductsListForCategory') }}
+                    {{ products_list_for_category_widget({
+                        'items': products
+                    }) }}
+                </div>
+                <!-- /.items -->
+
+                {{ use('frontend/widgets/PaginateBtn/PaginateBtn') }}
+                {{ paginate_btn_widget({'count': count}) }}
+
+                <div class="text">
+                    {{ model.text| raw }}
+                </div>
+
+                {{ use('frontend/widgets/FormOrder/FormOrder') }}
+                {{ form_order_widget() }}
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

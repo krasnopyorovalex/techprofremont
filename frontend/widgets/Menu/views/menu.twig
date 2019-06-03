@@ -1,0 +1,24 @@
+{% if model %}
+    <ul>
+        {% for item in model %}
+            <li class="{% if app.request.url == item.link %}active{% endif %}">
+                <a href="{{ item.link }}">{{ item.name }}</a>
+                {% if item.menuItems %}
+                    <ul>
+                        {% for item in item.menuItems %}
+                            <li><a href="{{ item.link }}">{{ item.name }}</a>
+                                {% if item.menuItems %}
+                                    <ul>
+                                        {% for item in item.menuItems %}
+                                            <li><a href="{{ item.link }}">{{ item.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

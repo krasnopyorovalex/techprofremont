@@ -1,0 +1,128 @@
+{{ void(this.beginPage()) }}<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="{{ app.charset }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
+    <title>{{ this.title| raw }}</title>
+    {{ register_asset_bundle('frontend/assets/AppAsset') }}
+    {{ html.csrfMetaTags| raw }}
+    {{ void(this.head) }}
+    <!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter48226469 = new Ya.Metrika({
+                    id:48226469,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/48226469" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+{{ void(this.beginBody()) }}
+    <header>
+        <div class="wrapper">
+            <div class="header__sections">
+                <div class="logo">
+                    <a href="{{ app.homeUrl }}">
+                        <img src="/img/logo.png" alt="logo">
+                    </a>
+                </div>
+                <!-- /.logo -->
+                <div class="h__contact-menu">
+                    <div class="contact__box">
+                        <div class="contact__box-city">
+                            <span>Город:</span>
+                            <div class="custom__select">
+                                <form action="#">
+                                    <select name="cities" id="cities">
+                                        {% for key,value in app.params.subdomains %}
+                                            <option value="{{ key }}.{{ app.params['site_domain'] }}">{{ value.nominative }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+                            </div>
+                            <!-- /.custom__select -->
+                        </div>
+                        <!-- /.contact__box-city -->
+                        <div class="contact__box-address">
+                            <span>Адрес:</span>
+                            <div class="value">{{ app.params.address }}</div>
+                        </div>
+                        <!-- /.contact__box-address -->
+                        <div class="contact__box-phone">
+                            <a href="tel:{{ app.params.phone }}">{{ app.params.phone }}</a>
+                        </div>
+                        <!-- /.contact__box-phone -->
+                    </div>
+                    <!-- /.contact__box -->
+                    <menu>
+                        {{ use('frontend/widgets/Menu/Menu') }}
+                        {{ menu_widget({'sysName': 'menu_head'}) }}
+                    </menu>
+                </div>
+                <!-- /.h__contact-menu -->
+            </div>
+            <!-- /.header__sections -->
+        </div>
+        <!-- /.wrapper -->
+    </header>
+
+    {{ use('frontend/widgets/Search/Search') }}
+    {{ search_widget() }}
+
+    {% if app.session.getFlash('message') %}
+        <legend id="success__message">
+            {{ app.session.getFlash('message') }}
+        </legend>
+    {% endif %}
+
+    {{ content| raw }}
+
+    <footer>
+        <div class="wrapper">
+            <div class="items border">
+                <div class="logo">
+                    <img src="/img/logo.png" alt="alt">
+                </div>
+                <div class="menu">
+                    {{ menu_widget({'sysName': 'menu_footer'}) }}
+                </div>
+                <div class="contacts">
+                    <div class="contacts__box-phone">
+                        <a href="te:{{ app.params.phone }}">{{ app.params.phone }}</a>
+                    </div>
+                    <!-- /.contact__box-phone -->
+                    <div class="contacts__street">
+                        {{ app.params.address }}
+                    </div>
+                </div>
+            </div>
+            <div class="items copyright">
+                <div class="left">© 2017-{{ now| date('Y') }}</div>
+                <div class="right"><a href="#">Создание и продвижение сайта</a></div>
+            </div>
+        </div>
+    </footer>
+{{ void(this.endBody()) }}
+</body>
+</html>{{ void(this.endPage()) }}

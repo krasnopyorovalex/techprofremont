@@ -1,0 +1,21 @@
+{% for item in model %}
+    <div class="item">
+        
+
+        <!-- /.item__image -->
+        <div class="item__name">
+            <a href="/catalog/{{ item.alias }}">{{ item.name }}</a>
+        </div>
+        <div class="item__image">
+            <a href="/catalog/{{ item.alias }}">
+                <img src="/userfiles/{{ item.image ? 'products/' ~ item.image : 'not_photo.jpg' }}" alt="{{ item.name }}">
+            </a>
+           <!-- <div class="item__availability-btn"><a href="/catalog/{{ item.alias }}">Узнать о наличии</a></div> -->
+        </div>
+        <div class="item_description">
+        {{ item.text|slice(0,200)|raw }}
+        </div>
+        <div class="item__price">{{ item.price| abs }}</div>
+        <!-- /.item__name -->
+    </div>
+{% endfor %}

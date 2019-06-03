@@ -1,0 +1,32 @@
+{{ set(this, 'title', app.params['title_404']) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li>{{ app.params['title_404'] }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__sidebar">
+            </div>
+            <!-- /.content__sidebar -->
+            <div class="content__body error">
+                <h1>{{ app.params['title_404'] }}</h1>
+
+                <div class="text">
+                    <p>Вы набрали неправильный адрес страницы. Пожалуйста, перейдите на <a href="{{ app.homeUrl }}">главную страницу</a> сайта или воспользуйтесь картой сайта.</p>
+                </div>
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

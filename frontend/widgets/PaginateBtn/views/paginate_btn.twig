@@ -1,0 +1,6 @@
+{% if count > (app.request.get('page') + app.params['per_page']) %}
+    <div class="load__more-btn btn__hover">
+        <span data-offset="{{ app.request.get('page') + app.params['per_page'] }}" data-count="{{ count }}">Показать ещё</span>
+    </div>
+    <!-- /.load__more-btn -->
+{% endif %}

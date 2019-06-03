@@ -1,0 +1,51 @@
+{{ set(this, 'title', model.name) }}
+{{ this.registerMetaTag({'name':'description', 'content': model.name}) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li>{{ model.name }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__sidebar">
+                {#{{ use('frontend/widgets/SidebarMenu/SidebarMenu') }}#}
+                {#{{ sidebar_menu_widget({'model': model.catalog}) }}#}
+            </div>
+            <!-- /.content__sidebar -->
+            <div class="content__body">
+                <h1>{{ model.name }}</h1>
+
+                <div class="items">
+                    {% for item in model.autoModels %}
+                    <div class="item">
+                        <div class="item__cat-auto">
+                            <a href="{{ path('category/category', {'catalog': model.alias, 'category': item.alias}) }}"><img src="/userfiles/auto_models/{{ item.image }}" alt="alt"></a>
+                            <div class="item__cat-model">{{ item.name }}</div>
+                        </div>
+                        <!-- /.item__cat-auto -->
+                    </div>
+                    <!-- /.item -->
+                    {% endfor %}
+                </div>
+
+                <div class="text">
+                    {{ model.text| raw }}
+                </div>
+
+                {{ use('frontend/widgets/FormOrder/FormOrder') }}
+                {{ form_order_widget() }}
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

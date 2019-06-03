@@ -1,0 +1,45 @@
+<section class="search">
+    <div class="wrapper">
+        <div class="search__box">
+            <div class="search__box-items">
+                <div class="find__by">
+                    <span>Искать по:</span>
+                    <ul>
+                        <li class="active" data-type="articul">артикулу (коду детали)</li>
+                        <li data-type="name">названию</li>
+                    </ul>
+                </div>
+                <!-- /.find__by -->
+
+                {% set form = active_form_begin({
+                    'action': path(url.to('/search')),
+                    'method': 'get',
+                    'fieldConfig': {
+                        'options': {
+                            'tag': false,
+                        },
+                    },
+                }) %}
+
+                {{ form.field(model, 'keyword', {
+                    'options': {
+                        'class': false
+                    },
+                    'template': '{input}'
+                }).textInput({'placeholder': 'Введите артикул...'}).error(false).label(false)| raw }}
+                {{ form.field(model, 'type', {
+                    'options': {
+                        'class': '',
+                        'name': 'type'
+                    },
+                    'template': '{input}'
+                }).hiddenInput({'value': 'articul','class': 'type__input'}).label(false)| raw }}
+                <i class="icon__search" title="Найти"></i>
+                {{ active_form_end() }}
+
+            </div>
+        </div>
+        <!-- /.search__box -->
+    </div>
+</section>
+<!-- /.search -->

@@ -1,0 +1,54 @@
+{{ set(this, 'title', 'Автозапчасти для ' ~ (model.brand.name) ~ ' ' ~ (model.h1 ? model.h1 : model.name) ~ ' купить в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - лучшие цены в каталоге интернет магазина One Auto') }}
+{{ this.registerMetaTag({'name':'description', 'content': 'В наличиии автозапчасти для ' ~ (model.h1 ? model.h1 : model.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' недорого и по доступным ценам. Купить запчасти для автомобилей ' ~ (model.h1 ? model.h1 : model.name) ~ ' в каталоге One Auto.'}) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li><a href="{{ path('auto/brand', {'brand': model.brand.alias}) }}">{{ model.brand.name }}</a></li>
+            <li>{{ model.name }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__sidebar">
+                {{ use('frontend/widgets/SidebarMenu/SidebarMenu') }}
+                {{ sidebar_menu_widget() }}
+            </div>
+            <!-- /.content__sidebar -->
+            <div class="content__body">
+                <h1>Автозапчасти для {{ model.brand.name }} {{ model.h1 ? model.h1 : model.name }}</h1>
+
+                <div class="items">
+                    {% for generation in model.autoGenerations %}
+                        <div class="item">
+                            <div class="item__cat-auto">
+                                <a href="{{ path('auto/generation', {
+                                    'brand': model.brand.alias,
+                                    'model': model.alias,
+                                    'generation': generation.alias
+                                }) }}">
+                                    <img src="/userfiles/auto_generations/{{ generation.image }}" alt="alt">
+                                </a>
+                                <div class="item__cat-model">{{ generation.name }}</div>
+                            </div>
+                            <!-- /.item__cat-auto -->
+                        </div>
+                        <!-- /.item -->
+                    {% endfor %}
+                </div>
+
+                {{ use('frontend/widgets/FormOrder/FormOrder') }}
+                {{ form_order_widget() }}
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

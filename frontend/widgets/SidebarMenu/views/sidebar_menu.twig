@@ -1,0 +1,28 @@
+<ul>
+    {% for category in model['roots'] %}
+        <li><a href="/{{ catalog }}/{{ category.alias }}{{ queryParams }}">{{ category.name }}</a>
+            {% if model['in'][category.id] %}
+                <ul>
+                    {% for subCategory in model['in'][category.id] %}
+                        <li>
+                            <a href="/{{catalog }}/{{ category.alias }}/{{ subCategory.alias }}{{ queryParams }}">
+                                {{ subCategory.name }}
+                            </a>
+                            {% if model['in'][subCategory.id] %}
+                                <ul>
+                                    {% for subSubCategory in model['in'][subCategory.id] %}
+                                        <li>
+                                            <a href="/{{ catalog }}/{{ category.alias }}/{{ subCategory.alias }}/{{ subSubCategory.alias }}{{ queryParams }}">
+                                                {{ subSubCategory.name }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

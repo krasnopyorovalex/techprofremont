@@ -1,0 +1,85 @@
+{{ set(this, 'title', 'Сервисный центр ' ~ model.name ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' отзывы, телефон и адрес | ТЕХПРОФРЕМОНТ') }}
+{{ this.registerMetaTag({'name':'description', 'content': 'Купить '~ model.name ~' от ' ~ model.price ~ ' руб. Магазин One Auto - автозапчасти в ' ~ app.params['subdomain_cases']['proposed'] ~ ' по лучшим ценам!'}) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            {% if model.category.catalog %}
+                <li><a href="/{{ model.category.catalog.alias }}">{{ model.category.catalog.name }}</a></li>
+            {% endif %}
+            {% if model.category.parent.parent %}
+                <li><a href="/{{ model.category.catalog.alias }}/{{ model.category.parent.parent.alias }}">{{ model.category.parent.parent.name }}</a></li>
+            {% endif %}
+            {% if model.category.parent %}
+                <li><a href="/{{ model.category.catalog.alias }}/{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}">{{ model.category.parent.name }}</a></li>
+            {% endif %}
+            <li><a href="/{{ model.category.catalog.alias }}/{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}/{{ model.category.alias }}">{{ model.category.name }}</a></li>
+            <li>{{ model.name }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__sidebar">
+                {{ use('frontend/widgets/SidebarMenu/SidebarMenu') }}
+                {{ sidebar_menu_widget({
+                    'model': model.category.catalog.catalogCategories,
+                    'catalogAlias': model.category.catalog.alias
+                }) }}
+            </div>
+            <!-- /.content__sidebar -->
+            <div class="content__body">
+                <h1>Сервисный центр «{{ model.name }}»</h1>
+
+                {% if model.productsOriginalNumbers %}
+                <div class="origin__numbers">
+                    <div>
+                        <div class="title">Оригинальные номера:</div>
+                        {% for item in model.productsOriginalNumbers %}
+                        <a href="{{ path('original-number/show', {'number': item.number}) }}">{{ item.number }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- /.origin__numbers -->
+                {% endif %}
+
+                <div class="item__row">
+                    <div class="item__col-left">
+                        <img src="/userfiles/{{ model.image ? 'products/' ~ model.image : 'not_photo.jpg' }}" alt="alt">
+                    </div>
+                    <div class="item__col-right">
+                        <div class="name"><a href="{{ path('maker/show', {'alias': model.maker.alias }) }}">{{ model.maker.name }}</a></b></div>
+                        <div class="desc">
+                            <ul>
+                                
+                                <li><span>Часы работы:</span> <b>{{ model.articul }}</b></li>
+                                <li><span>E-mail:</span> <b><a href="mailto:{{ model.balance }}">{{ model.balance }}</a></b></li>
+                                <li><span>Адрес:</span> <b>{{ model.barcode }}</b></li>
+                            </ul>
+                        </div>
+                        <div class="price">
+                            Телефон:	<span>{{ model.price }}</span>
+                        </div>
+                        <div class="item__availability-btn btn__hover"><a href="#">Выезд мастера</a></div>
+                        <div class="item__availability-btn btn__hover"><a href="#">Вызов курьера</a></div>
+                        <div class="item__availability-btn btn__hover"><a href="#">Срочный ремонт</a></div>
+                    </div>
+                </div>
+                <div class="text">
+                    {{ model.text| raw }}
+                </div>
+
+                {{ use('frontend/widgets/FormOrder/FormOrder') }}
+                {{ form_order_widget() }}
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

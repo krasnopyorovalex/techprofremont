@@ -1,0 +1,97 @@
+{{ set(this, 'title', 'Сервисные центры по ремонту, обслуживанию и установке техники ' ~ app.params['subdomain_cases']['proposed'] ~ ' каталог ТЕХПРОФРЕМОНТ') }}
+{{ this.registerMetaTag({'name':'description', 'content': 'One Auto - интернет магазин автозапчастей в ' ~ app.params['subdomain_cases']['proposed'] ~ '. Мы готовы предложить широкий ассортимент деталей в наличии по оптимальным ценам.'}) }}
+
+<section class="categories">
+    <div class="wrapper">
+        <div class="items">
+            <div class="first__column">
+                <div class="categories__item">
+                    <img src="./img/cat_img-01.png" alt="alt">
+                    <div class="categories__item-desc">
+                        <div class="categories__item-name">Цифровая техника</div>
+                        <div class="categories__item-count"></div>
+                    </div>
+                    <!-- /.categories__item-desc -->
+                </div>
+                <!-- /.categories__item -->
+            </div>
+            <!-- /.first_column -->
+            <div class="second__column">
+                <div class="first__column">
+                    <div class="categories__item">
+                        <img src="./img/cat_img-02.png" alt="alt">
+                        <div class="categories__item-desc">
+                            <div class="categories__item-name">Аудио видео техника</div>
+                            <div class="categories__item-count">1 024 моделей</div>
+                        </div>
+                        <!-- /.categories__item-desc -->
+                    </div>
+                    <!-- /.categories__item -->
+                    <div class="categories__item">
+                        <img src="./img/cat_img-03.png" alt="alt">
+                        <div class="categories__item-desc">
+                            <div class="categories__item-name">Климатическая техника</div>
+                            <div class="categories__item-count">1 024 моделей</div>
+                        </div>
+                        <!-- /.categories__item-desc -->
+                    </div>
+                    <!-- /.categories__item -->
+                </div>
+                <div class="categories__item margin__left-05">
+                    <a href="/uslugi/remont-melkoj-bitovoj-tehniki">
+                        <img src="./img/cat_img-04.png" alt="alt">
+                        <div class="categories__item-desc">
+                            <div class="categories__item-name">Мелкая бытовая техника</div>
+                            <div class="categories__item-count">13 024 товара</div>
+                        </div>
+                    </a>
+                    <!-- /.categories__item-desc -->
+                </div>
+                <!-- /.categories__item -->
+            </div>
+            <!-- /.second__column -->
+            <div class="third__column">
+                <div class="categories__item">
+                    <img src="./img/cat_img-05.png" alt="alt">
+                    <div class="categories__item-desc">
+                        <div class="categories__item-name">
+Крупная бытовая техника
+</div>
+                        <div class="categories__item-count">1 024 моделей</div>
+                    </div>
+                    <!-- /.categories__item-desc -->
+                </div>
+                <!-- /.categories__item -->
+                <div class="categories__view-all">
+                    <a href="#">Показать <br /> все категории</a>
+                </div>
+                <!-- /.categories__view-all -->
+            </div>
+            <!-- /.third__column -->
+        </div>
+    </div>
+</section>
+<!-- /.categories -->
+
+{% if brands %}
+<section class="brands">
+    <div class="wrapper">
+        <div class="items">
+            {% for item in brands %}
+            <div class="item">
+                <a href="{{ path('auto/brand', {'brand': item.alias}) }}">
+                    <img src="/userfiles/auto_brands/{{ item.image }}">
+                </a>
+                <ul>
+                    {% for autoModel in item.autoModels %}
+                    <li><a href="{{ path('auto/model', {'brand': item.alias, 'model': autoModel.alias}) }}">{{ autoModel.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+      
+    </div>
+</section>
+<!-- /.brands -->
+{% endif %}
