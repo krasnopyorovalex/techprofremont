@@ -5,17 +5,22 @@ namespace frontend\widgets\Search\form;
 use common\models\Products;
 use common\models\ProductsOriginalNumbers;
 
+/**
+ * Class FormSearch
+ * @package frontend\widgets\Search\form
+ */
 class FormSearch extends Products
 {
-    const TYPE_ARTICUL = 'articul';
-    const TYPE_NAME = 'name';
+    private const TYPE_ARTICUL = 'articul';
+    private const TYPE_NAME = 'name';
+
     public $type;
     public $keyword;
 
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['type', 'keyword'], 'required'],
@@ -29,11 +34,11 @@ class FormSearch extends Products
 
         $this->load($params);
 
-        if (!$this->validate()) {
+        if ( ! $this->validate()) {
             $query->where('0=1');
         }
 
-        if($this->type == self::TYPE_NAME){
+        if($this->type === self::TYPE_NAME){
             $query->andFilterWhere([
                 'name' => $this->keyword
             ]);

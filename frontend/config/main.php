@@ -13,7 +13,7 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'language' => 'ru',
     'timeZone'=>'Europe/Moscow',
-    'on beforeRequest' => function () {
+    'on beforeRequest' => static function () {
         (new \frontend\components\RedirectorService())->parse();
     },
     'components' => [
@@ -34,7 +34,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
-            'name' => 'frontend-one-auto',
+            'name' => 'frontend-techprofremont',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -65,9 +65,9 @@ return [
                 'original-number/<number:[\wd-]+>' => 'original-number/show',
                 'maker/<alias:[\wd-]+>' => 'maker/show',
 
-                'auto-<brand:[\wd-]+>' => 'auto/brand',
-                'auto-<brand:[\wd-]+>/<model:[\wd-]+>' => 'auto/model',
-                'auto-<brand:[\wd-]+>/<model:[\wd-]+>/<generation:[\wd-]+>' => 'auto/generation',
+                'brand-<brand:[\wd-]+>' => 'auto/brand',
+                //'auto-<brand:[\wd-]+>/<model:[\wd-]+>' => 'auto/model',
+                //'auto-<brand:[\wd-]+>/<model:[\wd-]+>/<generation:[\wd-]+>' => 'auto/generation',
 
                 '<alias:[\wd-]+>' => 'site/page',
 

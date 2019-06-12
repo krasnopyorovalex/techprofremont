@@ -2,6 +2,7 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\AutoBrands */
 
+use backend\assets\CheckBoxAsset;
 use backend\assets\SingleEditorAsset;
 use backend\assets\SelectAsset;
 use yii\bootstrap\ActiveForm;
@@ -10,6 +11,7 @@ use yii\helpers\Url;
 
 SingleEditorAsset::register($this);
 SelectAsset::register($this);
+CheckBoxAsset::register($this);
 
 $this->params['breadcrumbs'][] = ['label' => $this->context->module->params['name'], 'url' => Url::toRoute(['/'.$this->context->module->id])];
 $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action->id];
@@ -48,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                         'id' => 'editor-full',
                                         'placeholder' => 'Введите текст...'
                                     ]) ?>
+                                    <?= $form->field($model, 'is_popular')->checkbox(['class' => 'control-primary'], false)->error(false) ?>
                                 </div>
                             </div>
 

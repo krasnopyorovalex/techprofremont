@@ -3,10 +3,10 @@
 namespace backend\modules\products\controllers;
 
 use backend\controllers\SiteController;
-use common\models\Catalog;
 use common\models\CatalogCategories;
 use common\models\Makers;
 use common\models\Products;
+use common\models\Subdomains;
 use core\repositories\ProductsRepository;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -44,6 +44,7 @@ class DefaultController extends SiteController
         return $this->render('form', [
             'model' => $form,
             'catalogCategory' => CatalogCategories::findOne($id),
+            'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
             'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name')
         ]);
     }
@@ -53,7 +54,7 @@ class DefaultController extends SiteController
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): string
     {
         if(!$form = $this->repository->get($id)){
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -62,6 +63,7 @@ class DefaultController extends SiteController
         return $this->render('form', [
             'model' => $form,
             'catalogCategory' => CatalogCategories::findOne(['id' => $form['category_id']]),
+            'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
             'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name')
         ]);
     }
@@ -69,7 +71,6 @@ class DefaultController extends SiteController
     /**
      * @param $id
      * @return string|\yii\web\Response
-     * @throws \Exception
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
@@ -88,6 +89,7 @@ class DefaultController extends SiteController
         return $this->render('form', [
             'model' => $form,
             'catalogCategory' => CatalogCategories::findOne(['id' => $form['category_id']]),
+            'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
             'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name')
         ]);
     }

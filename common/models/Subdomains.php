@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use yii\db\ActiveQuery;
 use yii\helpers\Json;
 
 /**
@@ -16,10 +17,12 @@ use yii\helpers\Json;
  * @property int $is_main
  * @property int $created_at
  * @property int $updated_at
+ *
+ * @property Products[] $products
  */
 class Subdomains extends MainModel
 {
-    const IS_MAIN = 1;
+    public const IS_MAIN = 1;
 
     public $casesItems = [
         'nominative' => 'Именительный(кто, что?)',
@@ -34,7 +37,7 @@ class Subdomains extends MainModel
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%subdomains}}';
     }
@@ -42,7 +45,7 @@ class Subdomains extends MainModel
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['domain_name', 'phone', 'address'], 'required'],
@@ -59,7 +62,7 @@ class Subdomains extends MainModel
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -74,13 +77,21 @@ class Subdomains extends MainModel
         ];
     }
 
+    /**
+     * @return ActiveQuery
+     */
+    public function getProducts(): ActiveQuery
+    {
+        return $this->hasMany(Products::class, ['subdomain_id' => 'id']);
+    }
+
     public function afterFind()
     {
         parent::afterFind();
         $this->cases = Json::decode($this->cases_json);
     }
 
-    public function beforeSave($insert)
+    public function beforeSave($insert): bool
     {
         if (parent::beforeSave($insert)) {
             $this->cases_json = Json::encode($this->cases);

@@ -2,7 +2,8 @@
 
 namespace common\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%helpfull}}".
@@ -16,7 +17,7 @@ use Yii;
  * @property Helpfull $parent
  * @property Helpfull[] $helpfulls
  */
-class Helpfull extends \yii\db\ActiveRecord
+class Helpfull extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -27,23 +28,23 @@ class Helpfull extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['parent_id', 'is_complete'], 'integer'],
             [['name', 'alias'], 'required'],
             [['name'], 'string', 'max' => 512],
             [['alias'], 'string', 'max' => 255],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Helpfull::className(), 'targetAttribute' => ['parent_id' => 'id']],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => self::className(), 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -55,18 +56,18 @@ class Helpfull extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getParent()
+    public function getParent(): ActiveQuery
     {
-        return $this->hasOne(Helpfull::className(), ['id' => 'parent_id']);
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getHelpfulls()
+    public function getHelpfulls(): ActiveQuery
     {
-        return $this->hasMany(Helpfull::className(), ['parent_id' => 'id']);
+        return $this->hasMany(self::className(), ['parent_id' => 'id']);
     }
 }

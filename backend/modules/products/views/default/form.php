@@ -3,6 +3,7 @@
 /* @var $model common\models\Products */
 /* @var $catalogCategory common\models\Catalog */
 /* @var array $makers common\models\Makers */
+/* @var array $subdomains common\models\Subdomains */
 
 use backend\assets\SingleEditorAsset;
 use backend\assets\SelectBootstrapAsset;
@@ -58,11 +59,20 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                         'class' => 'form-control',
                                         'id' => 'to__generate'
                                     ]) ?>
+                                    <?= $form->field($model, 'advantages')->dropDownList($model->getAdvantages(), [
+                                        'prompt' => 'Не выбрано',
+                                        'class' => 'select-search',
+                                        'multiple' => true
+                                    ]) ?>
                                     <?php if($model->isNewRecord):?>
                                         <?= Html::activeInput('hidden',$model,'category_id',['value' => $catalogCategory->id])?>
                                     <?php endif;?>
                                 </div>
                                 <div class="col-md-4">
+                                    <?= $form->field($model, 'subdomain_id')->dropDownList($subdomains, [
+                                        'prompt' => 'Не выбрано',
+                                        'class' => 'select-search'
+                                    ]) ?>
                                     <?= $form->field($model, 'maker_id')->dropDownList($makers, [
                                                 'prompt' => 'Не выбрано',
                                                 'class' => 'select-search'
@@ -120,11 +130,11 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                         <div class="tab-pane" id="options">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <?= $form->field($model, 'price')->textInput(['autocomplete' => 'off']) ?>
+                                    <?= $form->field($model, 'phone')->textInput(['autocomplete' => 'off']) ?>
                                     <?= $form->field($model, 'articul')->textInput(['autocomplete' => 'off']) ?>
                                 </div>
                                 <div class="col-md-6">
-                                    <?= $form->field($model, 'barcode')->textInput(['autocomplete' => 'off']) ?>
+                                    <?= $form->field($model, 'address')->textInput(['autocomplete' => 'off']) ?>
                                     <?= $form->field($model, 'balance')->textInput(['autocomplete' => 'off']) ?>
                                 </div>
                             </div>

@@ -3,8 +3,8 @@
 namespace frontend\controllers;
 
 use common\models\Makers;
-use common\models\ProductsOriginalNumbers;
 use frontend\components\MakerBehavior;
+use yii\db\ActiveQuery;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -18,7 +18,7 @@ class MakerController extends SiteController
     /**
      * @return array
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'class' => MakerBehavior::class
@@ -30,9 +30,9 @@ class MakerController extends SiteController
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionShow($alias)
+    public function actionShow($alias): string
     {
-        if( ! $model = Makers::find()->where(['alias' => $alias])->with(['products' => function($query){
+        if( ! $model = Makers::find()->where(['alias' => $alias])->with(['products' => static function(ActiveQuery $query){
             return $query->with(['maker']);
         }])->limit(1)->one() ){
             throw new NotFoundHttpException('The requested page does not exist.');

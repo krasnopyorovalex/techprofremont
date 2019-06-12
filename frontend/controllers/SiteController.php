@@ -23,7 +23,7 @@ class SiteController extends Controller
     /**
      * @return array
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'class' => PagesAndCatalogBehavior::class
@@ -34,10 +34,10 @@ class SiteController extends Controller
      * @param string $alias
      * @return string
      */
-    public function actionIndex($alias = 'index')
+    public function actionIndex($alias = 'index'): string
     {
         $model = Pages::find()->where(['alias' => $alias])->one();
-        $brands = AutoBrands::find()->with(['autoModels'])->asArray()->all();
+        $brands = AutoBrands::find()->where(['is_popular' => AutoBrands::IS_POPULAR])->all();
 
         return $this->render('index.twig',[
             'model' => $model,

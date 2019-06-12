@@ -3,6 +3,7 @@
 namespace common\models;
 
 use backend\components\FileBehavior;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -17,18 +18,20 @@ use yii\helpers\ArrayHelper;
  * @property int $created_at
  * @property int $updated_at
  *
+ * @property ActiveQuery $catalogCategoriesRoot
  * @property CatalogCategories[] $catalogCategories
  */
 class Catalog extends MainModel
 {
 
-    const PATH = '/userfiles/catalog/';
-    const IMAGE_ENTITY = 'image';
+    public const IMAGE_ENTITY = 'image';
+    public const IS_MAIN = 1;
+    private const PATH = '/userfiles/catalog/';
 
     public $template = 'catalog.twig';
     public $file;
 
-    public function behaviors()
+    public function behaviors(): array
     {
         return ArrayHelper::merge(parent::behaviors(),[
             [
@@ -42,7 +45,7 @@ class Catalog extends MainModel
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%catalog}}';
     }
@@ -50,7 +53,7 @@ class Catalog extends MainModel
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'alias'], 'required'],
@@ -67,7 +70,7 @@ class Catalog extends MainModel
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -82,17 +85,17 @@ class Catalog extends MainModel
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getCatalogCategories()
+    public function getCatalogCategories(): ActiveQuery
     {
         return $this->hasMany(CatalogCategories::class, ['catalog_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getCatalogCategoriesRoot()
+    public function getCatalogCategoriesRoot(): ActiveQuery
     {
         return $this->hasMany(CatalogCategories::class, ['catalog_id' => 'id', 'parent_id' => null]);
     }

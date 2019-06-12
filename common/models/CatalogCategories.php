@@ -26,8 +26,8 @@ use yii\helpers\ArrayHelper;
  */
 class CatalogCategories extends MainModel
 {
-    const PATH = '/userfiles/categories/';
-    const IMAGE_ENTITY = 'image';
+    public const PATH = '/userfiles/categories/';
+    public const IMAGE_ENTITY = 'image';
 
     public $file;
     private $tree = [];

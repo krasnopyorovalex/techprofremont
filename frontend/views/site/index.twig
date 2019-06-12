@@ -54,9 +54,7 @@
                 <div class="categories__item">
                     <img src="./img/cat_img-05.png" alt="alt">
                     <div class="categories__item-desc">
-                        <div class="categories__item-name">
-Крупная бытовая техника
-</div>
+                        <div class="categories__item-name">Крупная бытовая техника</div>
                         <div class="categories__item-count">1 024 моделей</div>
                     </div>
                     <!-- /.categories__item-desc -->
@@ -80,7 +78,7 @@
             {% for item in brands %}
             <div class="item">
                 <a href="{{ path('auto/brand', {'brand': item.alias}) }}">
-                    <img src="/userfiles/auto_brands/{{ item.image }}">
+                    <img src="/userfiles/auto_brands/{{ item.image }}" alt="">
                 </a>
                 <ul>
                     {% for autoModel in item.autoModels %}
@@ -90,7 +88,7 @@
             </div>
             {% endfor %}
         </div>
-      
+
     </div>
 </section>
 <!-- /.brands -->

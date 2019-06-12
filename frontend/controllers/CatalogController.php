@@ -16,7 +16,7 @@ class CatalogController extends SiteController
     /**
      * @return array
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'class' => ProductsBehavior::class

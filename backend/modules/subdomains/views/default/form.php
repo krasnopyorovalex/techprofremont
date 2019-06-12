@@ -53,9 +53,7 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                     <?php foreach ($model->casesItems as $key => $value): ?>
                                         <?= $form->field($model, 'cases['.$key.']')->textInput([
                                                 'autocomplete' => 'off',
-                                                'value' => isset($model->cases[$key])
-                                                    ? $model->cases[$key]
-                                                    : ''
+                                                'value' => $model->cases[$key] ?? ''
                                         ])->label($value) ?>
                                     <?php endforeach; ?>
                                 </div>

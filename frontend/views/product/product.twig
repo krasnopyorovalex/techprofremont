@@ -1,5 +1,5 @@
 {{ set(this, 'title', 'Сервисный центр ' ~ model.name ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' отзывы, телефон и адрес | ТЕХПРОФРЕМОНТ') }}
-{{ this.registerMetaTag({'name':'description', 'content': 'Купить '~ model.name ~' от ' ~ model.price ~ ' руб. Магазин One Auto - автозапчасти в ' ~ app.params['subdomain_cases']['proposed'] ~ ' по лучшим ценам!'}) }}
+{{ this.registerMetaTag({'name':'description', 'content': 'Купить '~ model.name ~' от ' ~ model.phone ~ ' руб. Магазин One Auto - автозапчасти в ' ~ app.params['subdomain_cases']['proposed'] ~ ' по лучшим ценам!'}) }}
 
 <div class="wrapper">
     <div class="breadcrumbs">
@@ -55,22 +55,28 @@
                         <div class="name"><a href="{{ path('maker/show', {'alias': model.maker.alias }) }}">{{ model.maker.name }}</a></b></div>
                         <div class="desc">
                             <ul>
-                                
+
                                 <li><span>Часы работы:</span> <b>{{ model.articul }}</b></li>
                                 <li><span>E-mail:</span> <b><a href="mailto:{{ model.balance }}">{{ model.balance }}</a></b></li>
-                                <li><span>Адрес:</span> <b>{{ model.barcode }}</b></li>
+                                <li><span>Адрес:</span> <b>{{ model.address }}</b></li>
                             </ul>
                         </div>
                         <div class="price">
-                            Телефон:	<span>{{ model.price }}</span>
+                            Телефон:	<span>{{ model.phone }}</span>
                         </div>
-                        <div class="item__availability-btn btn__hover"><a href="#">Выезд мастера</a></div>
-                        <div class="item__availability-btn btn__hover"><a href="#">Вызов курьера</a></div>
-                        <div class="item__availability-btn btn__hover"><a href="#">Срочный ремонт</a></div>
+
+                        {% for advantage in model.advantages %}
+                            <div class="item__availability-btn btn__hover"><a href="#">{{ model.getByKeyAdvantage(advantage) }}</a></div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="text">
                     {{ model.text| raw }}
+                    {% if model.address %}
+                        <div class="product_map">
+                            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1714e7b1c2e2bed09cfa6397499914a13cd34c950324a4c336f00ccf489819f8&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=true"></script>
+                        </div>
+                    {% endif %}
                 </div>
 
                 {{ use('frontend/widgets/FormOrder/FormOrder') }}

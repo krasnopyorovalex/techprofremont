@@ -3,6 +3,8 @@
 namespace common\models;
 
 use backend\components\FileBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%auto_brands}}".
@@ -13,18 +15,20 @@ use backend\components\FileBehavior;
  * @property string $text
  * @property string $alias
  * @property string $image
+ * @property integer $is_popular
  *
  * @property AutoModels[] $autoModels
  */
-class AutoBrands extends \yii\db\ActiveRecord
+class AutoBrands extends ActiveRecord
 {
-    const PATH = '/userfiles/auto_brands/';
-    const IMAGE_ENTITY = 'image';
+    public const PATH = '/userfiles/auto_brands/';
+    public const IMAGE_ENTITY = 'image';
+    public const IS_POPULAR = 1;
 
     public $file;
     public $template = 'auto_brand.twig';
 
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             [
@@ -36,21 +40,22 @@ class AutoBrands extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%auto_brands}}';
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'alias'], 'required'],
             [['text'], 'string'],
+            [['is_popular'], 'integer'],
             [['name', 'h1'], 'string', 'max' => 512],
             [['alias'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 36],
@@ -59,9 +64,9 @@ class AutoBrands extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -70,14 +75,15 @@ class AutoBrands extends \yii\db\ActiveRecord
             'text' => 'Текст',
             'alias' => 'Alias',
             'image' => 'Изображение',
-            'file' => 'Изображение'
+            'file' => 'Изображение',
+            'is_popular' => 'Отображать на главной?'
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getAutoModels()
+    public function getAutoModels(): ActiveQuery
     {
         return $this->hasMany(AutoModels::class, ['brand_id' => 'id']);
     }

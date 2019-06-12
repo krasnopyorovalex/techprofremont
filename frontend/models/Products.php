@@ -24,6 +24,7 @@ use yii\db\ActiveRecord;
  * @property string $barcode
  * @property int $maker_id
  * @property string $image
+ * @property string $advantages
  * @property int $created_at
  * @property int $updated_at
  *
@@ -37,10 +38,16 @@ use yii\db\ActiveRecord;
  */
 class Products extends ActiveRecord
 {
+    protected const ADVANTAGES = [
+        'Выезд мастера',
+        'Вызов курьера',
+        'Срочный ремонт'
+    ];
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%products}}';
     }
@@ -83,5 +90,21 @@ class Products extends ActiveRecord
     public function getMaker()
     {
         return $this->hasOne(Makers::class, ['id' => 'maker_id']);
+    }
+
+    /**
+     * @param int $id
+     * @return mixed|string
+     */
+    public function getByKeyAdvantage(int $id)
+    {
+        return self::ADVANTAGES[$id] ?? '---';
+    }
+
+    public function afterFind(): void
+    {
+        parent::afterFind();
+
+        $this->advantages = json_decode($this->advantages, false);
     }
 }

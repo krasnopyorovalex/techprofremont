@@ -4,6 +4,7 @@ namespace common\models;
 
 use backend\components\FileBehavior;
 use backend\components\MakeListAutoBehavior;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -11,19 +12,22 @@ use yii\helpers\ArrayHelper;
  *
  * @property int $id
  * @property int $category_id
+ * @property int $subdomain_id
  * @property string $name
  * @property string $text
  * @property string $alias
- * @property int $price
+ * @property int $phone
  * @property string $articul
  * @property string $balance
- * @property string $barcode
+ * @property string $address
  * @property int $maker_id
  * @property string $image
+ * @property string $advantages
  * @property int $created_at
  * @property int $updated_at
  *
  * @property Catalog $category
+ * @property Subdomains $subdomain
  * @property ProductsAutoVia[] $productsAutoVias
  * @property ProductsOriginalNumbers[] $productsOriginalNumbers
  * @property ProductsOriginalNumbers[] $productsOriginalNumbersValues
@@ -33,14 +37,22 @@ use yii\helpers\ArrayHelper;
  */
 class Products extends MainModel
 {
-    const PATH = '/userfiles/products/';
-    const IMAGE_ENTITY = 'image';
+    public const IMAGE_ENTITY = 'image';
+    public const PATH = '/userfiles/products/';
+    protected const ADVANTAGES = [
+        'Выезд мастера',
+        'Вызов курьера',
+        'Срочный ремонт'
+    ];
 
     public $file;
     public $bindingAutoList;
     public $originalNumbers;
 
-    public function behaviors()
+    /**
+     * @return array
+     */
+    public function behaviors(): array
     {
         return ArrayHelper::merge(parent::behaviors(),[
             [
@@ -56,52 +68,56 @@ class Products extends MainModel
 
 
     /**
-     * @inheritdoc
+     * @return string
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%products}}';
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['category_id', 'name', 'alias', 'articul', 'maker_id'], 'required'],
             [['category_id', 'created_at', 'updated_at'], 'integer'],
-            [['price', 'text'], 'string'],
+            [['text'], 'string'],
             [['name'], 'string', 'max' => 512],
             [['alias'], 'string', 'max' => 255],
-            [['articul'], 'string', 'max' => 128],
-            [['barcode', 'balance'], 'string', 'max' => 64],
+            [['articul', 'address'], 'string', 'max' => 128],
+            [['balance'], 'string', 'max' => 64],
             [['image'], 'string', 'max' => 36],
+            [['phone'], 'string', 'max' => 24],
             [['alias'], 'unique'],
+            [['bindingAutoList', 'originalNumbers', 'advantages'], 'safe'],
+            [['articul', 'address', 'balance', 'alias', 'name'], 'trim'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CatalogCategories::class, 'targetAttribute' => ['category_id' => 'id']],
-            [['bindingAutoList', 'originalNumbers'], 'safe'],
-            [['articul', 'barcode', 'balance', 'alias', 'name'], 'trim'],
+            [['subdomain_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subdomains::class, 'targetAttribute' => ['subdomain_id' => 'id']],
             [['maker_id'], 'exist', 'skipOnError' => true, 'targetClass' => Makers::class, 'targetAttribute' => ['maker_id' => 'id']],
         ];
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
             'category_id' => 'Category ID',
+            'subdomain_id' => 'Субдомен',
             'name' => 'Наименование продукта',
             'text' => 'Текст',
             'alias' => 'Alias',
-            'price' => 'Телефон',
+            'phone' => 'Телефон',
             'image' => 'Image',
             'file' => 'Изображение',
+            'advantages' => 'Преимущества',
             'articul' => 'Артикул',
             'balance' => 'E-mail',
-            'barcode' => 'Адрес',
+            'address' => 'Адрес',
             'bindingAutoList' => 'Выберите из списка модель, поколение',
             'originalNumbers' => 'Оригинальные номера',
             'created_at' => 'Created At',
@@ -112,17 +128,25 @@ class Products extends MainModel
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getCategory()
+    public function getCategory(): ActiveQuery
     {
         return $this->hasOne(CatalogCategories::class, ['id' => 'category_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getProductsOriginalNumbers()
+    public function getSubdomain(): ActiveQuery
+    {
+        return $this->hasOne(Subdomains::class, ['id' => 'subdomain_id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getProductsOriginalNumbers(): ActiveQuery
     {
         return $this->hasMany(ProductsOriginalNumbers::class, ['product_id' => 'id']);
     }
@@ -130,39 +154,62 @@ class Products extends MainModel
     /**
      * @return array
      */
-    public function getProductsOriginalNumbersValues()
+    public function getProductsOriginalNumbersValues(): array
     {
         return $this->hasMany(ProductsOriginalNumbers::class, ['product_id' => 'id'])->select('number')->column();
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getProductsAutoVias()
+    public function getProductsAutoVias(): ActiveQuery
     {
         return $this->hasMany(ProductsAutoVia::class, ['product_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getMaker()
+    public function getMaker(): ActiveQuery
     {
         return $this->hasOne(Makers::class, ['id' => 'maker_id']);
     }
 
-    public function afterFind()
+    /**
+     * @return array
+     */
+    public function getAdvantages(): array
+    {
+        return self::ADVANTAGES;
+    }
+
+    public function beforeSave($insert): bool
+    {
+        if (parent::beforeSave($insert)) {
+
+            $this->advantages = json_encode($this->advantages);
+
+            return true;
+        }
+        return false;
+    }
+
+    public function afterFind(): void
     {
         parent::afterFind();
+
+        $this->advantages = json_decode($this->advantages, false);
+
         if($this->productsAutoVias){
             $this->bindingAutoList = $this->transformListAutoSelectedAfterFind($this->productsAutoVias);
         }
+
         if ($this->productsOriginalNumbersValues){
             $this->originalNumbers = implode(',', $this->productsOriginalNumbersValues);
         }
     }
 
-    public function afterSave($insert, $changedAttributes)
+    public function afterSave($insert, $changedAttributes): void
     {
         parent::afterSave($insert, $changedAttributes);
 

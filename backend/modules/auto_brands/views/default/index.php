@@ -20,23 +20,23 @@ $this->params['breadcrumbs'][] = $this->context->module->params['name'];
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Действия',
-                'template' => '{update} {models} {delete}',
+                'template' => '{update} {delete}',
                 'buttons' => [
-                    'update' => function($url){
+                    'update' => static function($url){
                         return Html::a(Html::tag('i','',[
                             'class' => 'icon-pencil',
                             'data-popup' => 'tooltip',
                             'data-original-title' => 'Редактировать запись'
                         ]), $url);
                     },
-                    'models' => function($url){
+                    'models' => static function($url){
                         return Html::a(Html::tag('i','',[
                             'class' => 'icon-list2',
                             'data-popup' => 'tooltip',
                             'data-original-title' => 'Перейти к моделям'
                         ]), $url);
                     },
-                    'delete' => function($url){
+                    'delete' => static function($url){
                         return Html::a(Html::tag('i','',[
                             'class' => 'icon-trash',
                             'data-popup' => 'tooltip',
