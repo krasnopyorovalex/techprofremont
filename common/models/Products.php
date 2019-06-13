@@ -3,7 +3,7 @@
 namespace common\models;
 
 use backend\components\FileBehavior;
-use backend\components\MakeListAutoBehavior;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -16,24 +16,21 @@ use yii\helpers\ArrayHelper;
  * @property string $name
  * @property string $text
  * @property string $alias
- * @property int $phone
- * @property string $articul
+ * @property string $phone
+ * @property string $working_hours
  * @property string $balance
  * @property string $address
- * @property int $maker_id
  * @property string $image
  * @property string $advantages
  * @property int $created_at
  * @property int $updated_at
  *
- * @property Catalog $category
+ * @property ProductCategories[] $productCategories
+ * @property CatalogCategories[] $categories
+ * @property ProductMakers[] $productMakers
+ * @property Makers[] $makers
+ * @property CatalogCategories $category
  * @property Subdomains $subdomain
- * @property ProductsAutoVia[] $productsAutoVias
- * @property ProductsOriginalNumbers[] $productsOriginalNumbers
- * @property ProductsOriginalNumbers[] $productsOriginalNumbersValues
- * @property Makers $maker
- *
- * @mixin MakeListAutoBehavior
  */
 class Products extends MainModel
 {
@@ -47,7 +44,8 @@ class Products extends MainModel
 
     public $file;
     public $bindingAutoList;
-    public $originalNumbers;
+    public $bindingMakersList;
+    public $bindingCategoriesList;
 
     /**
      * @return array
@@ -59,9 +57,6 @@ class Products extends MainModel
                 'class' => FileBehavior::class,
                 'path' => self::PATH,
                 'entity_db' => self::IMAGE_ENTITY
-            ],
-            [
-                'class' => MakeListAutoBehavior::class
             ]
         ]);
     }
@@ -81,21 +76,20 @@ class Products extends MainModel
     public function rules(): array
     {
         return [
-            [['category_id', 'name', 'alias', 'articul', 'maker_id'], 'required'],
+            [['category_id', 'name', 'alias', 'working_hours'], 'required'],
             [['category_id', 'created_at', 'updated_at'], 'integer'],
             [['text'], 'string'],
             [['name'], 'string', 'max' => 512],
             [['alias'], 'string', 'max' => 255],
-            [['articul', 'address'], 'string', 'max' => 128],
+            [['working_hours', 'address'], 'string', 'max' => 128],
             [['balance'], 'string', 'max' => 64],
             [['image'], 'string', 'max' => 36],
             [['phone'], 'string', 'max' => 24],
             [['alias'], 'unique'],
-            [['bindingAutoList', 'originalNumbers', 'advantages'], 'safe'],
-            [['articul', 'address', 'balance', 'alias', 'name'], 'trim'],
+            [['bindingMakersList', 'bindingCategoriesList', 'advantages'], 'safe'],
+            [['working_hours', 'address', 'balance', 'alias', 'name'], 'trim'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CatalogCategories::class, 'targetAttribute' => ['category_id' => 'id']],
-            [['subdomain_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subdomains::class, 'targetAttribute' => ['subdomain_id' => 'id']],
-            [['maker_id'], 'exist', 'skipOnError' => true, 'targetClass' => Makers::class, 'targetAttribute' => ['maker_id' => 'id']],
+            [['subdomain_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subdomains::class, 'targetAttribute' => ['subdomain_id' => 'id']]
         ];
     }
 
@@ -115,16 +109,68 @@ class Products extends MainModel
             'image' => 'Image',
             'file' => 'Изображение',
             'advantages' => 'Преимущества',
-            'articul' => 'Артикул',
+            'working_hours' => 'Время работы',
             'balance' => 'E-mail',
             'address' => 'Адрес',
-            'bindingAutoList' => 'Выберите из списка модель, поколение',
-            'originalNumbers' => 'Оригинальные номера',
+            'bindingMakersList' => 'Выберите из списка производителей',
+            'bindingCategoriesList' => 'Выберите дополнительные категории',
             'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'autoModelsValues' => 'Привязка товара к авто',
-            'maker_id' => 'Производители',
+            'updated_at' => 'Updated At'
         ];
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function isMainCategory(int $id): bool
+    {
+        return $this->category->parent->id === $id || $this->category->id === $id;
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function isChecked(int $id): bool
+    {
+        $keys = ArrayHelper::getColumn($this->productCategories, 'category_id');
+
+        return in_array($id, $keys, true);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getProductCategories(): ActiveQuery
+    {
+        return $this->hasMany(ProductCategories::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getCategories(): ActiveQuery
+    {
+        return $this->hasMany(CatalogCategories::className(), ['id' => 'category_id'])->viaTable('{{%product_categories}}', ['product_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getProductMakers(): ActiveQuery
+    {
+        return $this->hasMany(ProductMakers::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getMakers(): ActiveQuery
+    {
+        return $this->hasMany(Makers::className(), ['id' => 'maker_id'])->viaTable('{{%product_makers}}', ['product_id' => 'id']);
     }
 
     /**
@@ -144,43 +190,20 @@ class Products extends MainModel
     }
 
     /**
-     * @return ActiveQuery
-     */
-    public function getProductsOriginalNumbers(): ActiveQuery
-    {
-        return $this->hasMany(ProductsOriginalNumbers::class, ['product_id' => 'id']);
-    }
-
-    /**
-     * @return array
-     */
-    public function getProductsOriginalNumbersValues(): array
-    {
-        return $this->hasMany(ProductsOriginalNumbers::class, ['product_id' => 'id'])->select('number')->column();
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getProductsAutoVias(): ActiveQuery
-    {
-        return $this->hasMany(ProductsAutoVia::class, ['product_id' => 'id']);
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getMaker(): ActiveQuery
-    {
-        return $this->hasOne(Makers::class, ['id' => 'maker_id']);
-    }
-
-    /**
      * @return array
      */
     public function getAdvantages(): array
     {
         return self::ADVANTAGES;
+    }
+
+    /**
+     * @param int $id
+     * @return mixed|string
+     */
+    public function getByKeyAdvantage(int $id)
+    {
+        return self::ADVANTAGES[$id] ?? '---';
     }
 
     public function beforeSave($insert): bool
@@ -200,41 +223,34 @@ class Products extends MainModel
 
         $this->advantages = json_decode($this->advantages, false);
 
-        if($this->productsAutoVias){
-            $this->bindingAutoList = $this->transformListAutoSelectedAfterFind($this->productsAutoVias);
-        }
-
-        if ($this->productsOriginalNumbersValues){
-            $this->originalNumbers = implode(',', $this->productsOriginalNumbersValues);
-        }
+        $this->bindingMakersList = $this->makers;
     }
 
     public function afterSave($insert, $changedAttributes): void
     {
         parent::afterSave($insert, $changedAttributes);
 
-        $this->unlinkAll('productsAutoVias', true);
-        if($this->bindingAutoList){
-            $autos = $this->transformListAutoSelectedToSave($this->bindingAutoList);
+        $this->unlinkAll('makers', true);
+
+        if ($this->bindingMakersList) {
             array_map(function ($item) {
-                $key = key($item);
-                return (new ProductsAutoVia([
+                return (new ProductMakers([
                     'product_id' => $this->id,
-                    'type' => strval($key),
-                    'auto_id' => intval($item[$key])
+                    'maker_id' => (int)$item
                 ]))->save();
-            }, $autos);
+            }, $this->bindingMakersList);
         }
 
-        $this->unlinkAll('productsOriginalNumbers', true);
-        if($this->originalNumbers){
-            $this->originalNumbers = explode(',', $this->originalNumbers);
+        $this->unlinkAll('categories', true);
+
+        if ($this->bindingCategoriesList) {
+            $keys = array_keys(array_filter($this->bindingCategoriesList));
             array_map(function ($item) {
-                return (new ProductsOriginalNumbers([
+                return (new ProductCategories([
                     'product_id' => $this->id,
-                    'number' => strval($item)
+                    'category_id' => (int)$item
                 ]))->save();
-            }, $this->originalNumbers);
+            }, $keys);
         }
     }
 }

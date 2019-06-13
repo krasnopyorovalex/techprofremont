@@ -1,10 +1,11 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $model common\models\Products */
-/* @var $catalogCategory common\models\Catalog */
+/* @var $catalogCategory common\models\CatalogCategories */
 /* @var array $makers common\models\Makers */
 /* @var array $subdomains common\models\Subdomains */
 
+use backend\assets\CheckboxListAsset;
 use backend\assets\SingleEditorAsset;
 use backend\assets\SelectBootstrapAsset;
 use backend\assets\SelectAsset;
@@ -17,6 +18,7 @@ SingleEditorAsset::register($this);
 SelectBootstrapAsset::register($this);
 TagsInputAsset::register($this);
 SelectAsset::register($this);
+CheckboxListAsset::register($this);
 
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => Url::toRoute(['/catalog'])];
 
@@ -44,21 +46,14 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#main" data-toggle="tab">Основное</a></li>
                         <li><a href="#options" data-toggle="tab">Атрибуты</a></li>
-                        <li><a href="#auto_brands" data-toggle="tab">Привязка товара к авто</a></li>
                         <li><a href="#image" data-toggle="tab">Изображение</a></li>
+                        <li><a href="#dop_cats" data-toggle="tab">Дополнительные категории</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="main">
                             <div class="row">
                                 <div class="col-md-8">
                                     <?= $form->field($model, 'name')->textInput(['autocomplete' => 'off', 'id' => 'from__generate']) ?>
-                                    <?= $form->field($model, 'alias', [
-                                        'template' => '<div class="form-group">{label}<div class="input-group"><span class="input-group-addon"><i class="icon-pencil"></i></span>{input}{error}{hint}</div></div>'
-                                    ])->textInput([
-                                        'autocomplete' => 'off',
-                                        'class' => 'form-control',
-                                        'id' => 'to__generate'
-                                    ]) ?>
                                     <?= $form->field($model, 'advantages')->dropDownList($model->getAdvantages(), [
                                         'prompt' => 'Не выбрано',
                                         'class' => 'select-search',
@@ -73,21 +68,27 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                         'prompt' => 'Не выбрано',
                                         'class' => 'select-search'
                                     ]) ?>
-                                    <?= $form->field($model, 'maker_id')->dropDownList($makers, [
-                                                'prompt' => 'Не выбрано',
-                                                'class' => 'select-search'
+                                    <?= $form->field($model, 'alias', [
+                                        'template' => '<div class="form-group">{label}<div class="input-group"><span class="input-group-addon"><i class="icon-pencil"></i></span>{input}{error}{hint}</div></div>'
+                                    ])->textInput([
+                                        'autocomplete' => 'off',
+                                        'class' => 'form-control',
+                                        'id' => 'to__generate'
                                     ]) ?>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <?= $form->field($model, 'originalNumbers')->textInput([
-                                        'autocomplete' => 'off',
-                                        'class' => 'form-control tags-input',
-                                        'value' => is_array($model->originalNumbers)
-                                            ? implode(',', $model->originalNumbers)
-                                            : $model->originalNumbers
-                                    ]) ?>
+                                    <!-- product makers -->
+                                    <?= $form->field($model,'bindingMakersList',[
+                                        'options' => [
+                                            'class' => 'multi-select-full'
+                                        ]
+                                    ])->dropDownList($makers,[
+                                        'multiple' => 'multiple',
+                                        'class' => 'multiselect-filtering'
+                                    ])?>
+                                    <!-- product makers -->
                                 </div>
                             </div>
                             <div class="row">
@@ -131,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                             <div class="row">
                                 <div class="col-md-6">
                                     <?= $form->field($model, 'phone')->textInput(['autocomplete' => 'off']) ?>
-                                    <?= $form->field($model, 'articul')->textInput(['autocomplete' => 'off']) ?>
+                                    <?= $form->field($model, 'working_hours')->textInput(['autocomplete' => 'off']) ?>
                                 </div>
                                 <div class="col-md-6">
                                     <?= $form->field($model, 'address')->textInput(['autocomplete' => 'off']) ?>
@@ -142,25 +143,34 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                             <?= $this->render('@backend/views/blocks/actions_panel')?>
 
                         </div>
-                        <div class="tab-pane" id="auto_brands">
+                        <div class="tab-pane" id="dop_cats">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <!-- product auto -->
-                                        <?= $form->field($model,'bindingAutoList',[
-                                                'options' => [
-                                                        'class' => 'multi-select-full'
-                                                ]
-                                        ])->dropDownList($model->makeListAuto(),[
-                                                'multiple' => 'multiple',
-                                                'class' => 'multiselect-filtering'
-                                        ])?>
-                                    <!-- product auto -->
+                                    <div class="checkbox_list">
+                                        <?php foreach ($catalogCategory->getTree() as $item):?>
+                                            <?php $cssClass = $item['class'] . ' '. $item['parent'];?>
+                                            <?= $form->field($model, 'bindingCategoriesList['.$item['id'].']', [
+                                                    'options' => [
+                                                        'class' => $cssClass,
+                                                        'data' => ['key' => $item['id']]
+                                                    ]
+                                                ])
+                                                ->checkbox([
+                                                    'checked' => $model->isMainCategory($item['id']) ?: $model->isChecked($item['id']) ?: false,
+                                                    'class' => '',
+                                                    'disabled' => $model->isMainCategory($item['id'])
+                                                ])
+                                                ->label($item['name'])
+                                            ?>
+                                        <?php endforeach;?>
+                                    </div>
+                                    <!-- /.checkbox_list -->
                                 </div>
                             </div>
 
                             <?= $this->render('@backend/views/blocks/actions_panel')?>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
 

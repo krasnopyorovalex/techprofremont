@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\CatalogCategories;
-use frontend\models\Products;
+use common\models\Products;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -19,7 +19,7 @@ class ProductController extends SiteController
      */
     public function actionShow($alias): string
     {
-        if( ! $model = Products::find()->where(['alias' => $alias])->with(['category', 'productsOriginalNumbers'])->limit(1)->one() ){
+        if( ! $model = Products::find()->where(['alias' => $alias])->with(['category', 'makers'])->limit(1)->one() ){
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 

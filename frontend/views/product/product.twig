@@ -34,29 +34,20 @@
             <!-- /.content__sidebar -->
             <div class="content__body">
                 <h1>Сервисный центр «{{ model.name }}»</h1>
-
-                {% if model.productsOriginalNumbers %}
-                <div class="origin__numbers">
-                    <div>
-                        <div class="title">Оригинальные номера:</div>
-                        {% for item in model.productsOriginalNumbers %}
-                        <a href="{{ path('original-number/show', {'number': item.number}) }}">{{ item.number }}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <!-- /.origin__numbers -->
-                {% endif %}
-
                 <div class="item__row">
                     <div class="item__col-left">
                         <img src="/userfiles/{{ model.image ? 'products/' ~ model.image : 'not_photo.jpg' }}" alt="alt">
                     </div>
                     <div class="item__col-right">
-                        <div class="name"><a href="{{ path('maker/show', {'alias': model.maker.alias }) }}">{{ model.maker.name }}</a></b></div>
+                        {% if model.makers %}
+                            {% for item in model.makers %}
+                                <div class="name"><b><a href="#">{{ item.name }}</a></b></div>
+                            {% endfor %}
+                        {% endif %}
                         <div class="desc">
                             <ul>
 
-                                <li><span>Часы работы:</span> <b>{{ model.articul }}</b></li>
+                                <li><span>Часы работы:</span> <b>{{ model.working_hours }}</b></li>
                                 <li><span>E-mail:</span> <b><a href="mailto:{{ model.balance }}">{{ model.balance }}</a></b></li>
                                 <li><span>Адрес:</span> <b>{{ model.address }}</b></li>
                             </ul>

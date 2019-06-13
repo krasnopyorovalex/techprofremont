@@ -285,3 +285,9 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 .table .centered {
     text-align: center;
 }
+.checkbox_list .form-group {
+    margin-bottom: 5px;
+}
+.checkbox_list .tab_t {
+    margin-left: 2em;
+}

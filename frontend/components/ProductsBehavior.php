@@ -7,7 +7,7 @@ use common\models\AutoGenerations;
 use common\models\AutoModels;
 use common\models\CatalogCategories;
 use common\models\Products;
-use common\models\ProductsAutoVia;
+use Yii;
 use yii\base\Behavior;
 use yii\helpers\ArrayHelper;
 
@@ -29,16 +29,16 @@ class ProductsBehavior extends Behavior
      * @param null $model
      * @param null $generation
      */
-    public function getProducts(CatalogCategories $catalog, $page, $brand = null, $model = null, $generation = null)
+    public function getProducts(CatalogCategories $catalog, $page, $brand = null, $model = null, $generation = null): void
     {
         $this->model = $catalog;
-        array_push($this->ids, $catalog->id);
+        $this->ids[] = $catalog->id;
         $this->getCatalogCategories($catalog->catalogCategories);
 
         $query = Products::find()->where(['category_id' => $this->ids]);
 
         if( $productIds = $this->getProductsWithAuto($brand, $model, $generation) ) {
-            $ids = array_map(function ($id) {
+            $ids = array_map(static function ($id) {
                 $key = key($id);
                 return $id[$key];
             }, $productIds);
@@ -47,12 +47,12 @@ class ProductsBehavior extends Behavior
 
         $count = clone $query;
 
-        $products = $query->with(['maker'])->limit(\Yii::$app->params['per_page'])->offset($page)->asArray()->all();
+        $products = $query->with(['makers'])->limit(Yii::$app->params['per_page'])->offset($page)->asArray()->all();
 
         $this->data = [
             'products' => $products,
             'count' => $count->count(),
-            'offset' => $page + \Yii::$app->params['per_page'],
+            'offset' => $page + Yii::$app->params['per_page'],
             'sidebarMenuLinks' => $catalog['catalog']['catalogCategories'],
             'brand' => $brand,
             'model' => $model,
@@ -97,10 +97,10 @@ class ProductsBehavior extends Behavior
     /**
      * @param $catalogCategories
      */
-    private function getCatalogCategories($catalogCategories)
+    private function getCatalogCategories($catalogCategories): void
     {
         foreach ($catalogCategories as $catalogCategory) {
-            array_push($this->ids, $catalogCategory->id);
+            $this->ids[] = $catalogCategory->id;
             if($catalogCategories = $catalogCategory->catalogCategories){
                 $this->getCatalogCategories($catalogCategories);
             }
@@ -111,7 +111,7 @@ class ProductsBehavior extends Behavior
      * @param $brand
      * @param $model
      * @param $generation
-     * @return array|bool|\yii\db\ActiveRecord[]
+     * @return array|bool|Yii\db\ActiveRecord[]
      */
     private function getProductsWithAuto($brand, $model, $generation)
     {
@@ -128,10 +128,10 @@ class ProductsBehavior extends Behavior
             }])->limit(1)->one()) ) {
 
             array_map(function ($row) {
-                array_push($this->conditions, [
+                $this->conditions[] = [
                     'type' => $row->getType(),
                     'auto_id' => $row->id
-                ]);
+                ];
                 return $this->loadConditions($row['autoGenerations']);
             }, $brand['autoModels']);
 
@@ -151,7 +151,7 @@ class ProductsBehavior extends Behavior
     /**
      * @param $rows
      */
-    private function loadConditions($rows)
+    private function loadConditions($rows): void
     {
         array_map(function ($condition) {
             return array_push($this->conditions, [

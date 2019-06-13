@@ -3,6 +3,7 @@
 namespace common\models;
 
 use backend\components\FileBehavior;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -32,7 +33,7 @@ class CatalogCategories extends MainModel
     public $file;
     private $tree = [];
 
-    public function behaviors()
+    public function behaviors(): array
     {
         return ArrayHelper::merge(parent::behaviors(),[
             [
@@ -89,33 +90,33 @@ class CatalogCategories extends MainModel
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getCatalog()
+    public function getCatalog(): ActiveQuery
     {
         return $this->hasOne(Catalog::class, ['id' => 'catalog_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getParent()
+    public function getParent(): ActiveQuery
     {
-        return $this->hasOne(CatalogCategories::class, ['id' => 'parent_id']);
+        return $this->hasOne(__CLASS__, ['id' => 'parent_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getCatalogCategories()
+    public function getCatalogCategories(): ActiveQuery
     {
-        return $this->hasMany(CatalogCategories::class, ['parent_id' => 'id']);
+        return $this->hasMany(__CLASS__, ['parent_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getProducts()
+    public function getProducts(): ActiveQuery
     {
         return $this->hasMany(Products::class, ['category_id' => 'id']);
     }
@@ -123,12 +124,15 @@ class CatalogCategories extends MainModel
     /**
      * @param array $items
      * @param string $step
+     * @param string $cssClass
      * @return array
      */
-    public function getTree($items = [], $step = '*'): array
+    public function getTree($items = [], $step = '*', $cssClass = 'tab'): array
     {
         if( ! $items ){
-            $catalogs = self::find()->where(['parent_id' => null])->with(['catalogCategories']);
+            $catalogs = self::find()->where(['parent_id' => null])->with(['parent', 'catalogCategories' => static function(ActiveQuery $query) {
+                return $query->with(['catalogCategories','parent']);
+            }]);
             if( ! $this->isNewRecord ) {
                 $catalogs->andWhere(['<>','id',$this->id]);
             }
@@ -136,14 +140,16 @@ class CatalogCategories extends MainModel
         }
 
         foreach ($items as $catalog) {
-            array_push($this->tree, [
+            $this->tree[] = [
                 'id' => $catalog['id'],
-                'name' => $step . $catalog['name']
-            ]);
+                'name' => $step . $catalog['name'],
+                'class' => $cssClass,
+                'parent' => isset($catalog->parent) ? 'category_' . $catalog->parent->id : ''
+            ];
             if(isset($catalog->catalogCategories) && $catalog->catalogCategories){
-                $this->getTree($catalog->catalogCategories, $step.'*');
+                $this->getTree($catalog->catalogCategories, $step.'*', $cssClass.'_t');
             }
         }
-        return ArrayHelper::map($this->tree,'id','name');
+        return $this->tree;
     }
 }

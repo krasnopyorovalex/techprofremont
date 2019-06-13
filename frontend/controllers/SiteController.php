@@ -2,19 +2,24 @@
 
 namespace frontend\controllers;
 
-use common\models\Catalog;
 use frontend\components\PagesAndCatalogBehavior;
 use common\models\AutoBrands;
 use common\models\Pages;
 use common\models\Subdomains;
+use frontend\components\ParserBehavior;
+use Yii;
+use yii\base\ExitException;
 use yii\helpers\ArrayHelper;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use \Exception;
 
 /**
  * Site controller
  *
  * @mixin PagesAndCatalogBehavior
+ * @mixin ParserBehavior
  */
 class SiteController extends Controller
 {
@@ -26,7 +31,8 @@ class SiteController extends Controller
     public function behaviors(): array
     {
         return [
-            'class' => PagesAndCatalogBehavior::class
+            ['class' => PagesAndCatalogBehavior::class],
+            ['class' => ParserBehavior::class]
         ];
     }
 
@@ -50,10 +56,16 @@ class SiteController extends Controller
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionPage($alias)
+    public function actionPage($alias): string
     {
         if( ! $model = $this->getCatalogOrPage($alias) ) {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        try {
+            $model->text = $this->parse($model);
+        } catch (Exception $e) {
+            $model->text = $e->getMessage();
         }
 
         return $this->render($model['template'], [
@@ -64,7 +76,7 @@ class SiteController extends Controller
     /**
      * @return string
      */
-    public function actionContacts()
+    public function actionContacts(): string
     {
         return $this->render('contacts.twig');
     }
@@ -72,7 +84,7 @@ class SiteController extends Controller
     /**
      * @return string
      */
-    public function actionError()
+    public function actionError(): string
     {
         return $this->render('error.twig');
     }
@@ -80,32 +92,32 @@ class SiteController extends Controller
     /**
      * @param $action
      * @return bool
-     * @throws \yii\base\ExitException
-     * @throws \yii\web\BadRequestHttpException
+     * @throws ExitException
+     * @throws BadRequestHttpException
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         if (!parent::beforeAction($action)) {
             return false;
         }
 
-        $chunks = explode('.',\Yii::$app->request->hostName);
+        $chunks = explode('.',Yii::$app->request->hostName);
         $chunk = array_shift($chunks);
 
         $subdomain = Subdomains::findOne(['domain_name' => $chunk]);
-        if( count($chunks) == 2 && ! $subdomain ) {
-            \Yii::$app->response->setStatusCode(404);
-            \Yii::$app->end();
+        if( ! $subdomain && count($chunks) === 2) {
+            Yii::$app->response->setStatusCode(404);
+            Yii::$app->end();
         } elseif( ! $subdomain ) {
             $subdomain = Subdomains::findOne(['is_main' => Subdomains::IS_MAIN]);
         }
 
-        \Yii::$app->params['subdomain_cases'] = json_decode($subdomain['cases_json'], true);
-        \Yii::$app->params['phone'] = $subdomain->phone;
-        \Yii::$app->params['address'] = $subdomain->address;
-        \Yii::$app->params['contact_text'] = $subdomain->contact_text;
-        \Yii::$app->params['subdomains'] = ArrayHelper::map(Subdomains::find()->asArray()->all(), 'domain_name', function($item){
-            return json_decode($item['cases_json']);
+        Yii::$app->params['subdomain_cases'] = json_decode($subdomain['cases_json'], true);
+        Yii::$app->params['phone'] = $subdomain->phone;
+        Yii::$app->params['address'] = $subdomain->address;
+        Yii::$app->params['contact_text'] = $subdomain->contact_text;
+        Yii::$app->params['subdomains'] = ArrayHelper::map(Subdomains::find()->asArray()->all(), 'domain_name', static function($item){
+            return json_decode($item['cases_json'], true);
         });
         return true;
     }
