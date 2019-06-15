@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use common\models\AutoBrands;
+use common\models\Brands;
 
 /**
  * AutoBrand controller
@@ -18,7 +18,7 @@ class AutoBrandController extends CatalogController
      */
     public function actionShow($alias, $page = 0)
     {
-        if(!$model = AutoBrands::find()->where(['alias' => $alias])->with(['autoModels'])->one()){
+        if(!$model = Brands::find()->where(['alias' => $alias])->with(['autoModels'])->one()){
             return parent::actionShow($alias);
         }
 

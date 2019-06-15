@@ -4,7 +4,9 @@ namespace frontend\controllers;
 
 use common\models\CatalogCategories;
 use frontend\components\ProductsBehavior;
+use Yii;
 use yii\web\NotFoundHttpException;
+use Exception;
 
 /**
  * AutoCatalog controller
@@ -17,7 +19,7 @@ class AutoCatalogController extends SiteController
     /**
      * @return array
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'class' => ProductsBehavior::class
@@ -38,7 +40,7 @@ class AutoCatalogController extends SiteController
         /**
          * @var $catalog CatalogCategories
          */
-        if( ! $catalog = CatalogCategories::find()->where(['alias' => $category])->with(['catalogCategories'])->limit(1)->one() ) {
+        if ( ! $catalog = CatalogCategories::find()->where(['alias' => $category])->with(['catalogCategories'])->limit(1)->one() ) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -46,11 +48,11 @@ class AutoCatalogController extends SiteController
 
         try {
             $this->getProducts($catalog, $page, $brand, $model, $generation);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $catalog->text = $exception->getMessage();
         }
 
-        if(\Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             return $this->json();
         }
 
@@ -71,14 +73,14 @@ class AutoCatalogController extends SiteController
         /**
          * @var $catalog CatalogCategories
          */
-        if( ! $catalog = CatalogCategories::find()->where(['alias' => $subcategory])->with(['parent', 'catalogCategories'])->limit(1)->one() ) {
+        if ( ! $catalog = CatalogCategories::find()->where(['alias' => $subcategory])->with(['parent', 'catalogCategories'])->limit(1)->one()) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $page = is_numeric($model) ? $model : $page;
         $this->getProducts($catalog, $page, $brand, $model, $generation);
 
-        if(\Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             return $this->json();
         }
 
@@ -99,14 +101,14 @@ class AutoCatalogController extends SiteController
         /**
          * @var $catalog CatalogCategories
          */
-        if( ! $catalog = CatalogCategories::find()->where(['alias' => $subsubcategory])->with(['parent', 'catalogCategories'])->limit(1)->one() ) {
+        if ( ! $catalog = CatalogCategories::find()->where(['alias' => $subsubcategory])->with(['parent', 'catalogCategories'])->limit(1)->one()) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $page = is_numeric($generation) ? $generation : (is_numeric($model) ? $model : $page);
         $this->getProducts($catalog, $page, $brand, $model, $generation);
 
-        if(\Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             return $this->json();
         }
 

@@ -18,14 +18,8 @@ return [
     'products' => [
         'class' => 'backend\modules\products\Products',
     ],
-    'auto_brands' => [
-        'class' => 'backend\modules\auto_brands\AutoBrands',
-    ],
-    'auto_generations' => [
-        'class' => 'backend\modules\auto_generations\AutoGenerations',
-    ],
-    'auto_models' => [
-        'class' => 'backend\modules\auto_models\AutoModels',
+    'brands' => [
+        'class' => 'backend\modules\brands\Brands',
     ],
     'makers' => [
         'class' => 'backend\modules\makers\Makers',

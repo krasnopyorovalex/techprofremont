@@ -2,7 +2,10 @@
 
 namespace common\models;
 
-use frontend\models\Products as P;
+use common\models\Products as P;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%makers}}".
@@ -11,22 +14,23 @@ use frontend\models\Products as P;
  * @property string $name
  * @property string $alias
  *
+ * @property ProductMakers[] $productMakers
  * @property Products[] $products
  */
-class Makers extends \yii\db\ActiveRecord
+class Makers extends ActiveRecord
 {
     /**
-     * @inheritdoc
+     * @return string
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%makers}}';
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'alias'], 'required'],
@@ -37,22 +41,31 @@ class Makers extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Название',
             'alias' => 'Alias',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getProducts()
+    public function getProductMakers(): ActiveQuery
     {
-        return $this->hasMany(P::class, ['maker_id' => 'id']);
+        return $this->hasMany(ProductMakers::className(), ['maker_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getProducts(): ActiveQuery
+    {
+        return $this->hasMany(P::className(), ['id' => 'product_id'])->viaTable('{{%product_makers}}', ['maker_id' => 'id']);
     }
 }

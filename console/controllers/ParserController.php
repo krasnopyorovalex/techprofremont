@@ -2,7 +2,7 @@
 
 namespace console\controllers;
 
-use common\models\AutoBrands;
+use common\models\Brands;
 use common\models\AutoGenerations;
 use common\models\AutoModels;
 use common\models\CatalogCategories;
@@ -108,7 +108,7 @@ class ParserController extends Controller
 
     private function createLinksProductsWithAuto($alias)
     {
-        $autoBrands = AutoBrands::find()->all();
+        $autoBrands = Brands::find()->all();
 
         foreach ($autoBrands as $autoBrand) {
 
@@ -227,13 +227,13 @@ class ParserController extends Controller
             $body = self::$client->request('GET', self::BASE_URL . $page)->getBody();
             $document = \phpQuery::newDocumentHTML($body);
 
-            if(AutoBrands::findOne(['alias' => str_replace('/zapchasti/na-', '', $page)])) {
+            if(Brands::findOne(['alias' => str_replace('/zapchasti/na-', '', $page)])) {
                 $this->stdout('Info: Модель авто уже есть в БД ', Console::FG_GREEN);
                 $this->stdout('«' . $document->find('h1')->text() . '»' . PHP_EOL);
                 continue;
             }
 
-            $newBrand = new AutoBrands();
+            $newBrand = new Brands();
             $newBrand->name = $document->find('h1')->text();
             $newBrand->alias = str_replace('/zapchasti/na-', '', $page);
             $newBrand->save();

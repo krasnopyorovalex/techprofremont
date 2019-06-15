@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use common\models\AutoBrands;
+use common\models\Brands;
 use common\models\AutoGenerations;
 use common\models\AutoModels;
 use common\models\Catalog;
@@ -21,7 +21,7 @@ class AutoController extends SiteController
      */
     public function actionBrand($brand)
     {
-        if( ! $model = AutoBrands::find()->where(['alias' => $brand])->with(['autoModels'])->limit(1)->one() ) {
+        if( ! $model = Brands::find()->where(['alias' => $brand])->with(['autoModels'])->limit(1)->one() ) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 

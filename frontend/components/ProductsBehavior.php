@@ -2,13 +2,14 @@
 
 namespace frontend\components;
 
-use common\models\AutoBrands;
+use common\models\Brands;
 use common\models\AutoGenerations;
 use common\models\AutoModels;
 use common\models\CatalogCategories;
 use common\models\Products;
 use Yii;
 use yii\base\Behavior;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -37,7 +38,7 @@ class ProductsBehavior extends Behavior
 
         $query = Products::find()->where(['category_id' => $this->ids]);
 
-        if( $productIds = $this->getProductsWithAuto($brand, $model, $generation) ) {
+        if ($productIds = $this->getProductsWithAuto($brand)) {
             $ids = array_map(static function ($id) {
                 $key = key($id);
                 return $id[$key];
@@ -83,7 +84,7 @@ class ProductsBehavior extends Behavior
             'count' => $this->data['count'],
             'sidebarMenuLinks' => $this->data['sidebarMenuLinks'],
             'brandAuto' => $this->data['brand']
-                ? AutoBrands::findOne(['alias' => $this->data['brand']])
+                ? Brands::findOne(['alias' => $this->data['brand']])
                 : false,
             'modelAuto' => $this->data['model']
                 ? AutoModels::findOne(['alias' => $this->data['model']])
@@ -109,43 +110,11 @@ class ProductsBehavior extends Behavior
 
     /**
      * @param $brand
-     * @param $model
-     * @param $generation
-     * @return array|bool|Yii\db\ActiveRecord[]
+     * @return array
      */
-    private function getProductsWithAuto($brand, $model, $generation)
+    private function getProductsWithAuto($brand): array
     {
-        if ( $generation && ($rows = AutoGenerations::find()->where(['alias' => $generation])->all()) ) {
-
-            $this->loadConditions($rows);
-
-        } elseif ( $model && ($rows = AutoModels::find()->where(['alias' => $model])->all()) ) {
-
-            $this->loadConditions($rows);
-
-        } elseif ( $brand && ($brand = AutoBrands::find()->where(['alias' => $brand])->with(['autoModels' => function ($query) {
-                return $query->with(['autoGenerations']);
-            }])->limit(1)->one()) ) {
-
-            array_map(function ($row) {
-                $this->conditions[] = [
-                    'type' => $row->getType(),
-                    'auto_id' => $row->id
-                ];
-                return $this->loadConditions($row['autoGenerations']);
-            }, $brand['autoModels']);
-
-        } else {
-            return false;
-        }
-
-        $query = ProductsAutoVia::find()->select('product_id');
-        $autoIds = ArrayHelper::getColumn($this->conditions,'auto_id');
-        $results = $query->where(['auto_id' => array_unique($autoIds)])->asArray()->distinct('product_id')->all();
-
-        return !empty($results)
-            ? $results
-            : [['product_id' => 0]];
+        return [['product_id' => 0]];
     }
 
     /**

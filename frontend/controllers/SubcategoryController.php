@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use common\models\AutoBrands;
+use common\models\Brands;
 use common\models\Catalog;
 use common\models\Products;
 use common\models\SubCategory;
@@ -54,7 +54,7 @@ class SubcategoryController extends SiteController
             'products' => $data['products'],
             'count' => $data['count'],
             'offset' => $data['offset'],
-            'brands' => AutoBrands::find()->asArray()->all()
+            'brands' => Brands::find()->asArray()->all()
         ]);
     }
 }

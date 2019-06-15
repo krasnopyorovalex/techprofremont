@@ -3,6 +3,7 @@
 namespace common\models;
 
 use backend\components\FileBehavior;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
@@ -23,7 +24,11 @@ use yii\helpers\ArrayHelper;
  * @property Catalog $catalog
  * @property CatalogCategories $parent
  * @property CatalogCategories[] $catalogCategories
+ * @property CatalogCategoryBrands[] $catalogCategoryBrands
+ * @property Brands[] $brands
+ * @property ProductCategories[] $productCategories
  * @property Products[] $products
+ * @property ActiveQuery $productsVia
  */
 class CatalogCategories extends MainModel
 {
@@ -31,11 +36,13 @@ class CatalogCategories extends MainModel
     public const IMAGE_ENTITY = 'image';
 
     public $file;
+    public $bindingBrandsList;
+
     private $tree = [];
 
     public function behaviors(): array
     {
-        return ArrayHelper::merge(parent::behaviors(),[
+        return ArrayHelper::merge(parent::behaviors(), [
             [
                 'class' => FileBehavior::class,
                 'path' => self::PATH,
@@ -45,17 +52,17 @@ class CatalogCategories extends MainModel
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%catalog_categories}}';
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['catalog_id', 'name', 'alias'], 'required'],
@@ -66,14 +73,14 @@ class CatalogCategories extends MainModel
             [['alias'], 'unique'],
             [['image'], 'string', 'max' => 36],
             [['catalog_id'], 'exist', 'skipOnError' => true, 'targetClass' => Catalog::class, 'targetAttribute' => ['catalog_id' => 'id']],
-            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => CatalogCategories::class, 'targetAttribute' => ['parent_id' => 'id']],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => __CLASS__, 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -85,16 +92,17 @@ class CatalogCategories extends MainModel
             'alias' => 'Alias',
             'file' => 'Изображение',
             'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'updated_at' => 'Updated At'
         ];
     }
+
 
     /**
      * @return ActiveQuery
      */
     public function getCatalog(): ActiveQuery
     {
-        return $this->hasOne(Catalog::class, ['id' => 'catalog_id']);
+        return $this->hasOne(Catalog::className(), ['id' => 'catalog_id']);
     }
 
     /**
@@ -102,7 +110,7 @@ class CatalogCategories extends MainModel
      */
     public function getParent(): ActiveQuery
     {
-        return $this->hasOne(__CLASS__, ['id' => 'parent_id']);
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
     }
 
     /**
@@ -110,7 +118,41 @@ class CatalogCategories extends MainModel
      */
     public function getCatalogCategories(): ActiveQuery
     {
-        return $this->hasMany(__CLASS__, ['parent_id' => 'id']);
+        return $this->hasMany(self::className(), ['parent_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getCatalogCategoryBrands(): ActiveQuery
+    {
+        return $this->hasMany(CatalogCategoryBrands::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getBrands(): ActiveQuery
+    {
+        return $this->hasMany(Brands::className(), ['id' => 'brand_id'])->viaTable('{{%catalog_category_brands}}', ['category_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getProductCategories(): ActiveQuery
+    {
+        return $this->hasMany(ProductCategories::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getProductsVia(): ActiveQuery
+    {
+        return $this->hasMany(Products::className(), ['id' => 'product_id'])->viaTable('{{%product_categories}}', ['category_id' => 'id']);
     }
 
     /**
@@ -118,7 +160,28 @@ class CatalogCategories extends MainModel
      */
     public function getProducts(): ActiveQuery
     {
-        return $this->hasMany(Products::class, ['category_id' => 'id']);
+        return $this->hasMany(Products::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes): void
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $this->unlinkAll('brands', true);
+
+        if ($this->bindingBrandsList) {
+            $keys = array_keys(array_filter($this->bindingBrandsList));
+            array_map(function ($item) {
+                return (new CatalogCategoryBrands([
+                    'category_id' => $this->id,
+                    'brand_id' => (int)$item
+                ]))->save();
+            }, $keys);
+        }
     }
 
     /**

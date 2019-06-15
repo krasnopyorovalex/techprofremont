@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\CatalogCategories;
+use Yii;
 use yii\web\NotFoundHttpException;
 use frontend\components\ProductsBehavior;
 
@@ -34,13 +35,13 @@ class CatalogController extends SiteController
         /**
          * @var $model CatalogCategories
          */
-        if( ! $model = CatalogCategories::find()->where(['alias' => $category])->with(['parent'])->limit(1)->one() ) {
+        if ( ! $model = CatalogCategories::find()->where(['alias' => $category])->with(['parent'])->limit(1)->one()) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $this->getProducts($model, $page);
 
-        if(\Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             return $this->json();
         }
 
@@ -58,13 +59,13 @@ class CatalogController extends SiteController
         /**
          * @var $model CatalogCategories
          */
-        if( ! $model = CatalogCategories::find()->where(['alias' => $subcategory])->with(['parent'])->limit(1)->one() ) {
+        if ( ! $model = CatalogCategories::find()->where(['alias' => $subcategory])->with(['parent'])->limit(1)->one()) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $this->getProducts($model, $page);
 
-        if(\Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             return $this->json();
         }
 
@@ -82,13 +83,13 @@ class CatalogController extends SiteController
         /**
          * @var $model CatalogCategories
          */
-        if( ! $model = CatalogCategories::find()->where(['alias' => $subsubcategory])->with(['parent'])->limit(1)->one() ) {
+        if ( ! $model = CatalogCategories::find()->where(['alias' => $subsubcategory])->with(['parent'])->limit(1)->one()) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $this->getProducts($model, $page);
 
-        if(\Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             return $this->json();
         }
 

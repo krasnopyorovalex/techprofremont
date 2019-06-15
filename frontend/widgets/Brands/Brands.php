@@ -1,22 +1,23 @@
 <?php
 
-namespace frontend\widgets\BrandsList;
+namespace frontend\widgets\Brands;
 
-use common\models\Brands;
+use common\models\Brands as Model;
 use yii\base\Widget;
 
 /**
- * Class BrandsList
- * @package frontend\widgets\SidebarMenu
+ * Class Brands
+ * @package frontend\widgets\Brands
  */
-class BrandsList extends Widget
+class Brands extends Widget
 {
+
     /**
      * @return string
      */
     public function run(): string
     {
-        $brands = Brands::find()->all();
+        $brands = Model::find()->asArray()->all();
 
         return $this->render('brands.twig', [
             'brands' => $brands

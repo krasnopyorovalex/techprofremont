@@ -3,11 +3,10 @@
 namespace common\models;
 
 use backend\components\FileBehavior;
-use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "{{%auto_brands}}".
+ * This is the model class for table "{{%brands}}".
  *
  * @property int $id
  * @property string $name
@@ -16,12 +15,10 @@ use yii\db\ActiveRecord;
  * @property string $alias
  * @property string $image
  * @property integer $is_popular
- *
- * @property AutoModels[] $autoModels
  */
-class AutoBrands extends ActiveRecord
+class Brands extends ActiveRecord
 {
-    public const PATH = '/userfiles/auto_brands/';
+    public const PATH = '/userfiles/brands/';
     public const IMAGE_ENTITY = 'image';
     public const IS_POPULAR = 1;
 
@@ -44,7 +41,7 @@ class AutoBrands extends ActiveRecord
      */
     public static function tableName(): string
     {
-        return '{{%auto_brands}}';
+        return '{{%brands}}';
     }
 
     /**
@@ -78,13 +75,5 @@ class AutoBrands extends ActiveRecord
             'file' => 'Изображение',
             'is_popular' => 'Отображать на главной?'
         ];
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getAutoModels(): ActiveQuery
-    {
-        return $this->hasMany(AutoModels::class, ['brand_id' => 'id']);
     }
 }

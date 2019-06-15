@@ -26,7 +26,7 @@ class Catalog extends MainModel
 
     public const IMAGE_ENTITY = 'image';
     public const IS_MAIN = 1;
-    private const PATH = '/userfiles/catalog/';
+    public const PATH = '/userfiles/catalog/';
 
     public $template = 'catalog.twig';
     public $file;

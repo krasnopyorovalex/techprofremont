@@ -2,7 +2,8 @@
 
 namespace common\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%product_categories}}".
@@ -13,12 +14,12 @@ use Yii;
  * @property CatalogCategories $category
  * @property Products $product
  */
-class ProductCategories extends \yii\db\ActiveRecord
+class ProductCategories extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%product_categories}}';
     }
@@ -26,7 +27,7 @@ class ProductCategories extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['product_id', 'category_id'], 'required'],
@@ -40,7 +41,7 @@ class ProductCategories extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'product_id' => 'Product ID',
@@ -49,17 +50,17 @@ class ProductCategories extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getCategory()
+    public function getCategory(): ActiveQuery
     {
         return $this->hasOne(CatalogCategories::className(), ['id' => 'category_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getProduct()
+    public function getProduct(): ActiveQuery
     {
         return $this->hasOne(Products::className(), ['id' => 'product_id']);
     }

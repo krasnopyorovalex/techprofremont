@@ -3,14 +3,27 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `auto_models`.
+ * Handles the dropping of table `{{%auto_models}}`.
  */
-class m180209_122715_create_auto_models_table extends Migration
+class m190615_061458_drop_auto_models_table extends Migration
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function up()
+    public function safeUp()
+    {
+        $this->dropForeignKey('{{%fk-auto_models-brand_id}}', '{{%auto_models}}');
+
+        $this->dropIndex('{{%idx-auto_models-alias}}', '{{%auto_models}}');
+        $this->dropIndex('{{%idx-auto_models-brand_id}}', '{{%auto_models}}');
+
+        $this->dropTable('{{%auto_models}}');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
@@ -28,13 +41,7 @@ class m180209_122715_create_auto_models_table extends Migration
         $this->createIndex('{{%idx-auto_models-alias}}', '{{%auto_models}}', 'alias', true);
 
         $this->addForeignKey('{{%fk-auto_models-brand_id}}', '{{%auto_models}}', 'brand_id', '{{%brands}}', 'id');
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function down()
-    {
-        $this->dropTable('auto_models');
+        $this->addColumn('auto_models', 'h1', $this->string(512)->after('name'));
     }
 }

@@ -3,7 +3,7 @@
 namespace frontend\controllers;
 
 use frontend\components\PagesAndCatalogBehavior;
-use common\models\AutoBrands;
+use common\models\Brands;
 use common\models\Pages;
 use common\models\Subdomains;
 use frontend\components\ParserBehavior;
@@ -43,7 +43,7 @@ class SiteController extends Controller
     public function actionIndex($alias = 'index'): string
     {
         $model = Pages::find()->where(['alias' => $alias])->one();
-        $brands = AutoBrands::find()->where(['is_popular' => AutoBrands::IS_POPULAR])->all();
+        $brands = Brands::find()->where(['is_popular' => Brands::IS_POPULAR])->all();
 
         return $this->render('index.twig',[
             'model' => $model,

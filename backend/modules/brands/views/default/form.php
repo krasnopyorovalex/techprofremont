@@ -1,9 +1,8 @@
 <?php
-
 /* @var $this yii\web\View */
-/* @var $auto_model common\models\AutoModels */
-/* @var $model common\models\AutoGenerations */
+/* @var $model common\models\Brands */
 
+use backend\assets\CheckBoxAsset;
 use backend\assets\SingleEditorAsset;
 use backend\assets\SelectAsset;
 use yii\bootstrap\ActiveForm;
@@ -12,10 +11,9 @@ use yii\helpers\Url;
 
 SingleEditorAsset::register($this);
 SelectAsset::register($this);
+CheckBoxAsset::register($this);
 
-$this->params['breadcrumbs'][] = ['label' => 'Бренды авто', 'url' => Url::toRoute(['/auto_brands'])];
-$this->params['breadcrumbs'][] = ['label' => $auto_model->brand->name, 'url' => Url::toRoute(['/auto_brands/models/'.$auto_model->brand->id])];
-$this->params['breadcrumbs'][] = ['label' => $auto_model->name, 'url' => Url::to(Url::previous())];
+$this->params['breadcrumbs'][] = ['label' => $this->context->module->params['name'], 'url' => Url::toRoute(['/'.$this->context->module->id])];
 $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action->id];
 ?>
 <div class="row">
@@ -36,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                             <div class="row">
                                 <div class="col-md-12">
                                     <?= $form->field($model, 'name')->textInput(['autocomplete' => 'off', 'id' => 'from__generate']) ?>
-                                    <?= $form->field($model, 'h1')->textInput(['autocomplete' => 'off']) ?>
+                                    <?= $form->field($model, 'h1')->textInput() ?>
                                     <?= $form->field($model, 'alias', [
                                         'template' => '<div class="form-group">{label}<div class="input-group"><span class="input-group-addon"><i class="icon-pencil"></i></span>{input}{error}{hint}</div></div>'
                                     ])->textInput([
@@ -44,9 +42,15 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                         'class' => 'form-control',
                                         'id' => 'to__generate'
                                     ]) ?>
-                                    <?php if($model->isNewRecord):?>
-                                        <?= Html::activeInput('hidden',$model,'model_id',['value' => $auto_model->id])?>
-                                    <?php endif;?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?= $form->field($model, 'text')->textarea([
+                                        'id' => 'editor-full',
+                                        'placeholder' => 'Введите текст...'
+                                    ]) ?>
+                                    <?= $form->field($model, 'is_popular')->checkbox(['class' => 'control-primary'], false)->error(false) ?>
                                 </div>
                             </div>
 

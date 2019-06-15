@@ -35,8 +35,8 @@
             <div class="content__body">
                 <h1>{{ model.h1 ? model.h1 : model.name }} для {{ (brandAuto.name ? ' ' ~ brandAuto.name : '') ~ (modelAuto.name and not generationAuto ? ' ' ~ modelAuto.name : '') ~ (generationAuto.name ? ' ' ~ generationAuto.name : '')}}</h1>
 
-                {{ use('frontend/widgets/AutoBrands/AutoBrands') }}
-                {{ auto_brands_widget() }}
+                {{ use('frontend/widgets/Brands/Brands') }}
+                {{ brands_widget() }}
 
                 <div class="items">
                     {{ use('frontend/widgets/ProductsListForCategory/ProductsListForCategory') }}

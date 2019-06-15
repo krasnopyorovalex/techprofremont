@@ -12,7 +12,7 @@ class m190612_093644_add_column_is_popular_to_auto_brands_table extends Migratio
      */
     public function safeUp()
     {
-        $this->addColumn('auto_brands', 'is_popular', $this->tinyInteger(1)->defaultValue(0)->unsigned());
+        $this->addColumn('brands', 'is_popular', $this->tinyInteger(1)->defaultValue(0)->unsigned());
     }
 
     /**
@@ -20,7 +20,7 @@ class m190612_093644_add_column_is_popular_to_auto_brands_table extends Migratio
      */
     public function safeDown()
     {
-        $this->dropColumn('auto_brands', 'is_popular');
+        $this->dropColumn('brands', 'is_popular');
     }
 
     /*

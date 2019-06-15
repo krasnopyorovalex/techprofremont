@@ -3,16 +3,16 @@
 use yii\db\Migration;
 
 /**
- * Class m180329_170327_add_column_h1_to_auto_brands_table
+ * Class m190615_061723_rename_auto_brands_table_to_brands_table
  */
-class m180329_170327_add_column_h1_to_auto_brands_table extends Migration
+class m190615_061723_rename_auto_brands_table_to_brands_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->addColumn('brands', 'h1', $this->string(512)->after('name'));
+        $this->renameTable('{{%brands}}', '{{%brands}}');
     }
 
     /**
@@ -20,7 +20,7 @@ class m180329_170327_add_column_h1_to_auto_brands_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('brands', 'h1');
+        $this->renameTable('{{%brands}}', '{{%brands}}');
     }
 
     /*
@@ -32,7 +32,7 @@ class m180329_170327_add_column_h1_to_auto_brands_table extends Migration
 
     public function down()
     {
-        echo "m180329_170327_add_column_h1_to_auto_brands_table cannot be reverted.\n";
+        echo "m190615_061723_rename_auto_brands_table_to_brands_table cannot be reverted.\n";
 
         return false;
     }

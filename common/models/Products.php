@@ -43,7 +43,6 @@ class Products extends MainModel
     ];
 
     public $file;
-    public $bindingAutoList;
     public $bindingMakersList;
     public $bindingCategoriesList;
 

@@ -41,7 +41,7 @@
                     <div class="item__col-right">
                         {% if model.makers %}
                             {% for item in model.makers %}
-                                <div class="name"><b><a href="#">{{ item.name }}</a></b></div>
+                                <div class="name"><b><a href="{{ path('maker/show', {'alias': item.alias}) }}">{{ item.name }}</a></b></div>
                             {% endfor %}
                         {% endif %}
                         <div class="desc">

@@ -2,7 +2,7 @@
 
 namespace backend\components;
 
-use common\models\AutoBrands;
+use common\models\Brands;
 use common\models\ProductsAutoVia;
 use yii\base\Behavior;
 use yii\helpers\ArrayHelper;
@@ -26,7 +26,7 @@ class MakeListAutoBehavior extends Behavior
      */
     public function makeListAuto(): array
     {
-        $autos = AutoBrands::find()->with(['autoModels' => function($query){
+        $autos = Brands::find()->with(['autoModels' => function($query){
             return $query->with(['autoGenerations']);
         }])->asArray()->all();
 

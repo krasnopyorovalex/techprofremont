@@ -1,4 +1,7 @@
 <?php
+
+use frontend\components\RedirectorService;
+
 $params = array_merge(
     require(__DIR__ . '/../../common/config/params.php'),
     require(__DIR__ . '/../../common/config/params-local.php'),
@@ -14,7 +17,7 @@ return [
     'language' => 'ru',
     'timeZone'=>'Europe/Moscow',
     'on beforeRequest' => static function () {
-        (new \frontend\components\RedirectorService())->parse();
+        (new RedirectorService())->parse();
     },
     'components' => [
         'request' => [

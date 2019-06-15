@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $dataProvider common\models\Catalog */
-/* @var $brand common\models\AutoBrands */
+/* @var $brand common\models\Brands */
 /* @var $this yii\web\View */
 
 $this->params['breadcrumbs'][] = ['label' => $this->context->module->params['name'], 'url' => Url::toRoute(['/'.$this->context->module->id])];
@@ -28,21 +28,21 @@ $this->params['breadcrumbs'][] = $brand->name;
                             'class' => 'icon-pencil',
                             'data-popup' => 'tooltip',
                             'data-original-title' => 'Редактировать запись'
-                        ]), str_replace('auto_brands','auto_models',$url));
+                        ]), str_replace('brands','auto_models',$url));
                     },
                     'generations' => function($url){
                         return Html::a(Html::tag('i','',[
                             'class' => 'icon-list2',
                             'data-popup' => 'tooltip',
                             'data-original-title' => 'Перейти к модификациям'
-                        ]), str_replace('auto_brands','auto_models',$url));
+                        ]), str_replace('brands','auto_models',$url));
                     },
                     'delete' => function($url){
                         return Html::a(Html::tag('i','',[
                             'class' => 'icon-trash',
                             'data-popup' => 'tooltip',
                             'data-original-title' => 'Удалить запись'
-                        ]), str_replace('auto_brands','auto_models',$url));
+                        ]), str_replace('brands','auto_models',$url));
                     }
                 ],
             ],
