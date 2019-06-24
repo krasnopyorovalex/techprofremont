@@ -3,6 +3,8 @@
 namespace common\models;
 
 use backend\components\FileBehavior;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -14,7 +16,12 @@ use yii\db\ActiveRecord;
  * @property string $text
  * @property string $alias
  * @property string $image
- * @property integer $is_popular
+ * @property int $is_popular
+ *
+ * @property CatalogCategoryBrands[] $catalogCategoryBrands
+ * @property CatalogCategories[] $categories
+ * @property ProductBrands[] $productBrands
+ * @property Products[] $products
  */
 class Brands extends ActiveRecord
 {
@@ -23,7 +30,7 @@ class Brands extends ActiveRecord
     public const IS_POPULAR = 1;
 
     public $file;
-    public $template = 'auto_brand.twig';
+    public $template = 'brand.twig';
 
     public function behaviors(): array
     {
@@ -75,5 +82,39 @@ class Brands extends ActiveRecord
             'file' => 'Изображение',
             'is_popular' => 'Отображать на главной?'
         ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getCatalogCategoryBrands(): ActiveQuery
+    {
+        return $this->hasMany(CatalogCategoryBrands::className(), ['brand_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getCategories(): ActiveQuery
+    {
+        return $this->hasMany(CatalogCategories::className(), ['id' => 'category_id'])->viaTable('{{%catalog_category_brands}}', ['brand_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getProductBrands(): ActiveQuery
+    {
+        return $this->hasMany(ProductBrands::className(), ['brand_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getProducts(): ActiveQuery
+    {
+        return $this->hasMany(Products::className(), ['id' => 'product_id'])->viaTable('{{%product_brands}}', ['brand_id' => 'id']);
     }
 }

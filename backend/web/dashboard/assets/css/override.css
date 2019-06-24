@@ -291,3 +291,7 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
 .checkbox_list .tab_t {
     margin-left: 2em;
 }
+.checkbox_list.brands .form-group{
+    min-width: 120px;
+    display: inline-block;
+}

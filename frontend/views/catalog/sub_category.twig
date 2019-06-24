@@ -29,7 +29,7 @@
                 <h1>{{ model.h1 ? model.h1 : model.name }}</h1>
 
                 {{ use('frontend/widgets/Brands/Brands') }}
-                {{ brands_widget() }}
+                {{ brands_widget({'brands': model.brands}) }}
 
                 <div class="items">
                     {{ use('frontend/widgets/ProductsListForCategory/ProductsListForCategory') }}

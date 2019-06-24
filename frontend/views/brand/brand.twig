@@ -1,0 +1,56 @@
+{{ set(this, 'title', 'Авторизированные и официальные ' ~ (brand.h1 ? brand.h1 : brand.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' адреса, телефоны и отзывы на ТЕХПРОФРЕМОНТ') }}
+{{ this.registerMetaTag({'name':'description', 'content': 'Все официальные и авторизированные ' ~ (brand.h1 ? brand.h1 : brand.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ', отзывы с рейтингом и фотографиями. Адреса, телефоны, часы работы, схема проезда.'}) }}
+
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li>{{ brand.name }}</li>
+        </ul>
+    </div>
+    <!-- /.breadcrumbs -->
+</div>
+
+<section class="content">
+    <div class="wrapper">
+        <div class="items">
+            <div class="content__sidebar">
+                {{ use('frontend/widgets/SidebarMenu/SidebarMenu') }}
+                {{ sidebar_menu_widget() }}
+            </div>
+            <!-- /.content__sidebar -->
+            <div class="content__body">
+                <h1> {{ brand.h1 ? brand.h1 : brand.name }} </h1>
+
+                {% if brand.categories %}
+                {{ use('frontend/widgets/ProductsListForCategory/ProductsListForCategory') }}
+                <div class="items">
+                    {% for category in brand.categories %}
+                        {% if category.products %}
+                            {{ products_list_for_category_widget({
+                                'items': category.products
+                            }) }}
+                        {% endif %}
+                        {% if category.productCategories %}
+                            {{ products_list_for_category_widget({
+                                'items': category.productCategories
+                            }) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="text">
+                    {{ brand.text| raw }}
+                </div>
+
+                {{ use('frontend/widgets/FormOrder/FormOrder') }}
+                {{ form_order_widget() }}
+
+            </div>
+            <!-- /.content__body -->
+        </div>
+        <!-- /.items -->
+    </div>
+</section>
+<!-- /.content -->

@@ -1,6 +1,6 @@
 <?php
 /* @var $this yii\web\View */
-/* @var $model common\models\Brands */
+/* @var $model common\models\BrandsOld */
 
 use backend\assets\CheckBoxAsset;
 use backend\assets\SingleEditorAsset;

@@ -9,24 +9,24 @@ header {
     font-size: .9rem;
     }
 
-menu {  
+menu {
     padding-left: 0px;
   }
-.contact__box-city {  
+.contact__box-city {
         text-align: left;
         font-size: .9rem;
   }
- .contact__box-address {  
+ .contact__box-address {
         font-size: .9rem;
   }
-.header__sections .h__contact-menu .value {  
+.header__sections .h__contact-menu .value {
     font-weight: 500;
-  }  
+  }
 .header__sections .h__contact-menu .contact__box {
-    margin-left: 10px;  
-    padding-bottom: 15px;   
+    margin-left: 10px;
+    padding-bottom: 15px;
    }
-.contact__box-address {  
+.contact__box-address {
         text-align: left;
   }
 .header__sections .h__contact-menu .contact__box .contact__box-city .custom__select {
@@ -49,16 +49,16 @@ menu {
 .breadcrumbs {
     margin: 1.5em 0;
 }
-.breadcrumbs ul li a { 
+.breadcrumbs ul li a {
     font-size: .9rem;
 }
 .search .search__box .search__box-items form .icon__search  {
     top: 14px;
-   } 
-.categories {  
+   }
+.categories {
     background-color:#fff;
     padding: 1.4em 0 2em;
-    }     
+    }
 .search {
     background-color: #edf0f4;
     padding: 1.4em 0;
@@ -83,84 +83,84 @@ menu {
 }
 .second__column {
     padding: 0px;
-} 
+}
 .categories .categories__view-all a {
-    font-size: 0.9rem;  
+    font-size: 0.9rem;
     font-weight: 500;
-} 
+}
 
 
 .brands {
     padding: 2.5em 0;
- } 
+ }
  .brands .items .item ul li a {
     font-size: 0.9rem;
- } 
+ }
 .brands .load__more-btn {
     width: 205px;
-  } 
+  }
   .brands .load__more-btn a {
     font-size: .9rem;
-}   
+}
 .brands .load__more-btn a::after {
   top: -0.5em;
-} 
+}
 .content__body {
      margin-left: 0px;
      width: calc(78% - 30px);
      margin-right: 0px;
-} 
+}
 .content__body .items {
   margin-left: 15px;
- }  
+ }
 .content__body .items .item {
   width: calc(32.333% - 30px);
   margin-bottom:1em;
-} 
+}
 .content__body .items .item__name {
-      text-align: center;  
-    } 
+      text-align: center;
+    }
 .content__body .items .item__name a {
     font-size: .9rem;
     font-weight: bold;
 
     text-transform: uppercase;
-  }   
+  }
 .content__body .items .item__cat-name a {
     font-family: "Montserrat";
     font-weight: 600;
-  }   
+  }
 
 
 .content__body .auto__names {
      margin: 15px 15px 30px 30px;
-}    
+}
 .content__body .auto__names ul li{
    width: 16%;
    margin: 0.2em 0;
-}    
+}
 .content__body .auto__names ul li a {
     font-size: .9rem;
     font-weight: 500;
-}    
+}
 .content__sidebar  {
     margin-right: 0px;
-}  
+}
 .content__sidebar > ul > li > a  {
      font-size: .9rem;
      padding: 0.15em 1em;
-}    
+}
 .content__sidebar > ul > li > ul  {
      padding: 0;
-}    
+}
 .content__sidebar > ul > li > ul > li > a {
      font-size: .9rem;
      padding: 0.15em 1em;
-}    
+}
 .content__sidebar > ul > li > ul > li > ul > li > a {
      font-size: .9rem;
      padding: 0.15em 1em;
-}    
+}
 .content__body h1{
     font-size: 1.9rem;
     font-weight: 700;
@@ -181,38 +181,38 @@ menu {
     padding: 2em 2em;
     width: 96%;
     margin: 1.5em 0 3em 30px;
- }  
+ }
  .content__body .text {
     margin: 2em 0 1em 30px;
-} 
+}
 .content__body .item__row .item__col-right .name a {
   text-decoration: none;
   color:#282828;
- } 
+ }
 .form__order .form-group input {
     font-size: .9rem;
     height: 40px;
 }
 .form__order .form-group.message textarea {
    font-size: .9rem;
- }  
+ }
  .form__order .form-group {
    font-size: .9rem;
    font-weight: 500;
- }  
+ }
  .form__order-btn {
    font-size: .9rem;
    font-weight: 500;
    font-family: "Montserrat";
    padding: .5em 3em;
- } 
+ }
  .form__order-title  {
-    font-size: 1.8rem; 
-} 
+    font-size: 1.8rem;
+}
 .form__order-subtitle {
     font-size: .9rem;
     font-weight: 500;
-}    
+}
 .checkbox {
     /*display: none!important;*/
 }
@@ -241,7 +241,7 @@ menu {
 .content__body .item__cat-name a {
     font-family: "Montserrat";
     font-weight: 600;
-}    
+}
 .content__body .items .item__brand  {
     display: inline-block;
     float: left;
@@ -249,81 +249,81 @@ menu {
     margin-bottom: 5px;
     font-size: .9rem;
     padding: .5em 1.2em;
-} 
+}
 .content__body .items .item__price  {
     display: inline-block;
     position: relative;
     margin-bottom: 5px;
     font-size: .9rem;
     padding: .5em 1.2em;
-} 
+}
 .content__body .origin__numbers  {
     font-size: .9rem;
     margin: 15px 0 15px 30px;
-} 
+}
 .content__body .item__row {
     margin: 0px 0 0px 15px;
-} 
+}
 .content__body .item__row .item__col-left {
    width: calc(30% - 30px);
-} 
+}
 .content__body .item__row .item__col-right {
    width: calc(70% - 30px);
-} 
+}
 .content__body .item__row .item__col-right .desc ul li span  {
     font-weight: 500;
     font-size: .9rem;
-} 
+}
 .content__body .item__row .item__col-right .desc ul li {
     font-size: .9rem;
-} 
+}
 .content__body .item__row .item__col-right .desc a{
     color: black;
-} 
+}
 .content__body .item__row .item__col-right .price {
     padding: 10px;
-} 
+}
 .content__body .item__row .item__col-right .price span {
     font-size: 1.5rem;
-  } 
+  }
 .content__body .item__row .item__col-right .item__availability-btn {
     font-size: .9rem;
     font-weight: 500;
     font-family: "Montserrat";
     padding: .5em 27px;
-} 
+}
 .content__body .text p {
   margin-bottom:15px;
-   } 
+   }
 .item_description {
     padding:1em;
     text-align:left;
- } 
+ }
 .product_map {
   height: 400px;
-  } 
-h2.map-title { 
+  }
+h2.map-title {
   text-align: center;
   margin-bottom: 0.5em;
   font-size: 22px;
-} 
+}
  footer {
     border-top: 1px solid #dde5ef;
 }
 
  footer .items  {
     padding: 1.4em 0;
- } 
+ }
  footer .items .contacts {
     margin-left: 0px;
     margin-right: 0px;
     width: 18.667%;
     text-align: right;
-  }    
+  }
 footer .items .contacts__street {
     font-size: .9rem;
-  }    
- footer .items .contacts__box-phone a {   
+  }
+ footer .items .contacts__box-phone a {
     font-family: "Montserrat";
     font-weight: 500;
     font-size: 1.25rem;
@@ -379,4 +379,14 @@ footer .items .menu ul li a  {
 }
 .content__body.search, .content__body.error, .content__body.info__page {
     width: 100%;
+}
+.item_btn {
+    padding: 0 1em 1em 1em;
+    text-align: center;
+}
+.item_btn .item__price {
+    text-decoration: none;
+}
+.item_btn .item__price:hover {
+    text-decoration: underline;
 }

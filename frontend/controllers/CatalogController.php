@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\CatalogCategories;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\web\NotFoundHttpException;
 use frontend\components\ProductsBehavior;
 
@@ -33,13 +34,25 @@ class CatalogController extends SiteController
     public function actionShow($category, $page = 0)
     {
         /**
-         * @var $model CatalogCategories
+         * @var $catalogCategory CatalogCategories
          */
-        if ( ! $model = CatalogCategories::find()->where(['alias' => $category])->with(['parent'])->limit(1)->one()) {
+        $catalogCategory = CatalogCategories::find()
+            ->where(['alias' => $category])
+            ->with(['parent','productCategories','brands', 'catalogCategoryBrands','catalogCategories' => static function (ActiveQuery $query){
+                return $query->with(['brands','catalogCategories']);
+            }, 'catalog' => static function(ActiveQuery $query) {
+                return $query->with(['catalogCategories' => static function (ActiveQuery $query){
+                    return $query->with(['brands']);
+                }]);
+            }])
+            ->limit(1)
+            ->one();
+
+        if ( !$catalogCategory) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $this->getProducts($model, $page);
+        $this->getProducts($catalogCategory, $page);
 
         if (Yii::$app->request->isPost) {
             return $this->json();
@@ -59,7 +72,9 @@ class CatalogController extends SiteController
         /**
          * @var $model CatalogCategories
          */
-        if ( ! $model = CatalogCategories::find()->where(['alias' => $subcategory])->with(['parent'])->limit(1)->one()) {
+        $model = CatalogCategories::find()->where(['alias' => $subcategory])->with(['parent'])->limit(1)->one();
+
+        if ( !$model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -83,7 +98,8 @@ class CatalogController extends SiteController
         /**
          * @var $model CatalogCategories
          */
-        if ( ! $model = CatalogCategories::find()->where(['alias' => $subsubcategory])->with(['parent'])->limit(1)->one()) {
+        $model = CatalogCategories::find()->where(['alias' => $subsubcategory])->with(['parent'])->limit(1)->one();
+        if ( !$model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
@@ -95,5 +111,4 @@ class CatalogController extends SiteController
 
         return $this->html('sub_sub_category.twig');
     }
-
 }

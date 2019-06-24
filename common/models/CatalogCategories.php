@@ -28,6 +28,7 @@ use yii\helpers\ArrayHelper;
  * @property Brands[] $brands
  * @property ProductCategories[] $productCategories
  * @property Products[] $products
+ * @property array $checkedBrands
  * @property ActiveQuery $productsVia
  */
 class CatalogCategories extends MainModel
@@ -74,6 +75,7 @@ class CatalogCategories extends MainModel
             [['image'], 'string', 'max' => 36],
             [['catalog_id'], 'exist', 'skipOnError' => true, 'targetClass' => Catalog::class, 'targetAttribute' => ['catalog_id' => 'id']],
             [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => __CLASS__, 'targetAttribute' => ['parent_id' => 'id']],
+            [['bindingBrandsList'], 'safe'],
         ];
     }
 
@@ -163,6 +165,13 @@ class CatalogCategories extends MainModel
         return $this->hasMany(Products::className(), ['category_id' => 'id']);
     }
 
+    public function afterFind(): void
+    {
+        parent::afterFind();
+
+        $this->bindingBrandsList = $this->brands;
+    }
+
     /**
      * @param bool $insert
      * @param array $changedAttributes
@@ -185,6 +194,29 @@ class CatalogCategories extends MainModel
     }
 
     /**
+     * @param int $id
+     * @return bool
+     */
+    public function isChecked(int $id): bool
+    {
+        $keys = ArrayHelper::getColumn($this->brands, 'id');
+
+        return in_array($id, $keys, true);
+    }
+
+    /**
+     * @return array
+     */
+    public function getCheckedBrands(): array
+    {
+        $parentBrands = $this->parent
+            ? $this->parent->brands
+            : [];
+
+        return ArrayHelper::merge($this->brands, $parentBrands);
+    }
+
+    /**
      * @param array $items
      * @param string $step
      * @param string $cssClass
@@ -193,8 +225,8 @@ class CatalogCategories extends MainModel
     public function getTree($items = [], $step = '*', $cssClass = 'tab'): array
     {
         if( ! $items ){
-            $catalogs = self::find()->where(['parent_id' => null])->with(['parent', 'catalogCategories' => static function(ActiveQuery $query) {
-                return $query->with(['catalogCategories','parent']);
+            $catalogs = self::find()->where(['parent_id' => null])->with(['parent', 'brands', 'catalogCategories' => static function(ActiveQuery $query) {
+                return $query->with(['catalogCategories','parent','brands']);
             }]);
             if( ! $this->isNewRecord ) {
                 $catalogs->andWhere(['<>','id',$this->id]);

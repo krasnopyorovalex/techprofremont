@@ -4,7 +4,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/* @var $dataProvider common\models\Brands */
+/* @var $dataProvider common\models\BrandsOld */
 /* @var $this yii\web\View */
 
 $this->params['breadcrumbs'][] = $this->context->module->params['name'];

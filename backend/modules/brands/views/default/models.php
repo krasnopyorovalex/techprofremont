@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $dataProvider common\models\Catalog */
-/* @var $brand common\models\Brands */
+/* @var $brand common\models\BrandsOld */
 /* @var $this yii\web\View */
 
 $this->params['breadcrumbs'][] = ['label' => $this->context->module->params['name'], 'url' => Url::toRoute(['/'.$this->context->module->id])];

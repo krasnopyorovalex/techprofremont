@@ -2,8 +2,8 @@
 
 namespace frontend\controllers;
 
-use common\models\CatalogCategories;
 use common\models\Products;
+use frontend\components\yandex\Geocoder;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -13,21 +13,43 @@ use yii\web\NotFoundHttpException;
 class ProductController extends SiteController
 {
     /**
+     * @var Geocoder
+     */
+    private $yandexGeocoder;
+
+    /**
+     * ProductController constructor.
+     * @param $id
+     * @param $module
+     * @param Geocoder $yandexGeocoder
+     * @param array $config
+     */
+    public function __construct($id, $module, Geocoder $yandexGeocoder, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->yandexGeocoder = $yandexGeocoder;
+    }
+
+    /**
      * @param $alias
      * @return string
      * @throws NotFoundHttpException
      */
     public function actionShow($alias): string
     {
-        if( ! $model = Products::find()->where(['alias' => $alias])->with(['category', 'makers'])->limit(1)->one() ){
+        $model = Products::find()->where(['alias' => $alias])->with(['makers'])->limit(1)->one();
+
+        if ( !$model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $catalogCategories = CatalogCategories::find()->where(['catalog_id' => $model['category']['catalog_id']])->asArray()->all();
+        $point = $model->address
+            ? $this->yandexGeocoder->load($model->address)
+            : false;
 
         return $this->render('product.twig', [
             'model' => $model,
-            'sidebarMenuLinks' => $catalogCategories
+            'point' => $point
         ]);
     }
 }

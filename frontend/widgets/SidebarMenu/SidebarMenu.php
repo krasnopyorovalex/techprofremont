@@ -5,6 +5,7 @@ namespace frontend\widgets\SidebarMenu;
 use common\models\Catalog;
 use Yii;
 use yii\base\Widget;
+use yii\db\ActiveQuery;
 
 /**
  * Class SidebarMenu
@@ -23,9 +24,13 @@ class SidebarMenu extends Widget
         $request = Yii::$app->request;
         $this->catalogAlias = $this->catalogAlias ?: $request->get('catalog');
 
-        if( ! $this->model ) {
-            $catalog = Catalog::find()->where(['is_main' => Catalog::IS_MAIN])->with(['catalogCategories'])->limit(1)->one();
+        if( ! $this->model) {
+            $catalog = Catalog::find()->where(['is_main' => Catalog::IS_MAIN])->with(['catalogCategories' => static function(ActiveQuery $query){
+                return $query->with(['brands']);
+            }])->limit(1)->one();
+
             $this->model = $catalog['catalogCategories'];
+
             $this->catalogAlias = $catalog['alias'];
         }
 
@@ -42,7 +47,7 @@ class SidebarMenu extends Widget
     {
         $links = ['in'=> [],'roots' => []];
 
-        if($this->model){
+        if ($this->model) {
             foreach ($this->model as $item) {
                 if( ! $item['parent_id'] ){
                     $links['roots'][] = [

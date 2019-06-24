@@ -1,6 +1,10 @@
 <?php
 
 use frontend\components\RedirectorService;
+use common\models\User;
+use frontend\services\SendService;
+use yii\log\FileTarget;
+use yii\web\View;
 
 $params = array_merge(
     require(__DIR__ . '/../../common/config/params.php'),
@@ -10,7 +14,7 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-frontend',
+    'id' => 'app-techprofremont',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -21,17 +25,17 @@ return [
     },
     'components' => [
         'request' => [
-            'csrfParam' => '_csrf-frontend',
+            'csrfParam' => '_csrf-techprofremont',
             'baseUrl' => ''
         ],
         'sender' => [
-            'class' => 'frontend\services\SendService'
+            'class' => SendService::class,
         ],
         'assetManager' => [
             'appendTimestamp' => true,
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -43,7 +47,7 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
@@ -65,31 +69,22 @@ return [
 
                 'catalog/<alias:[\wd-]+>' => 'product/show',
 
-                'original-number/<number:[\wd-]+>' => 'original-number/show',
                 'maker/<alias:[\wd-]+>' => 'maker/show',
 
-                'brand-<brand:[\wd-]+>' => 'auto/brand',
-                //'auto-<brand:[\wd-]+>/<model:[\wd-]+>' => 'auto/model',
-                //'auto-<brand:[\wd-]+>/<model:[\wd-]+>/<generation:[\wd-]+>' => 'auto/generation',
+                'brand-<alias:[\wd-]+>' => 'brand/show',
 
                 '<alias:[\wd-]+>' => 'site/page',
 
                 [
-                    'pattern' => '<catalog:[\wd-]+>/<category:[\wd-]+>/auto-<brand:[\wd-]+>/<model:[\wd-]+>/<generation:[\wd-]+>/<page:\d+>',
-                    'route' => 'auto-catalog/products-with-auto',
-                    'defaults' => ['model' => '', 'generation' => '', 'page' => 0]
+                    'pattern' => '<catalog:[\wd-]+>/<category:[\wd-]+>/brand-<brand:[\wd-]+>/<page:\d+>',
+                    'route' => 'brand-catalog/products-with-brand',
+                    'defaults' => ['page' => 0]
                 ],
 
                 [
-                    'pattern' => '<catalog:[\wd-]+>/<category:[\wd-]+>/<subcategory:[\wd-]+>/auto-<brand:[\wd-]+>/<model:[\wd-]+>/<generation:[\wd-]+>/<page:\d+>',
-                    'route' => 'auto-catalog/products-with-auto-subcategory',
-                    'defaults' => ['model' => '', 'generation' => '', 'page' => 0]
-                ],
-
-                [
-                    'pattern' => '<catalog:[\wd-]+>/<category:[\wd-]+>/<subcategory:[\wd-]+>/<subsubcategory:[\wd-]+>/auto-<brand:[\wd-]+>/<model:[\wd-]+>/<generation:[\wd-]+>/<page:\d+>',
-                    'route' => 'auto-catalog/products-with-auto-sub-subcategory',
-                    'defaults' => ['model' => '', 'generation' => '', 'page' => 0]
+                    'pattern' => '<catalog:[\wd-]+>/<category:[\wd-]+>/<subcategory:[\wd-]+>/brand-<brand:[\wd-]+>/<page:\d+>',
+                    'route' => 'brand-catalog/products-with-brand-subcategory',
+                    'defaults' => ['page' => 0]
                 ],
 
                 [
@@ -103,16 +98,10 @@ return [
                     'route' => 'catalog/show-sub-category',
                     'defaults' => ['page' => 0]
                 ],
-
-                [
-                    'pattern' => '<catalog:[\wd-]+>/<category:[\wd-]+>/<subcategory:[\wd-]+>/<subsubcategory:[\wd-]+>/<page:\d+>',
-                    'route' => 'catalog/show-sub-sub-category',
-                    'defaults' => ['page' => 0]
-                ],
             ],
         ],
         'view' => [
-            'class' => 'yii\web\View',
+            'class' => View::class,
             'renderers' => [
                 'twig' => [
                     'class' => 'yii\twig\ViewRenderer',

@@ -3,7 +3,7 @@
 namespace backend\modules\brands\controllers;
 
 use backend\controllers\ModuleController;
-use common\models\Brands;
+use common\models\BrandsOld;
 use core\repositories\BrandsRepository;
 use Yii;
 use yii\filters\AccessControl;
@@ -45,7 +45,7 @@ class DefaultController extends ModuleController
 
     public function actionAdd()
     {
-        $form = new Brands();
+        $form = new BrandsOld();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $this->repository->save($form);
@@ -93,7 +93,7 @@ class DefaultController extends ModuleController
      */
     public function actionRemoveImage($id)
     {
-        $model = Brands::findOne($id);
+        $model = BrandsOld::findOne($id);
         if(FH::removeFile($model->image,$model::PATH)){
             $model->image = '';
             return $model->save();

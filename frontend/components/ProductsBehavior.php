@@ -3,13 +3,10 @@
 namespace frontend\components;
 
 use common\models\Brands;
-use common\models\AutoGenerations;
-use common\models\AutoModels;
 use common\models\CatalogCategories;
 use common\models\Products;
 use Yii;
 use yii\base\Behavior;
-use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -21,29 +18,28 @@ class ProductsBehavior extends Behavior
     private $ids = [];
     private $model;
     private $data;
-    private $conditions = [];
 
     /**
      * @param CatalogCategories $catalog
      * @param $page
-     * @param null $brand
-     * @param null $model
-     * @param null $generation
+     * @param bool $brand
      */
-    public function getProducts(CatalogCategories $catalog, $page, $brand = null, $model = null, $generation = null): void
+    public function getProducts(CatalogCategories $catalog, $page, $brand = false): void
     {
         $this->model = $catalog;
         $this->ids[] = $catalog->id;
         $this->getCatalogCategories($catalog->catalogCategories);
 
+        foreach ($this->model->productsVia as $product) {
+            $this->ids[] = $product->category_id;
+        }
+
         $query = Products::find()->where(['category_id' => $this->ids]);
 
-        if ($productIds = $this->getProductsWithAuto($brand)) {
-            $ids = array_map(static function ($id) {
-                $key = key($id);
-                return $id[$key];
-            }, $productIds);
-            $query->andWhere(['id' => $ids]);
+        if ($brand) {
+            $productIds = $this->getProductsWithBrand($brand);
+
+            $query->andWhere(['id' => $productIds]);
         }
 
         $count = clone $query;
@@ -54,10 +50,7 @@ class ProductsBehavior extends Behavior
             'products' => $products,
             'count' => $count->count(),
             'offset' => $page + Yii::$app->params['per_page'],
-            'sidebarMenuLinks' => $catalog['catalog']['catalogCategories'],
-            'brand' => $brand,
-            'model' => $model,
-            'generation' => $generation
+            'brand' => $brand
         ];
     }
 
@@ -82,16 +75,9 @@ class ProductsBehavior extends Behavior
             'model' => $this->model,
             'products' => $this->data['products'],
             'count' => $this->data['count'],
-            'sidebarMenuLinks' => $this->data['sidebarMenuLinks'],
-            'brandAuto' => $this->data['brand']
+            'brands' => $this->data['brand']
                 ? Brands::findOne(['alias' => $this->data['brand']])
                 : false,
-            'modelAuto' => $this->data['model']
-                ? AutoModels::findOne(['alias' => $this->data['model']])
-                : false,
-            'generationAuto' => $this->data['generation']
-                ? AutoGenerations::findOne(['alias' => $this->data['generation']])
-                : false
         ]);
     }
 
@@ -109,24 +95,13 @@ class ProductsBehavior extends Behavior
     }
 
     /**
-     * @param $brand
+     * @param $alias
      * @return array
      */
-    private function getProductsWithAuto($brand): array
+    private function getProductsWithBrand($alias): array
     {
-        return [['product_id' => 0]];
-    }
+        $brand = Brands::find()->where(['alias' => $alias])->with(['productBrands'])->asArray()->limit(1)->one();
 
-    /**
-     * @param $rows
-     */
-    private function loadConditions($rows): void
-    {
-        array_map(function ($condition) {
-            return array_push($this->conditions, [
-                'type' => $condition->getType(),
-                'auto_id' => $condition->id
-            ]);
-        }, $rows);
+        return ArrayHelper::getColumn($brand['productBrands'], 'product_id');
     }
 }

@@ -2,7 +2,7 @@
     <div class="items">
         {% for item in brands %}
             <div class="item">
-                <a href="{{ path('auto/brand', {'brand': item.alias}) }}">
+                <a href="{{ path('brand/show', {'alias': item.alias}) }}">
                     <img src="/userfiles/auto_brands/{{ item.image }}" alt="">
                 </a>
             </div>

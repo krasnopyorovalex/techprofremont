@@ -11,7 +11,7 @@ use yii\db\ActiveRecord;
  * @property int $category_id
  * @property int $brand_id
  *
- * @property Brands $brand
+ * @property BrandsOld $brand
  * @property CatalogCategories $category
  */
 class CatalogCategoryBrands extends ActiveRecord
@@ -33,7 +33,7 @@ class CatalogCategoryBrands extends ActiveRecord
             [['category_id', 'brand_id'], 'required'],
             [['category_id', 'brand_id'], 'integer'],
             [['category_id', 'brand_id'], 'unique', 'targetAttribute' => ['category_id', 'brand_id']],
-            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => Brands::className(), 'targetAttribute' => ['brand_id' => 'id']],
+            [['brand_id'], 'exist', 'skipOnError' => true, 'targetClass' => BrandsOld::className(), 'targetAttribute' => ['brand_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CatalogCategories::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
@@ -54,7 +54,7 @@ class CatalogCategoryBrands extends ActiveRecord
      */
     public function getBrand(): ActiveQuery
     {
-        return $this->hasOne(Brands::className(), ['id' => 'brand_id']);
+        return $this->hasOne(BrandsOld::className(), ['id' => 'brand_id']);
     }
 
     /**

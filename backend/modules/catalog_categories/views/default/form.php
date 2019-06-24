@@ -2,10 +2,12 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\CatalogCategories */
 /* @var $catalog common\models\Catalog */
+/* @var array $brands common\models\Brands */
 
 use backend\assets\SingleEditorAsset;
 use backend\assets\SelectAsset;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -28,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#main" data-toggle="tab">Основное</a></li>
                         <li><a href="#image" data-toggle="tab">Изображение</a></li>
+                        <li><a href="#brands" data-toggle="tab">Бренды</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="main">
@@ -47,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                         'class' => 'form-control',
                                         'id' => 'to__generate'
                                     ]) ?>
-                                    <?= $form->field($model, 'parent_id')->dropDownList($model->getTree(), [
+                                    <?= $form->field($model, 'parent_id')->dropDownList(ArrayHelper::map($model->getTree(),'id','name'), [
                                         'class' => 'select-search',
                                         'data-width' => '100%',
                                         'prompt' => 'Не выбрано'
@@ -90,6 +93,25 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
 
                             <?= $this->render('@backend/views/blocks/actions_panel')?>
 
+                        </div>
+
+                        <div class="tab-pane" id="brands">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkbox_list brands">
+                                        <?php foreach ($brands as $brand):?>
+                                            <?= $form->field($model, 'bindingBrandsList['.$brand['id'].']')
+                                                ->checkbox([
+                                                    'checked' => $model->isChecked($brand['id']) ?: false
+                                                ])
+                                                ->label($brand['name'])
+                                            ?>
+                                        <?php endforeach;?>
+                                    </div>
+                                    <!-- /.checkbox_list -->
+                                </div>
+                            </div>
+                            <?= $this->render('@backend/views/blocks/actions_panel')?>
                         </div>
 
                     </div>

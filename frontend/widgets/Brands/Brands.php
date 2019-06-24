@@ -2,7 +2,6 @@
 
 namespace frontend\widgets\Brands;
 
-use common\models\Brands as Model;
 use yii\base\Widget;
 
 /**
@@ -11,16 +10,18 @@ use yii\base\Widget;
  */
 class Brands extends Widget
 {
+    /**
+     * @var array
+     */
+    public $brands = [];
 
     /**
      * @return string
      */
     public function run(): string
     {
-        $brands = Model::find()->asArray()->all();
-
         return $this->render('brands.twig', [
-            'brands' => $brands
+            'brands' => $this->brands
         ]);
     }
 }

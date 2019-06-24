@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\components\BrandBehavior;
 use backend\components\FileBehavior;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
@@ -25,12 +26,16 @@ use yii\helpers\ArrayHelper;
  * @property int $created_at
  * @property int $updated_at
  *
+ * @property ProductBrands[] $productBrands
+ * @property Brands[] $brands
  * @property ProductCategories[] $productCategories
  * @property CatalogCategories[] $categories
  * @property ProductMakers[] $productMakers
  * @property Makers[] $makers
  * @property CatalogCategories $category
  * @property Subdomains $subdomain
+ *
+ * @mixin BrandBehavior
  */
 class Products extends MainModel
 {
@@ -45,6 +50,7 @@ class Products extends MainModel
     public $file;
     public $bindingMakersList;
     public $bindingCategoriesList;
+    public $bindingBrandsList;
 
     /**
      * @return array
@@ -56,6 +62,9 @@ class Products extends MainModel
                 'class' => FileBehavior::class,
                 'path' => self::PATH,
                 'entity_db' => self::IMAGE_ENTITY
+            ],
+            [
+                'class' => BrandBehavior::class
             ]
         ]);
     }
@@ -85,7 +94,7 @@ class Products extends MainModel
             [['image'], 'string', 'max' => 36],
             [['phone'], 'string', 'max' => 24],
             [['alias'], 'unique'],
-            [['bindingMakersList', 'bindingCategoriesList', 'advantages'], 'safe'],
+            [['bindingMakersList', 'bindingCategoriesList', 'bindingBrandsList', 'advantages'], 'safe'],
             [['working_hours', 'address', 'balance', 'alias', 'name'], 'trim'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CatalogCategories::class, 'targetAttribute' => ['category_id' => 'id']],
             [['subdomain_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subdomains::class, 'targetAttribute' => ['subdomain_id' => 'id']]
@@ -139,6 +148,34 @@ class Products extends MainModel
     }
 
     /**
+     * @param int $id
+     * @return bool
+     */
+    public function isCheckedBrand(int $id): bool
+    {
+        $keys = ArrayHelper::getColumn($this->bindingBrandsList, 'id');
+
+        return in_array($id, $keys, true);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getProductBrands(): ActiveQuery
+    {
+        return $this->hasMany(ProductBrands::className(), ['product_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getBrands(): ActiveQuery
+    {
+        return $this->hasMany(Brands::className(), ['id' => 'brand_id'])->viaTable('{{%product_brands}}', ['product_id' => 'id']);
+    }
+
+    /**
      * @return ActiveQuery
      */
     public function getProductCategories(): ActiveQuery
@@ -178,6 +215,23 @@ class Products extends MainModel
     public function getCategory(): ActiveQuery
     {
         return $this->hasOne(CatalogCategories::class, ['id' => 'category_id']);
+    }
+
+    /**
+     * @param CatalogCategories $catalogCategory
+     */
+    public function setCategory(CatalogCategories $catalogCategory): void
+    {
+        $this->category = $catalogCategory;
+        $this->category_id = $catalogCategory->id;
+    }
+
+    /**
+     * @param array $brands
+     */
+    public function setBindingBrandsList(array $brands): void
+    {
+        $this->bindingBrandsList = $brands;
     }
 
     /**
@@ -223,6 +277,7 @@ class Products extends MainModel
         $this->advantages = json_decode($this->advantages, false);
 
         $this->bindingMakersList = $this->makers;
+        $this->bindingBrandsList = $this->brands;
     }
 
     public function afterSave($insert, $changedAttributes): void

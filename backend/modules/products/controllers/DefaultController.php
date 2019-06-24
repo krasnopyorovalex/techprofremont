@@ -3,6 +3,7 @@
 namespace backend\modules\products\controllers;
 
 use backend\controllers\SiteController;
+use common\models\Brands;
 use common\models\CatalogCategories;
 use common\models\Makers;
 use common\models\Products;
@@ -45,6 +46,9 @@ class DefaultController extends SiteController
     public function actionAdd($id)
     {
         $form = new Products();
+        $form->setCategory(CatalogCategories::findOne($id));
+        $form->setBindingBrandsList($form->category->getCheckedBrands());
+
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $this->repository->save($form);
@@ -57,9 +61,10 @@ class DefaultController extends SiteController
 
         return $this->render('form', [
             'model' => $form,
-            'catalogCategory' => CatalogCategories::findOne($id),
+            'catalogCategory' => $form->category,
             'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
-            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name')
+            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name'),
+            'brands' => Brands::find()->all()
         ]);
     }
 
@@ -80,7 +85,8 @@ class DefaultController extends SiteController
             'model' => $form,
             'catalogCategory' => CatalogCategories::findOne(['id' => $form['category_id']]),
             'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
-            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name')
+            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name'),
+            'brands' => Brands::find()->all()
         ]);
     }
 
@@ -108,7 +114,8 @@ class DefaultController extends SiteController
             'model' => $form,
             'catalogCategory' => CatalogCategories::findOne(['id' => $form['category_id']]),
             'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
-            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name')
+            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name'),
+            'brands' => Brands::find()->all()
         ]);
     }
 
@@ -122,10 +129,11 @@ class DefaultController extends SiteController
          * @var $model Products
          */
         $model = $this->repository->get($id);
-        if(FH::removeFile($model->image,$model::PATH)){
+        if (FH::removeFile($model->image,$model::PATH)) {
             $model->image = '';
             return $model->save();
         }
+
         return false;
     }
 }

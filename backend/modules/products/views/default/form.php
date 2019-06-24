@@ -3,6 +3,7 @@
 /* @var $model common\models\Products */
 /* @var $catalogCategory common\models\CatalogCategories */
 /* @var array $makers common\models\Makers */
+/* @var array $brands common\models\Brands */
 /* @var array $subdomains common\models\Subdomains */
 
 use backend\assets\CheckboxListAsset;
@@ -47,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                         <li class="active"><a href="#main" data-toggle="tab">Основное</a></li>
                         <li><a href="#options" data-toggle="tab">Атрибуты</a></li>
                         <li><a href="#image" data-toggle="tab">Изображение</a></li>
+                        <li><a href="#brands" data-toggle="tab">Бренды</a></li>
                         <li><a href="#dop_cats" data-toggle="tab">Дополнительные категории</a></li>
                     </ul>
                     <div class="tab-content">
@@ -59,9 +61,6 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                         'class' => 'select-search',
                                         'multiple' => true
                                     ]) ?>
-                                    <?php if($model->isNewRecord):?>
-                                        <?= Html::activeInput('hidden',$model,'category_id',['value' => $catalogCategory->id])?>
-                                    <?php endif;?>
                                 </div>
                                 <div class="col-md-4">
                                     <?= $form->field($model, 'subdomain_id')->dropDownList($subdomains, [
@@ -137,6 +136,26 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                 <div class="col-md-6">
                                     <?= $form->field($model, 'address')->textInput(['autocomplete' => 'off']) ?>
                                     <?= $form->field($model, 'balance')->textInput(['autocomplete' => 'off']) ?>
+                                </div>
+                            </div>
+
+                            <?= $this->render('@backend/views/blocks/actions_panel')?>
+
+                        </div>
+                        <div class="tab-pane" id="brands">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkbox_list brands">
+                                        <?php foreach ($brands as $item):?>
+                                            <?= $form->field($model, 'bindingBrandsList['.$item->id.']')
+                                                ->checkbox([
+                                                    'checked' => $model->isCheckedBrand($item->id)
+                                                ])
+                                                ->label($item->name)
+                                            ?>
+                                        <?php endforeach;?>
+                                    </div>
+                                    <!-- /.checkbox_list -->
                                 </div>
                             </div>
 

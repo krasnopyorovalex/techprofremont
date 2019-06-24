@@ -1,5 +1,6 @@
 {{ set(this, 'title', 'Сервисный центр ' ~ model.name ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' отзывы, телефон и адрес | ТЕХПРОФРЕМОНТ') }}
 {{ this.registerMetaTag({'name':'description', 'content': 'Купить '~ model.name ~' от ' ~ model.phone ~ ' руб. Магазин One Auto - автозапчасти в ' ~ app.params['subdomain_cases']['proposed'] ~ ' по лучшим ценам!'}) }}
+{{ this.registerJsFile('https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;coordorder=longlat') }}
 
 <div class="wrapper">
     <div class="breadcrumbs">
@@ -26,10 +27,7 @@
         <div class="items">
             <div class="content__sidebar">
                 {{ use('frontend/widgets/SidebarMenu/SidebarMenu') }}
-                {{ sidebar_menu_widget({
-                    'model': model.category.catalog.catalogCategories,
-                    'catalogAlias': model.category.catalog.alias
-                }) }}
+                {{ sidebar_menu_widget() }}
             </div>
             <!-- /.content__sidebar -->
             <div class="content__body">
@@ -53,7 +51,7 @@
                             </ul>
                         </div>
                         <div class="price">
-                            Телефон:	<span>{{ model.phone }}</span>
+                            Телефон: <span>{{ model.phone }}</span>
                         </div>
 
                         {% for advantage in model.advantages %}
@@ -63,10 +61,9 @@
                 </div>
                 <div class="text">
                     {{ model.text| raw }}
-                    {% if model.address %}
-                        <div class="product_map">
-                            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A1714e7b1c2e2bed09cfa6397499914a13cd34c950324a4c336f00ccf489819f8&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=true"></script>
-                        </div>
+                    {% if point %}
+                        <h2 class="map-title">Карта и схема проезда</h2>
+                        <div class="product_map" id="yandex-map" data-point="{{ point.getCoords() }}"></div>
                     {% endif %}
                 </div>
 

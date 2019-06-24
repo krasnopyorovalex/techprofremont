@@ -19,7 +19,7 @@ class ProductsRepository
      */
     public function get($id): ActiveRecord
     {
-        if (!$product = Products::find()->where(['id' => $id])->with(['productCategories','category' => static function(ActiveQuery $query) {
+        if (!$product = Products::find()->where(['id' => $id])->with(['productCategories', 'category' => static function(ActiveQuery $query) {
             return $query->with(['parent']);
         }])->limit(1)->one()) {
             throw new NotFoundException('Product is not found.');
