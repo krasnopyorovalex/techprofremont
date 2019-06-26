@@ -23,7 +23,7 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'access' => [
@@ -56,7 +56,7 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
-    public function actions()
+    public function actions(): array
     {
         return [
             'error' => [
@@ -71,7 +71,7 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
+    public function actionIndex(): string
     {
         return $this->render('index');
     }

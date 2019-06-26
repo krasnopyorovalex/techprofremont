@@ -2,7 +2,7 @@
 
 namespace core\repositories;
 
-use common\models\BrandsOld;
+use common\models\Brands;
 use RuntimeException;
 use yii\db\ActiveRecord;
 use yii\db\StaleObjectException;
@@ -19,8 +19,8 @@ class BrandsRepository
      */
     public function get($id): ActiveRecord
     {
-        if ( ! $brand = BrandsOld::findOne($id)) {
-            throw new NotFoundException('Brand is not found.');
+        if ( ! $brand = Brands::findOne($id)) {
+            throw new NotFoundException('Brands is not found.');
         }
         return $brand;
     }
@@ -30,7 +30,7 @@ class BrandsRepository
      */
     public function all(): array
     {
-        if ( ! $brands = BrandsOld::find()->all()) {
+        if ( !$brands = Brands::find()->all()) {
             throw new NotFoundException('Brands is not found.');
         }
         return $brands;
@@ -53,7 +53,7 @@ class BrandsRepository
      */
     public function remove($id): void
     {
-        if ( ! BrandsOld::findOne($id)->delete()) {
+        if ( ! Brands::findOne($id)->delete()) {
             throw new RuntimeException('Removing error.');
         }
     }

@@ -8,6 +8,6 @@ return [
     'per_page' => 12,
     'breadcrumbs_main_name' => 'Главная',
     'server_protocol' => 'http://',
-    'site_domain' => 'one-auto.ru',
+    'site_domain' => 'techprofremont.ru',
     'default_subdomain' => 'moscow'
 ];

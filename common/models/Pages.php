@@ -20,17 +20,17 @@ class Pages extends MainModel
     public $template = 'page.twig';
 
     /**
-     * @inheritdoc
+     * @return string
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%pages}}';
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['name', 'title', 'alias'], 'required'],
@@ -44,9 +44,9 @@ class Pages extends MainModel
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',

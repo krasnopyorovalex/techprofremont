@@ -21,7 +21,10 @@ class ModuleController extends SiteController
         }
     }
 
-    public function actionIndex()
+    /**
+     * @return string
+     */
+    public function actionIndex(): string
     {
         $model = $this->_model;
         return $this->render('index',[

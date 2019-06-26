@@ -1,8 +1,8 @@
 ymaps.ready(init);
 function init () {
-    var centerMap = jQuery("#yandex-map").attr("data-point");
-    if(centerMap){
-        centerMap = centerMap.split(",");
+    var centerMap = jQuery("#yandex-map");
+    if(centerMap.length) {
+        centerMap = centerMap.attr("data-point").split(",");
         var myMap = new ymaps.Map("yandex-map", {
             center: [centerMap[0], centerMap[1]],
             zoom: 14,

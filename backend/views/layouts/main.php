@@ -48,6 +48,7 @@ AppAsset::register($this);
                             <li><a href="<?= \yii\helpers\Url::toRoute(['/catalog/default/index'])?>"><i class="icon-folder5"></i> <span>Каталог</span></a></li>
                             <li><a href="<?= \yii\helpers\Url::toRoute(['/brands/default/index'])?>"><i class="icon-car"></i> <span>Бренды</span></a></li>
                             <li><a href="<?= \yii\helpers\Url::toRoute(['/makers/default/index'])?>"><i class="icon-make-group"></i> <span>Производители</span></a></li>
+                            <li><a href="<?= \yii\helpers\Url::toRoute(['/parser_csv/default/index'])?>"><i class="icon-dots"></i> <span>Парсер CSV</span></a></li>
                         </ul>
                     </div>
                 </div>

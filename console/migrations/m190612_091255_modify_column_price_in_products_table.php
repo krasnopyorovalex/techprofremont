@@ -13,7 +13,7 @@ class m190612_091255_modify_column_price_in_products_table extends Migration
     public function safeUp()
     {
         $this->renameColumn('products', 'price', 'phone');
-        $this->alterColumn('products', 'phone', $this->string(24));
+        $this->alterColumn('products', 'phone', $this->string(255));
     }
 
     /**

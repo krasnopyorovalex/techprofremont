@@ -8,7 +8,10 @@ class ProductsListForCategory extends Widget
 {
     public $items;
 
-    public function run()
+    /**
+     * @return string
+     */
+    public function run(): string
     {
         return $this->render('products_list_for_category.twig', [
             'model' => $this->items

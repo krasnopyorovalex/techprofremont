@@ -34,7 +34,11 @@ class ProductsBehavior extends Behavior
             $this->ids[] = $product->category_id;
         }
 
-        $query = Products::find()->where(['category_id' => $this->ids]);
+        $products = new Products();
+
+        $query = $products::find()
+            ->where(['category_id' => $this->ids])
+            ->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id]);
 
         if ($brand) {
             $productIds = $this->getProductsWithBrand($brand);
@@ -44,7 +48,12 @@ class ProductsBehavior extends Behavior
 
         $count = clone $query;
 
-        $products = $query->with(['makers'])->limit(Yii::$app->params['per_page'])->offset($page)->asArray()->all();
+        $products = $query
+            ->with(['makers'])
+            ->limit(Yii::$app->params['per_page'])
+            ->offset($page)
+            ->asArray()
+            ->all();
 
         $this->data = [
             'products' => $products,

@@ -6,7 +6,15 @@
         </div>
         <div class="item__image">
             <a href="/catalog/{{ item.alias }}">
-                <img src="/userfiles/{{ item.image ? 'products/' ~ item.image : 'not_photo.jpg' }}" alt="{{ item.name }}">
+                {% if item.image %}
+                <img src="/userfiles/products/{{ item.image }}" alt="{{ item.name }}">
+                {% else %}
+                    <div class="not__image">
+                       <div>
+                           «{{ item.name }}»
+                       </div>
+                    </div>
+                {% endif %}
             </a>
            <!-- <div class="item__availability-btn"><a href="/catalog/{{ item.alias }}">Узнать о наличии</a></div> -->
         </div>

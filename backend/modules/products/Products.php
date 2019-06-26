@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\modules\products;
+
 use backend\interfaces\ModelProviderInterface;
 use yii\base\Module;
 

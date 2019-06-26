@@ -24,7 +24,10 @@ class DefaultController extends ModuleController
         'delete' => 'Удаление меню',
     ];
 
-    public function behaviors()
+    /**
+     * @return array
+     */
+    public function behaviors(): array
     {
         return ArrayHelper::merge(parent::behaviors(),[
             'access' => [
@@ -40,7 +43,11 @@ class DefaultController extends ModuleController
         ]);
     }
 
-    public function actionMenuItems($id)
+    /**
+     * @param $id
+     * @return string
+     */
+    public function actionMenuItems($id): string
     {
         return $this->render('menu_list', [
             'model' => MenuItems::find()->where(['menu_id' => $id, 'parent_id' => MenuItems::NOT_PARENT])->orderBy('pos')->all(),
@@ -86,7 +93,11 @@ class DefaultController extends ModuleController
         ]);
     }
 
-    public function actionMenuItemsSorting($id)
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function actionMenuItemsSorting($id): bool
     {
         if(!$id){
             return false;

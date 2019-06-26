@@ -97,7 +97,7 @@ class SiteController extends Controller
      */
     public function beforeAction($action): bool
     {
-        if (!parent::beforeAction($action)) {
+        if ( !parent::beforeAction($action)) {
             return false;
         }
 
@@ -105,13 +105,15 @@ class SiteController extends Controller
         $chunk = array_shift($chunks);
 
         $subdomain = Subdomains::findOne(['domain_name' => $chunk]);
-        if( ! $subdomain && count($chunks) === 2) {
+
+        if( !$subdomain && count($chunks) === 2) {
             Yii::$app->response->setStatusCode(404);
             Yii::$app->end();
-        } elseif( ! $subdomain ) {
+        } elseif( !$subdomain) {
             $subdomain = Subdomains::findOne(['is_main' => Subdomains::IS_MAIN]);
         }
 
+        Yii::$app->params['subdomain'] = $subdomain;
         Yii::$app->params['subdomain_cases'] = json_decode($subdomain['cases_json'], true);
         Yii::$app->params['phone'] = $subdomain->phone;
         Yii::$app->params['address'] = $subdomain->address;

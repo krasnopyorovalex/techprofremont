@@ -92,7 +92,7 @@ class Products extends MainModel
             [['working_hours', 'address'], 'string', 'max' => 128],
             [['balance'], 'string', 'max' => 64],
             [['image'], 'string', 'max' => 36],
-            [['phone'], 'string', 'max' => 24],
+            [['phone'], 'string', 'max' => 255],
             [['alias'], 'unique'],
             [['bindingMakersList', 'bindingCategoriesList', 'bindingBrandsList', 'advantages'], 'safe'],
             [['working_hours', 'address', 'balance', 'alias', 'name'], 'trim'],
@@ -259,9 +259,23 @@ class Products extends MainModel
         return self::ADVANTAGES[$id] ?? '---';
     }
 
+    public function fillBrands(): void
+    {
+        $this->bindingBrandsList = $this->brands;
+    }
+
+    public function fillMakers(): void
+    {
+        $this->bindingMakersList = $this->makers;
+    }
+
     public function beforeSave($insert): bool
     {
         if (parent::beforeSave($insert)) {
+
+            if ($this->isNewRecord) {
+                $this->advantages = array_keys(self::ADVANTAGES);
+            }
 
             $this->advantages = json_encode($this->advantages);
 
@@ -275,9 +289,6 @@ class Products extends MainModel
         parent::afterFind();
 
         $this->advantages = json_decode($this->advantages, false);
-
-        $this->bindingMakersList = $this->makers;
-        $this->bindingBrandsList = $this->brands;
     }
 
     public function afterSave($insert, $changedAttributes): void

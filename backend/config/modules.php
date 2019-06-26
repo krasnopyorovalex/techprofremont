@@ -24,4 +24,7 @@ return [
     'makers' => [
         'class' => 'backend\modules\makers\Makers',
     ],
+    'parser_csv' => [
+        'class' => 'backend\modules\parser_csv\ParserCsv',
+    ],
 ];

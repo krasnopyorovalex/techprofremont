@@ -8,9 +8,27 @@ header {
     font-family: "Montserrat";
     font-size: .9rem;
     }
-
+.not__image {
+    background-color: #edf0f4;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.not__image > div {
+    color: #282828;
+    font-weight: bold;
+    font-size: 20px;
+}
+.content__body .items .item .item__image a {
+    text-decoration: none;
+}
+.content__body .item__row .item__col-left .not__image {
+    height: 100%;
+}
 menu {
-    padding-left: 0px;
+    padding-left: 0;
   }
 .contact__box-city {
         text-align: left;

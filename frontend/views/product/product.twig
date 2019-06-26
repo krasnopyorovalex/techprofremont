@@ -1,6 +1,5 @@
 {{ set(this, 'title', 'Сервисный центр ' ~ model.name ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' отзывы, телефон и адрес | ТЕХПРОФРЕМОНТ') }}
 {{ this.registerMetaTag({'name':'description', 'content': 'Купить '~ model.name ~' от ' ~ model.phone ~ ' руб. Магазин One Auto - автозапчасти в ' ~ app.params['subdomain_cases']['proposed'] ~ ' по лучшим ценам!'}) }}
-{{ this.registerJsFile('https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;coordorder=longlat') }}
 
 <div class="wrapper">
     <div class="breadcrumbs">
@@ -34,7 +33,15 @@
                 <h1>Сервисный центр «{{ model.name }}»</h1>
                 <div class="item__row">
                     <div class="item__col-left">
-                        <img src="/userfiles/{{ model.image ? 'products/' ~ model.image : 'not_photo.jpg' }}" alt="alt">
+                        {% if model.image %}
+                        <img src="/userfiles/products/{{ model.image }}" alt="{{ model.name }}">
+                        {% else %}
+                            <div class="not__image">
+                                <div>
+                                    «{{ model.name }}»
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="item__col-right">
                         {% if model.makers %}
@@ -62,6 +69,7 @@
                 <div class="text">
                     {{ model.text| raw }}
                     {% if point %}
+                        {{ this.registerJsFile('https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;coordorder=longlat') }}
                         <h2 class="map-title">Карта и схема проезда</h2>
                         <div class="product_map" id="yandex-map" data-point="{{ point.getCoords() }}"></div>
                     {% endif %}

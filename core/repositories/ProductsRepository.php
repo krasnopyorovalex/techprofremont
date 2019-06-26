@@ -24,6 +24,10 @@ class ProductsRepository
         }])->limit(1)->one()) {
             throw new NotFoundException('Product is not found.');
         }
+
+        $product->fillBrands();
+        $product->fillMakers();
+
         return $product;
     }
 

@@ -64,7 +64,6 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                 </div>
                                 <div class="col-md-4">
                                     <?= $form->field($model, 'subdomain_id')->dropDownList($subdomains, [
-                                        'prompt' => 'Не выбрано',
                                         'class' => 'select-search'
                                     ]) ?>
                                     <?= $form->field($model, 'alias', [
