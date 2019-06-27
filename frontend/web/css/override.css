@@ -26,6 +26,7 @@ header {
 }
 .content__body .item__row .item__col-left .not__image {
     height: 100%;
+    text-align: center;
 }
 menu {
     padding-left: 0;
