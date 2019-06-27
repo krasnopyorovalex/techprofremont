@@ -81,8 +81,10 @@ class DefaultController extends SiteController
         if ($model->validate() && $path = $model->upload()) {
             try {
                 $this->parserCsvService->parse($path, $model->subdomain);
+                Yii::$app->session->setFlash('info', 'Импорт завершен');
             } catch (ExceptionCsv $exception) {
                 Yii::error($exception->getMessage());
+                Yii::$app->session->setFlash('info', 'Во время импорта произошла ошибка');
             }
         }
 

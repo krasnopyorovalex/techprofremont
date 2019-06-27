@@ -16,6 +16,11 @@ $this->params['breadcrumbs'][] = $this->context->module->params['name'];
 ?>
 <div class="row">
     <div class="col-md-12">
+        <?php if(Yii::$app->session->hasFlash('info')):?>
+            <div class="info">
+                <?= Yii::$app->session->getFlash('info')?>
+            </div>
+        <?php endif; ?>
         <?php $form = ActiveForm::begin(['method' => 'post', 'action' => Url::toRoute(["/parser_csv/upload"]), 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
         <?= $form->field($model, 'subdomain')->dropDownList($subdomains, [
