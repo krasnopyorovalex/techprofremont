@@ -31,9 +31,9 @@
                                 'items': category.products
                             }) }}
                         {% endif %}
-                        {% if category.productCategories %}
+                        {% if category.productsVia %}
                             {{ products_list_for_category_widget({
-                                'items': category.productCategories
+                                'items': category.productsVia
                             }) }}
                         {% endif %}
                     {% endfor %}

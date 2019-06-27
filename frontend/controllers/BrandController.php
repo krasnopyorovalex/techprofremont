@@ -22,7 +22,7 @@ class BrandController extends CatalogController
     {
         $brand = $brand = Brands::find()->where(['alias' => $alias])->with([
             'categories' => static function (ActiveQuery $query) {
-                return $query->with(['products', 'productCategories']);
+                return $query->with(['products', 'productsVia']);
             }
         ])->limit(1)->one();
 
