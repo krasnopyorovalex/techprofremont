@@ -35,7 +35,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
-            'name' => 'krasber-backend',
+            'name' => 'techprofremont-backend',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

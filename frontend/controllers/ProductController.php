@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Products;
+use core\repositories\ProductsRepository;
 use frontend\components\yandex\Geocoder;
 use yii\web\NotFoundHttpException;
 
@@ -16,6 +17,10 @@ class ProductController extends SiteController
      * @var Geocoder
      */
     private $yandexGeocoder;
+    /**
+     * @var ProductsRepository
+     */
+    private $productsRepository;
 
     /**
      * ProductController constructor.
@@ -24,10 +29,11 @@ class ProductController extends SiteController
      * @param Geocoder $yandexGeocoder
      * @param array $config
      */
-    public function __construct($id, $module, Geocoder $yandexGeocoder, $config = [])
+    public function __construct($id, $module, Geocoder $yandexGeocoder, ProductsRepository $productsRepository, $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->yandexGeocoder = $yandexGeocoder;
+        $this->productsRepository = $productsRepository;
     }
 
     /**
@@ -37,7 +43,7 @@ class ProductController extends SiteController
      */
     public function actionShow($alias): string
     {
-        $model = Products::find()->where(['alias' => $alias])->with(['makers'])->limit(1)->one();
+        $model = $this->productsRepository->getByAlias($alias);
 
         if ( !$model) {
             throw new NotFoundHttpException('The requested page does not exist.');

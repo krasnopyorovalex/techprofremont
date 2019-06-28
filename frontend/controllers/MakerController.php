@@ -3,28 +3,15 @@
 namespace frontend\controllers;
 
 use common\models\Makers;
-use frontend\components\MakerBehavior;
 use yii\db\ActiveQuery;
 use yii\web\NotFoundHttpException;
 
 /**
- * MakerController controller
- *
- * @mixin MakerBehavior
+ * Class MakerController
+ * @package frontend\controllers
  */
 class MakerController extends SiteController
 {
-
-    /**
-     * @return array
-     */
-    public function behaviors(): array
-    {
-        return [
-            'class' => MakerBehavior::class
-        ];
-    }
-
     /**
      * @param $alias
      * @return string
@@ -32,14 +19,18 @@ class MakerController extends SiteController
      */
     public function actionShow($alias): string
     {
-        if( ! $model = Makers::find()->where(['alias' => $alias])->with(['products' => static function(ActiveQuery $query){
-            return $query->with(['maker']);
-        }])->limit(1)->one() ){
+        $maker = Makers::find()->where(['alias' => $alias])->with([
+            'catalogCategories' => static function (ActiveQuery $query) {
+                return $query->with(['products', 'productsVia']);
+            }
+        ])->limit(1)->one();
+
+        if ( !$maker) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         return $this->render('maker.twig', [
-            'model' => $model
+            'model' => $maker
         ]);
     }
 }

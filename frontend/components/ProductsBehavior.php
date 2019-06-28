@@ -49,7 +49,6 @@ class ProductsBehavior extends Behavior
         $count = clone $query;
 
         $products = $query
-            ->with(['makers'])
             ->limit(Yii::$app->params['per_page'])
             ->offset($page)
             ->asArray()

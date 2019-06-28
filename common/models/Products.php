@@ -30,8 +30,6 @@ use yii\helpers\ArrayHelper;
  * @property Brands[] $brands
  * @property ProductCategories[] $productCategories
  * @property CatalogCategories[] $categories
- * @property ProductMakers[] $productMakers
- * @property Makers[] $makers
  * @property CatalogCategories $category
  * @property Subdomains $subdomain
  *
@@ -48,9 +46,9 @@ class Products extends MainModel
     ];
 
     public $file;
-    public $bindingMakersList;
     public $bindingCategoriesList;
     public $bindingBrandsList;
+    public $makers;
 
     /**
      * @return array
@@ -94,7 +92,7 @@ class Products extends MainModel
             [['image'], 'string', 'max' => 36],
             [['phone'], 'string', 'max' => 255],
             [['alias'], 'unique'],
-            [['bindingMakersList', 'bindingCategoriesList', 'bindingBrandsList', 'advantages'], 'safe'],
+            [['bindingCategoriesList', 'bindingBrandsList', 'advantages'], 'safe'],
             [['working_hours', 'address', 'balance', 'alias', 'name'], 'trim'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => CatalogCategories::class, 'targetAttribute' => ['category_id' => 'id']],
             [['subdomain_id'], 'exist', 'skipOnError' => true, 'targetClass' => Subdomains::class, 'targetAttribute' => ['subdomain_id' => 'id']]
@@ -120,7 +118,6 @@ class Products extends MainModel
             'working_hours' => 'Время работы',
             'balance' => 'E-mail',
             'address' => 'Адрес',
-            'bindingMakersList' => 'Выберите из списка производителей',
             'bindingCategoriesList' => 'Выберите дополнительные категории',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At'
@@ -195,23 +192,6 @@ class Products extends MainModel
     /**
      * @return ActiveQuery
      */
-    public function getProductMakers(): ActiveQuery
-    {
-        return $this->hasMany(ProductMakers::className(), ['product_id' => 'id']);
-    }
-
-    /**
-     * @return ActiveQuery
-     * @throws InvalidConfigException
-     */
-    public function getMakers(): ActiveQuery
-    {
-        return $this->hasMany(Makers::className(), ['id' => 'maker_id'])->viaTable('{{%product_makers}}', ['product_id' => 'id']);
-    }
-
-    /**
-     * @return ActiveQuery
-     */
     public function getCategory(): ActiveQuery
     {
         return $this->hasOne(CatalogCategories::class, ['id' => 'category_id']);
@@ -264,11 +244,6 @@ class Products extends MainModel
         $this->bindingBrandsList = $this->brands;
     }
 
-    public function fillMakers(): void
-    {
-        $this->bindingMakersList = $this->makers;
-    }
-
     public function beforeSave($insert): bool
     {
         if (parent::beforeSave($insert)) {
@@ -295,17 +270,6 @@ class Products extends MainModel
     {
         parent::afterSave($insert, $changedAttributes);
 
-        $this->unlinkAll('makers', true);
-
-        if ($this->bindingMakersList) {
-            array_map(function ($item) {
-                return (new ProductMakers([
-                    'product_id' => $this->id,
-                    'maker_id' => (int)$item
-                ]))->save();
-            }, $this->bindingMakersList);
-        }
-
         $this->unlinkAll('categories', true);
 
         if ($this->bindingCategoriesList) {
@@ -316,6 +280,19 @@ class Products extends MainModel
                     'category_id' => (int)$item
                 ]))->save();
             }, $keys);
+        }
+    }
+
+    public function fillMakers(): void
+    {
+        foreach ($this->category->makers as $maker) {
+            $this->makers[$maker->id] = $maker;
+        }
+
+        if ($this->category->parent) {
+            foreach ($this->category->parent->makers as $maker) {
+                $this->makers[$maker->id] = $maker;
+            }
         }
     }
 }

@@ -2,10 +2,10 @@
 
 namespace common\models;
 
-use common\models\Products as P;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%makers}}".
@@ -14,11 +14,13 @@ use yii\db\ActiveRecord;
  * @property string $name
  * @property string $alias
  *
- * @property ProductMakers[] $productMakers
- * @property Products[] $products
+ * @property MakerCatalogCategories[] $makerCatalogCategories
+ * @property CatalogCategories[] $catalogCategories
  */
 class Makers extends ActiveRecord
 {
+    public $bindingCategoriesList;
+
     /**
      * @return string
      */
@@ -37,6 +39,7 @@ class Makers extends ActiveRecord
             [['name'], 'string', 'max' => 128],
             [['alias'], 'string', 'max' => 255],
             [['alias'], 'unique'],
+            [['bindingCategoriesList'], 'safe']
         ];
     }
 
@@ -55,17 +58,47 @@ class Makers extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getProductMakers(): ActiveQuery
+    public function getMakerCatalogCategories(): ActiveQuery
     {
-        return $this->hasMany(ProductMakers::className(), ['maker_id' => 'id']);
+        return $this->hasMany(MakerCatalogCategories::className(), ['maker_id' => 'id']);
     }
 
     /**
      * @return ActiveQuery
      * @throws InvalidConfigException
      */
-    public function getProducts(): ActiveQuery
+    public function getCatalogCategories(): ActiveQuery
     {
-        return $this->hasMany(P::className(), ['id' => 'product_id'])->viaTable('{{%product_makers}}', ['maker_id' => 'id']);
+        return $this->hasMany(CatalogCategories::className(), ['id' => 'catalog_category_id'])->viaTable('{{%maker_catalog_categories}}', ['maker_id' => 'id']);
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function isChecked(int $id): bool
+    {
+        $keys = ArrayHelper::getColumn($this->makerCatalogCategories, 'catalog_category_id');
+
+        return in_array($id, $keys, true);
+    }
+
+    public function afterSave($insert, $changedAttributes): void
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $this->unlinkAll('catalogCategories', true);
+
+        if ($this->bindingCategoriesList) {
+
+            $keys = array_keys(array_filter($this->bindingCategoriesList));
+
+            array_map(function ($item) {
+                return (new MakerCatalogCategories([
+                    'maker_id' => $this->id,
+                    'catalog_category_id' => (int)$item
+                ]))->save();
+            }, $keys);
+        }
     }
 }

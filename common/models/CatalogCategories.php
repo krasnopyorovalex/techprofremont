@@ -26,10 +26,12 @@ use yii\helpers\ArrayHelper;
  * @property CatalogCategories[] $catalogCategories
  * @property CatalogCategoryBrands[] $catalogCategoryBrands
  * @property Brands[] $brands
+ * @property MakerCatalogCategories[] $makerCatalogCategories
+ * @property Makers[] $makers
  * @property ProductCategories[] $productCategories
- * @property Products[] $products
+ * @property Products[] $productsVia
  * @property array $checkedBrands
- * @property ActiveQuery $productsVia
+ * @property Products[] $products
  */
 class CatalogCategories extends MainModel
 {
@@ -105,6 +107,23 @@ class CatalogCategories extends MainModel
     public function getCatalog(): ActiveQuery
     {
         return $this->hasOne(Catalog::className(), ['id' => 'catalog_id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getMakerCatalogCategories(): ActiveQuery
+    {
+        return $this->hasMany(MakerCatalogCategories::className(), ['catalog_category_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     * @throws InvalidConfigException
+     */
+    public function getMakers(): ActiveQuery
+    {
+        return $this->hasMany(Makers::className(), ['id' => 'maker_id'])->viaTable('{{%maker_catalog_categories}}', ['catalog_category_id' => 'id']);
     }
 
     /**

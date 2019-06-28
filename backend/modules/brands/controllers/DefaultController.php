@@ -3,16 +3,15 @@
 namespace backend\modules\brands\controllers;
 
 use backend\controllers\ModuleController;
-use common\models\BrandsOld;
+use common\models\Brands;
 use core\repositories\BrandsRepository;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 use backend\components\FileHelper as FH;
 
 /**
- * Default controller for the `brands` module
+ * Default controller for the `Brands` module
  */
 class DefaultController extends ModuleController
 {
@@ -45,7 +44,7 @@ class DefaultController extends ModuleController
 
     public function actionAdd()
     {
-        $form = new BrandsOld();
+        $form = new Brands();
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             try {
                 $this->repository->save($form);
@@ -61,8 +60,10 @@ class DefaultController extends ModuleController
     }
 
     /**
-     * @param integer $id
-     * @return mixed
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -78,23 +79,14 @@ class DefaultController extends ModuleController
         return $this->render('form', ['model' => $this->repository->get($id)]);
     }
 
-    public function actionModels($id)
-    {
-        Url::remember();
-        return $this->render('models',[
-            'dataProvider' => $this->findData(AutoModels::find()->where(['brand_id' => $id])),
-            'brand' => $this->repository->get($id)
-        ]);
-    }
-
     /**
      * @param $id
      * @return bool
      */
-    public function actionRemoveImage($id)
+    public function actionRemoveImage($id): bool
     {
-        $model = BrandsOld::findOne($id);
-        if(FH::removeFile($model->image,$model::PATH)){
+        $model = Brands::findOne($id);
+        if($model && FH::removeFile($model->image,$model::PATH)){
             $model->image = '';
             return $model->save();
         }

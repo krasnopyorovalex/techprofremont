@@ -5,7 +5,6 @@ namespace backend\modules\products\controllers;
 use backend\controllers\SiteController;
 use common\models\Brands;
 use common\models\CatalogCategories;
-use common\models\Makers;
 use common\models\Products;
 use common\models\Subdomains;
 use core\repositories\ProductsRepository;
@@ -63,7 +62,6 @@ class DefaultController extends SiteController
             'model' => $form,
             'catalogCategory' => $form->category,
             'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
-            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name'),
             'brands' => Brands::find()->all()
         ]);
     }
@@ -85,7 +83,6 @@ class DefaultController extends SiteController
             'model' => $form,
             'catalogCategory' => CatalogCategories::findOne(['id' => $form['category_id']]),
             'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
-            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name'),
             'brands' => Brands::find()->all()
         ]);
     }
@@ -114,7 +111,6 @@ class DefaultController extends SiteController
             'model' => $form,
             'catalogCategory' => CatalogCategories::findOne(['id' => $form['category_id']]),
             'subdomains' => ArrayHelper::map(Subdomains::find()->asArray()->all(),'id','domain_name'),
-            'makers' => ArrayHelper::map(Makers::find()->asArray()->all(),'id','name'),
             'brands' => Brands::find()->all()
         ]);
     }

@@ -23,9 +23,14 @@
 
                 <div class="items">
                     {{ use('frontend/widgets/ProductsListForCategory/ProductsListForCategory') }}
+                    {% for catalogCategory in model.catalogCategories %}
                     {{ products_list_for_category_widget({
-                        'items': model.products
+                        'items': catalogCategory.products
                     }) }}
+                    {{ products_list_for_category_widget({
+                        'items': catalogCategory.productsVia
+                    }) }}
+                    {% endfor %}
                 </div>
                 <!-- /.items -->
 

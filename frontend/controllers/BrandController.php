@@ -22,7 +22,7 @@ class BrandController extends CatalogController
      */
     public function actionShow($alias, $page = 0): string
     {
-        $brand = $brand = Brands::find()->where(['alias' => $alias])->with([
+        $brand = Brands::find()->where(['alias' => $alias])->with([
             'categories' => static function (ActiveQuery $query) {
                 return $query->with(['products' => static function(ActiveQuery $query) {
                     return $query->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id]);
@@ -32,7 +32,7 @@ class BrandController extends CatalogController
             }
         ])->limit(1)->one();
 
-        if ( ! $brand) {
+        if ( !$brand) {
             return parent::actionShow($alias);
         }
 

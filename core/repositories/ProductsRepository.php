@@ -26,7 +26,6 @@ class ProductsRepository
         }
 
         $product->fillBrands();
-        $product->fillMakers();
 
         return $product;
     }
@@ -51,5 +50,26 @@ class ProductsRepository
         if (!Products::findOne($id)->delete()) {
             throw new RuntimeException('Removing error.');
         }
+    }
+
+    /**
+     * @param $alias
+     * @return array|Products|ActiveRecord|null
+     */
+    public function getByAlias($alias)
+    {
+        $product = Products::find()->where(['alias' => $alias])->with(['category' => static function(ActiveQuery $query) {
+            return $query->with(['parent' => static function(ActiveQuery $query) {
+                return $query->with(['makers']);
+            },'makers']);
+        }])->limit(1)->one();
+
+        if ( !$product) {
+            throw new NotFoundException('Product is not found.');
+        }
+
+        $product->fillMakers();
+
+        return $product;
     }
 }

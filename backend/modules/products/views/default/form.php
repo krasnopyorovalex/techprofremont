@@ -2,7 +2,6 @@
 /* @var $this yii\web\View */
 /* @var $model common\models\Products */
 /* @var $catalogCategory common\models\CatalogCategories */
-/* @var array $makers common\models\Makers */
 /* @var array $brands common\models\Brands */
 /* @var array $subdomains common\models\Subdomains */
 
@@ -73,20 +72,6 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                         'class' => 'form-control',
                                         'id' => 'to__generate'
                                     ]) ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <!-- product makers -->
-                                    <?= $form->field($model,'bindingMakersList',[
-                                        'options' => [
-                                            'class' => 'multi-select-full'
-                                        ]
-                                    ])->dropDownList($makers,[
-                                        'multiple' => 'multiple',
-                                        'class' => 'multiselect-filtering'
-                                    ])?>
-                                    <!-- product makers -->
                                 </div>
                             </div>
                             <div class="row">
