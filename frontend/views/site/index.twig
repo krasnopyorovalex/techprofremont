@@ -1,8 +1,9 @@
-{{ set(this, 'title', 'Сервисные центры по ремонту, обслуживанию и установке техники ' ~ app.params['subdomain_cases']['proposed'] ~ ' каталог ТЕХПРОФРЕМОНТ') }}
+{{ set(this, 'title', 'Сервисные центры по ремонту, обслуживанию и установке техники в ' ~ app.params['subdomain_cases']['proposed'] ~ ' каталог ТЕХПРОФРЕМОНТ') }}
 {{ this.registerMetaTag({'name':'description', 'content': 'One Auto - интернет магазин автозапчастей в ' ~ app.params['subdomain_cases']['proposed'] ~ '. Мы готовы предложить широкий ассортимент деталей в наличии по оптимальным ценам.'}) }}
 
 <section class="categories">
     <div class="wrapper">
+        <h1 style="text-align:center;">Поиск сервисных центров и частных специалистов в {{ app.params['subdomain_cases']['proposed'] }}</h1>
         <div class="items">
             <div class="first__column">
                 <div class="categories__item">
@@ -73,6 +74,7 @@
 
 {% if brands %}
 <section class="brands">
+    <h2 style="text-align:center;">Популярные производители</h2>
     <div class="wrapper">
         <div class="items">
             {% for item in brands %}
@@ -85,6 +87,9 @@
         </div>
 
     </div>
+    <div class="brands_batton">
+            <a href="/populyarnye-proizvoditeli" class="more_brands">Все производители</a>
+        </div>
 </section>
 <!-- /.brands -->
 {% endif %}

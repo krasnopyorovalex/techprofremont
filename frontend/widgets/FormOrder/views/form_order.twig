@@ -5,13 +5,13 @@
     }
 }) %}
 
-    <div class="form__order-title">Не нашли нужной вам запчасти?</div>
-    <div class="form__order-subtitle">Отправьте запрос на подбор, менеджер перезвонит вам через 8 минут</div>
+    <div class="form__order-title">Быстрая заявка на ремонт</div>
+    <div class="form__order-subtitle">Опишите поломку, мы передадим ваши данные в специализированные сервисные центры и менеджеры свяжутся в вами.</div>
 
     {{ form.field(modelForm, 'name', {'options': {'class': 'form-group name'}}).textInput({'placeholder': 'Ваше имя*'}).label(false)| raw }}
     {{ form.field(modelForm, 'phone', {'options': {'class': 'form-group phone'}}).textInput({'placeholder': 'Телефон*'}).label(false)| raw }}
 
-    {{ form.field(modelForm, 'info', {'options': {'class': 'form-group message'}}).textarea({'placeholder': 'Комментарий'}).label(false)| raw }}
+    {{ form.field(modelForm, 'info', {'options': {'class': 'form-group message'}}).textarea({'placeholder': 'Опишите поломку'}).label(false)| raw }}
 
     {{ form.field(modelForm, 'agree', {'options': {'class': 'form-group checked'}}).checkbox().error(false)| raw }}
     {{ html.submitButton('Отправить запрос', {'class': 'form__order-btn btn__hover'})| raw }}
