@@ -6,9 +6,7 @@
 use backend\assets\SelectAsset;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
-use backend\assets\CheckboxListAsset;
 
-CheckboxListAsset::register($this);
 SelectAsset::register($this);
 
 $this->params['breadcrumbs'][] = ['label' => $this->context->module->params['name'], 'url' => Url::toRoute(['/'.$this->context->module->id])];
