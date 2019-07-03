@@ -1,5 +1,5 @@
-{% set customTitle = (model.h1 ? model.h1 : model.name)  ~ (brands.name ? ' ' ~ brands.name : '') %}
-{{ set(this, 'title', customTitle ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - ардеса, телефоны и отзывы о сервисных центрах | ТЕХПРОФРЕМОНТ') }}
+{% set customTitle = (model.h1 ? model.h1 : model.name)  ~ ' ' ~ brands.name %}
+{{ set(this, 'title', customTitle ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - адреса, телефоны и отзывы о сервисных центрах | ТЕХПРОФРЕМОНТ') }}
 {{ this.registerMetaTag({'name':'description', 'content': customTitle ~ ' в '
  ~ app.params['subdomain_cases']['proposed'] ~ ' недорого и по доступным ценам. Адреса и телефоны официальных и авторизованных сервисных центров в '
  ~ app.params['subdomain_cases']['proposed'] ~ '.'}) }}
@@ -14,7 +14,7 @@
                     'category': model.parent.alias,
                     'page': 0
                 }) }}">{{ model.parent.name }}</a></li>
-            <li>{{ model.name ~ (brands.name ? ' ' ~ brands.name : '') }}</li>
+            <li>{{ model.name ~ ' ' ~ brands.name }}</li>
         </ul>
     </div>
     <!-- /.breadcrumbs -->
@@ -29,7 +29,7 @@
             </div>
             <!-- /.content__sidebar -->
             <div class="content__body">
-                <h1>{{ model.h1 ? model.h1 : model.name }} {{ brands.name ? ' ' ~ brands.name : '' }}</h1>
+                <h1>{{ model.h1 ? model.h1 : model.name }}  {{ brands.name }}</h1>
 
                 {{ use('frontend/widgets/Brands/Brands') }}
                 {{ brands_widget() }}
