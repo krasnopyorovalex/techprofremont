@@ -1,5 +1,5 @@
-{% set customTitle = (model.h1 ? model.h1 : model.name)  ~ (brandAuto.name ? ' ' ~ brandAuto.name : '') ~ (modelAuto.name and not generationAuto ? ' ' ~ modelAuto.name : '') ~ (generationAuto.name ? ' ' ~ generationAuto.name : '') %}
-{{ set(this, 'title', customTitle ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - ардеса, телефоны и отзывы о сервисных центрах | ТЕХПРОФРЕМОНТ') }}
+{% set customTitle = (model.h1 ? model.h1 : model.name)  ~ (brand.name) %}
+{{ set(this, 'title', customTitle ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - адреса, телефоны и отзывы о сервисных центрах | ТЕХПРОФРЕМОНТ') }}
 {{ this.registerMetaTag({'name':'description', 'content': customTitle ~ ' в '
  ~ app.params['subdomain_cases']['proposed'] ~ ' недорого и по доступным ценам. Адреса и телефоны официальных и авторизованных сервисных центров в '
  ~ app.params['subdomain_cases']['proposed'] ~ '.'}) }}
@@ -29,7 +29,7 @@
             </div>
             <!-- /.content__sidebar -->
             <div class="content__body">
-                <h1>{{ model.h1 ? model.h1 : model.name }} {{ (brandAuto.name ? ' ' ~ brandAuto.name : '') ~ (modelAuto.name and not generationAuto ? ' ' ~ modelAuto.name : '') ~ (generationAuto.name ? ' ' ~ generationAuto.name : '')}}</h1>
+                <h1>{{ model.h1 ? model.h1 : model.name }}  {{ brand.name }}</h1>
 
                 {{ use('frontend/widgets/Brands/Brands') }}
                 {{ brands_widget() }}
