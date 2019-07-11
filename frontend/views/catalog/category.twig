@@ -1,5 +1,5 @@
-{{ set(this, 'title', (model.h1 ? model.h1 : model.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - адреса и телефоны сервисных центов, вызов мастера на дом | ТЕХПРОФРЕМОНТ') }}
-{{ this.registerMetaTag({'name':'description', 'content': (model.h1 ? model.h1 : model.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' недорого и по доступным ценам. Большой выбор сервисных центров и частных мастеров, фото, телефоны и отзывы. в каталоге ТЕХПРОФРЕМОНТ.'}) }}
+{{ set(this, 'title', (model.h1 ? model.h1 : model.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - цены, адреса и телефоны сервисных центров') }}
+{{ this.registerMetaTag({'name':'description', 'content': (model.h1 ? model.h1 : model.name) ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' недорого и по доступным ценам, вызов мастера на дом. Большой выбор сервисных центров и частных мастеров, фото, телефоны и отзывы.'}) }}
 
 <div class="wrapper">
     <div class="breadcrumbs">
@@ -22,8 +22,9 @@
             <!-- /.content__sidebar -->
             <div class="content__body">
                 <h1>{{ model.h1 ? model.h1 : model.name }}</h1>
-                {{ use('frontend/widgets/Brands/Brands') }}
-                {{ brands_widget({'brands': model.brands}) }}
+                 <div class="category-text">
+                    {{ model.text| raw }}
+                </div>
 
                 <div class="items">
                     {{ use('frontend/widgets/ProductsListForCategory/ProductsListForCategory') }}
@@ -36,9 +37,8 @@
                 {{ use('frontend/widgets/PaginateBtn/PaginateBtn') }}
                 {{ paginate_btn_widget({'count': count}) }}
 
-                <div class="text">
-                    {{ model.text| raw }}
-                </div>
+               
+               
 
                 {{ use('frontend/widgets/FormOrder/FormOrder') }}
                 {{ form_order_widget() }}

@@ -1,28 +1,33 @@
 {% for item in model %}
     <div class="item">
         <!-- /.item__image -->
-        <div class="item__name">
-            <a href="{{ path('product/show', {'alias': item.alias}) }}">{{ item.name }}</a>
-        </div>
+
         <div class="item__image">
             <a href="/catalog/{{ item.alias }}">
                 {% if item.image %}
+                 <div class="item__name">
+                    <a href="{{ path('product/show', {'alias': item.alias}) }}">«{{ item.name }}»</a>
+                </div>
                 <img src="/userfiles/products/{{ item.image }}" alt="{{ item.name }}">
                 {% else %}
                     <div class="not__image">
-                       <div>
-                           «{{ item.name }}»
-                       </div>
+                       
+                       <div class="item__name">
+           «{{ item.name }}»
+        </div>
+
                     </div>
                 {% endif %}
             </a>
            <!-- <div class="item__availability-btn"><a href="/catalog/{{ item.alias }}">Узнать о наличии</a></div> -->
         </div>
         <div class="item_description">
-        {{ item.text|slice(0,200)|raw }}
+      <div class="itemadress"><img style="vertical-align:text-top;padding-right: 8px;" src="/img/adress-icon.png"> {{ item.address }}</div>
+        <div class="itemphone"><img style="vertical-align:text-top;padding-right: 8px;" src="/img/phone-icon.png">{{ item.phone }}</div>
         </div>
         <!-- /.item__name -->
         <div class="item_btn">
+
             <a href="{{ path('product/show', {'alias': item.alias}) }}" class="item__price">Подробнее</a>
         </div>
     </div>

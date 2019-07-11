@@ -5,8 +5,8 @@
                 <div class="find__by">
                     <span>Искать по:</span>
                     <ul>
-                        <li class="active" data-type="articul">артикулу (коду детали)</li>
-                        <li data-type="name">названию</li>
+                        <li class="active" data-type="articul">типу техники</li>
+                        <li data-type="name">производителю</li>
                     </ul>
                 </div>
                 <!-- /.find__by -->
@@ -26,7 +26,7 @@
                         'class': false
                     },
                     'template': '{input}'
-                }).textInput({'placeholder': 'Введите артикул...'}).error(false).label(false)| raw }}
+                }).textInput({'placeholder': 'Введите поисковый запрос...'}).error(false).label(false)| raw }}
                 {{ form.field(model, 'type', {
                     'options': {
                         'class': '',

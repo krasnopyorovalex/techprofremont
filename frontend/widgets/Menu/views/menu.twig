@@ -1,5 +1,5 @@
 {% if model %}
-    <ul>
+    <ul class="main-menu">
         {% for item in model %}
             <li class="{% if app.request.url == item.link %}active{% endif %}">
                 <a href="{{ item.link }}">{{ item.name }}</a>

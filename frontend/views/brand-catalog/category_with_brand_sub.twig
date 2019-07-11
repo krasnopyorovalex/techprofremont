@@ -1,5 +1,5 @@
 {% set customTitle = (model.h1 ? model.h1 : model.name)  ~ ' ' ~ brands.name %}
-{{ set(this, 'title', customTitle ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - адреса, телефоны и отзывы о сервисных центрах | ТЕХПРОФРЕМОНТ') }}
+{{ set(this, 'title', customTitle ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' - адреса, телефоны и отзывы о сервисных центрах') }}
 {{ this.registerMetaTag({'name':'description', 'content': customTitle ~ ' в '
  ~ app.params['subdomain_cases']['proposed'] ~ ' недорого и по доступным ценам. Адреса и телефоны официальных и авторизованных сервисных центров в '
  ~ app.params['subdomain_cases']['proposed'] ~ '.'}) }}

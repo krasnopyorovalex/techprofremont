@@ -1,5 +1,5 @@
-{{ set(this, 'title', 'Сервисный центр ' ~ model.name ~ ' в ' ~ app.params['subdomain_cases']['proposed'] ~ ' отзывы, телефон и адрес | ТЕХПРОФРЕМОНТ') }}
-{{ this.registerMetaTag({'name':'description', 'content': 'Купить '~ model.name ~' от ' ~ model.phone ~ ' руб. Магазин One Auto - автозапчасти в ' ~ app.params['subdomain_cases']['proposed'] ~ ' по лучшим ценам!'}) }}
+{{ set(this, 'title', 'Сервисный центр ' ~ model.name ~ ' ' ~ model.address ~ ' - отзывы, цены, телефон  | ТЕХПРОФРЕМОНТ') }}
+{{ this.registerMetaTag({'name':'description', 'content': 'Адрес, телефон, время работы сервисного центра '~ model.name ~' в ' ~ app.params['subdomain_cases']['proposed'] ~ '. Постгарантийный ремонт и сервисное обслуживание техники по низким ценам в сервисном центре ' ~ model.name ~ '.' }) }}
 
 <div class="wrapper">
     <div class="breadcrumbs">
@@ -37,7 +37,7 @@
                         <img src="/userfiles/products/{{ model.image }}" alt="{{ model.name }}">
                         {% else %}
                             <div class="not__image">
-                                <div>
+                                <div class="item__name">
                                     «{{ model.name }}»
                                 </div>
                             </div>
@@ -67,6 +67,10 @@
                     </div>
                 </div>
                 <div class="text">
+                   <p> Компания «{{ model.name }}» осуществляет профессиональный постгарантийный ремонт и сервисное обслуживание следующей техники и оборудования: {{ model.category.name }}. 
+                   Дополнительные услуги включают диагностику, установку, пуск и наладку при необходимости, консультации. Адрес, телефон, время работы сервисного центра «{{ model.name }}» в {{ app.params['subdomain_cases']['proposed'] }}. Отзывы о работе сервис-центра «{{ model.name }}».</p>
+
+
                     {{ model.text| raw }}
                     {% if point %}
                         {{ this.registerJsFile('https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;coordorder=longlat') }}
