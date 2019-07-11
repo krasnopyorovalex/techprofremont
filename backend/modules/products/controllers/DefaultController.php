@@ -39,6 +39,18 @@ class DefaultController extends SiteController
     }
 
     /**
+     * @return string
+     */
+    public function actionIndex(): string
+    {
+        $model = new Products();
+
+        return $this->render('index',[
+            'dataProvider' => $this->findData($model::find())
+        ]);
+    }
+
+    /**
      * @param $id
      * @return string|Response
      */

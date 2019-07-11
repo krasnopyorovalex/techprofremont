@@ -4,6 +4,7 @@ namespace core\repositories;
 
 use common\models\Products;
 use RuntimeException;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
@@ -58,11 +59,15 @@ class ProductsRepository
      */
     public function getByAlias($alias)
     {
-        $product = Products::find()->where(['alias' => $alias])->with(['category' => static function(ActiveQuery $query) {
-            return $query->with(['parent' => static function(ActiveQuery $query) {
-                return $query->with(['makers']);
-            },'makers']);
-        }])->limit(1)->one();
+        $product = Products::find()
+            ->where(['alias' => $alias])
+            ->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id])
+            ->with(['category' => static function(ActiveQuery $query) {
+                return $query->with(['parent' => static function(ActiveQuery $query) {
+                    return $query->with(['makers']);
+                },'makers']);
+        }])->limit(1)
+            ->one();
 
         if ( !$product) {
             throw new NotFoundException('Product is not found.');
