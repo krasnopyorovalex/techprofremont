@@ -24,7 +24,7 @@ menu {
   }  
 .header__sections .h__contact-menu .contact__box {
     margin-left: 10px;  
-    padding-bottom: 15px;   
+    padding-bottom: 10px; 
    }
 .contact__box-address {  
         text-align: left;
@@ -114,17 +114,22 @@ menu {
   margin-left: 15px;
  }  
 .content__body .items .item {
-  width: calc(32.333% - 30px);
+  width: 29%;
   margin-bottom:1em;
 } 
 .content__body .items .item__name {
-      text-align: center;  
-    } 
-.content__body .items .item__name a {
+    text-align: center;   
     font-size: .9rem;
     font-weight: bold;
-
-    text-transform: uppercase;
+    text-transform: uppercase;  
+    color: #282828;
+    } 
+.item__col-left .not__image .item__name {
+    text-align: center;   
+    font-size: .9rem;
+    font-weight: bold;
+    text-transform: uppercase;  
+    color: #282828;
   }   
 .content__body .items .item__cat-name a {
     font-family: "Montserrat";
@@ -136,8 +141,9 @@ menu {
      margin: 15px 15px 30px 30px;
 }    
 .content__body .auto__names ul li{
-   width: 16%;
-   margin: 0.2em 0;
+   width: 19%;
+   margin: 0 0 7px;
+   vertical-align: top;
 }    
 .content__body .auto__names ul li a {
     font-size: .9rem;
@@ -182,12 +188,15 @@ menu {
     width: 96%;
     margin: 1.5em 0 3em 30px;
  }  
- .content__body .text {
-    margin: 2em 0 1em 30px;
+ .content__body .category-text {
+    margin: 0;
 } 
 .content__body .item__row .item__col-right .name a {
   text-decoration: none;
   color:#282828;
+} 
+ .content__body .item__row .item__col-right .name{
+  margin: 0 5px 5px;
  } 
 .form__order .form-group input {
     font-size: .9rem;
@@ -253,7 +262,7 @@ menu {
 .content__body .items .item__price  {
     display: inline-block;
     position: relative;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     font-size: .9rem;
     padding: .5em 1.2em;
 } 
@@ -285,6 +294,7 @@ menu {
 } 
 .content__body .item__row .item__col-right .price span {
     font-size: 1.5rem;
+    line-height: 1.7em;
   } 
 .content__body .item__row .item__col-right .item__availability-btn {
     font-size: .9rem;
@@ -292,8 +302,8 @@ menu {
     font-family: "Montserrat";
     padding: .5em 27px;
 } 
-.content__body .text p {
-  margin-bottom:15px;
+.content__body .text {
+  margin:2em 0 1em 30px;
    } 
 .item_description {
     padding:1em;
@@ -388,6 +398,7 @@ footer .items .menu ul li a  {
     font-weight: 700;
     margin-bottom: 0.8em;
 }
+
 .brands h2{
     font-size: 1.4rem;
     font-weight: 700;
@@ -408,10 +419,92 @@ footer .items .menu ul li a  {
     font-size: .875rem;
     font-weight: 700;
 }
-@media screen and (max-width: 768px) {
-.content__body h1 {
-    font-size: 1.3125rem;
+
+.not__image {
+  width:100%;
+  height: 216px;
+  background-color: #edf0f4;
+ } 
+
+.categories .auto__names {
+    background-color: #f3f5f7;
+    padding: 1em;
+    margin: 1em 0 0;
+    border-radius: 3px;
+    z-index: 1;
 }
+.categories .auto__names ul {
+    text-align: left;
+}
+.categories  .auto__names ul li {
+    margin: 0.2em 0;
+    display: inline-block;
+    width: 19%;
+    line-height: 22px;
+}
+.categories .auto__names ul li a {
+  font-size: 16px;
+  color: #282828;
+}
+.categories .auto__names h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+.categories .auto__names ul li a:hover {
+    text-decoration: none;
+}
+.content__body .auto__names ul li a {
+    font-size: .9rem;
+    font-weight: 500;
+}
+.content__body .auto__names ul li a {
+    color: #282828;
+}
+.itemadress {
+  line-height: 21px;
+  font-size: .9rem;
+  font-weight: bold;
+  margin: 5px;
+}
+.itemphone{
+  line-height: 21px;
+  font-size: .9rem;
+  font-weight: bold;
+  margin: 5px;
+}
+.content__body .item__row .item__col-right {
+  margin:0;
+}
+.header__sections .logo {
+  width:30%;
+}
+.header__sections .h__contact-menu {
+  width:66%;
+  margin: 0;
+}
+.header__sections .h__contact-menu .contact__box .contact__box-address, .header__sections .h__contact-menu .contact__box .contact__box-city, .header__sections .h__contact-menu .contact__box .contact__box-phone 
+{
+  width:auto;
+  margin: 0;
+  margin-left:160px;
+
+}
+.header__sections .logo a {
+  text-decoration:none;
+  color:#282828;
+  }
+@media screen and (max-width: 768px) {
+
+  .content__body .item__row {
+    margin: 0px 10px 0px 10px;
+}
+.content__body h1 {
+  margin-left: 25px;
+  font-size: 1.3125rem;
+}
+.content__body .items .item .item__image img{
+  width:90%;
+  }
 .content__body .item__row .item__col-left {
 	width: 100%;
 }
@@ -419,14 +512,147 @@ footer .items .menu ul li a  {
 	width: 100%;
 }
 .content__sidebar  {
- display:none;
+  display:none;
 }	
 .content__body {
     width: 100%;
+}
+.categories .auto__names ul li {
+    width: 49%;
+}
+.categories .categories__view-all {
+       padding: 1em 0 40px 2em;
+}
+.content__body .item__row .item__col-right {
+  margin:0 15px;
 }
 .content__body .item__row .item__col-right .desc ul li span {
     min-width: auto;
 }
 .content__body .item__row .item__col-right .name {
-   	margin:10px ;
+   	margin:5px;
 }
+.content__body .item__row .item__col-right .price {
+    padding:15px 0;
+}
+.content__body .item__row .item__col-right .item__availability-btn {
+    padding: .5em 15px;
+ }   
+ .content__body .item__row .item__col-right .item__availability-btn {
+    margin: 0.5em 0;
+}
+.product_map {
+    height: 400px;
+    width: 94%;
+    overflow: hidden;
+}
+.form__order-title {
+    line-height: 1em;
+}
+.form__order {
+    width: 86%;
+}
+.form__order .form-group.name, .form__order .form-group.phone {
+    width: 100%;
+}
+.form__order .form-group.phone {
+    margin-left: 0px;
+}
+.form__order-btn {
+    width: 100%;
+}
+.content__body .auto__names {
+    margin: 15px 20px 15px 20px;
+}
+.content__body .auto__names ul li {
+    width: 32%;
+    vertical-align: top;
+}
+.content__body .items {
+     margin-left: 5px;
+}
+.content__body .items .item {
+    width: 88%;
+}
+.breadcrumbs {
+    margin: 1.5em 5px;
+}
+.header__sections .logo {
+    width: 100%;
+    text-align: center;    
+    margin: 0 25px 10px;
+}
+.header__sections .logo a {
+    text-decoration:none;
+    color:#282828;
+
+}
+.search .search__box .search__box-items .find__by {
+    padding: 0.5em 1em 0em 1em;
+}
+.breadcrumbs ul li {
+    margin: 3px 0;
+}
+.brands .items {
+
+    margin-left: 0px;
+    margin-right: 0px;
+ }   
+.brands .items .item {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top:0;
+    width: 44%;
+}
+.contact__box-city {
+  width:100%;
+  }
+  .h__contact-menu{
+  margin:0 20px;
+  }
+  .header__sections .h__contact-menu .contact__box .contact__box-address, .header__sections .h__contact-menu .contact__box .contact__box-city, .header__sections .h__contact-menu .contact__box .contact__box-phone
+  {
+      width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+footer .items .logo {
+  width:100%;
+  margin:0 15px;
+}  
+footer .items .contacts {
+  display:none;
+  }  
+footer .items {
+  margin:0 15px;
+} 
+header {
+    padding: 1em 0 0 0;
+} 
+.header__sections .h__contact-menu {
+  width:100%;    
+  margin: 0 20px;
+}  
+
+.header__sections .h__contact-menu menu>ul>li  {
+    text-align: right;
+    display: flex;
+    margin: 0 0 10px 0;
+
+}
+.categories .items .first__column, .categories .items .second__column, .categories .items .third__column
+{
+  width: 300px;
+  padding: 0;
+ } 
+.categories .categories__item img {
+    width: 100%;
+    height: auto;
+}
+.categories .items .first__column .first__column .categories__item, .categories .items .second__column .first__column .categories__item, .categories .items .third__column .first__column .categories__item {
+  margin: 10px 0;
+ } 
+ .categories .categories__item.margin__left-05 {
+ margin: 10px 0;
+ } 
+

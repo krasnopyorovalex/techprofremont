@@ -72,11 +72,6 @@ class ProductRecordCsv
          */
         $this->setBrandsForProduct($product);
 
-        /**
-         * set makers for product
-         */
-        $this->setMakersForProduct($product);
-
         $product->save();
 
         unset($product);
@@ -139,10 +134,4 @@ class ProductRecordCsv
             $product->bindingBrandsList = array_keys($brands);
         }
     }
-
-    private function setMakersForProduct(Products $product): void
-    {
-        $product->bindingMakersList = [];
-    }
-
 }
