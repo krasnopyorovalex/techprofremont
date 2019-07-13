@@ -46,7 +46,7 @@ class Products extends MainModel
     ];
 
     public $file;
-    public $bindingCategoriesList;
+    public $bindingCategoriesList = [];
     public $bindingBrandsList;
     public $makers;
 

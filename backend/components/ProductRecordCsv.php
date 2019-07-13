@@ -122,7 +122,7 @@ class ProductRecordCsv
 
     private function setBrandsForProduct(Products $product): void
     {
-        $categories = ArrayHelper::merge($product->bindingCategoriesList, [$product->category_id]);
+        $categories = ArrayHelper::merge($product->bindingCategoriesList, [$product->category_id => 1]);
 
         $brands = CatalogCategoryBrands::find()
             ->where(['category_id' => $categories])
@@ -130,7 +130,7 @@ class ProductRecordCsv
             ->indexBy('brand_id')
             ->column();
 
-        if ($brands) {
+        if (count($brands)) {
             $product->bindingBrandsList = array_keys($brands);
         }
     }
