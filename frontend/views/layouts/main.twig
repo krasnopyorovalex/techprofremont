@@ -80,15 +80,6 @@
                 <div class="menu">
                     {{ menu_widget({'sysName': 'menu_footer'}) }}
                 </div>
-                <div class="contacts">
-                    <div class="contacts__box-phone">
-                        <a href="te:{{ app.params.phone }}">{{ app.params.phone }}</a>
-                    </div>
-                    <!-- /.contact__box-phone -->
-                    <div class="contacts__street">
-                        {{ app.params.address }}
-                    </div>
-                </div>
             </div>
             <div class="items copyright">
                 <div class="left">© 2017-{{ now| date('Y') }}</div>

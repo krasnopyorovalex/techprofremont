@@ -140,6 +140,13 @@ menu {
 .content__body .auto__names {
      margin: 15px 15px 30px 30px;
 }    
+.auto__names h2 {
+    text-align:center;
+    text-transform: uppercase;
+    font-size: 26px;
+    margin: 15px 0;
+    font-weight: 600;
+ }  
 .content__body .auto__names ul li{
    width: 19%;
    margin: 0 0 7px;
@@ -173,6 +180,7 @@ menu {
     margin-left: 30px;
     margin-bottom: 10px;
 }
+
 .content__body .items .item__name {
   border-top:none;
   }
@@ -305,6 +313,24 @@ menu {
 .content__body .text {
   margin:2em 0 1em 30px;
    } 
+.content__body .text p {
+  margin-bottom:15px;
+  font-size: 15px;
+     }      
+.content__body .text h2 {
+    margin:20px 0 5px;
+     }  
+.content__body .text ul {
+    text-align: left;
+     } 
+.content__body .text li {
+    list-style: circle;
+    margin-bottom: 5px;
+    list-style-position: inside;
+       font-size: 15px;
+       padding-left: 43px;
+     }    
+
 .item_description {
     padding:1em;
     text-align:left;
@@ -361,7 +387,7 @@ footer .items.border {
 footer .items .menu {
 margin-left: 45px;
 margin-right: 0px;
-width: calc(64.66666666666667% - 30px);
+width: calc(82.66666666666667% - 30px);
 }
 footer .items .menu ul li a  {
     font-size: .9rem;
@@ -400,9 +426,11 @@ footer .items .menu ul li a  {
 }
 
 .brands h2{
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 10px;
+    text-align:center;
+    text-transform: uppercase;
+    font-size: 26px;
+    margin: 15px 0;
+    font-weight: 600;
 }
 .brands .brands_batton {
 	text-align:center;
@@ -655,4 +683,7 @@ header {
  .categories .categories__item.margin__left-05 {
  margin: 10px 0;
  } 
-
+footer .items .menu ul li {
+    display: block;
+    width: 100%;
+}
