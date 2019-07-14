@@ -16,6 +16,7 @@ use yii\helpers\ArrayHelper;
 class ProductsBehavior extends Behavior
 {
     private $ids = [];
+    private $productIds = [];
     private $model;
     private $data;
 
@@ -30,9 +31,14 @@ class ProductsBehavior extends Behavior
         $this->ids[] = $catalog->id;
         $this->getCatalogCategories($catalog->catalogCategories);
 
-        foreach ($this->model->productsVia as $product) {
-            $this->ids[] = $product->category_id;
+
+        if ( !$brand) {
+            foreach ($this->model->productsVia as $product) {
+                $this->productIds[] = $product->id;
+            }
         }
+
+        $this->ids = array_unique($this->ids);
 
         $products = new Products();
 
@@ -44,6 +50,11 @@ class ProductsBehavior extends Behavior
             $productIds = $this->getProductsWithBrand($brand);
 
             $query->andWhere(['id' => $productIds]);
+        }
+
+        if (count($this->productIds)) {
+            $query->orWhere(['id' => $this->productIds])
+                ->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id]);
         }
 
         $count = clone $query;
@@ -95,7 +106,9 @@ class ProductsBehavior extends Behavior
     private function getCatalogCategories($catalogCategories): void
     {
         foreach ($catalogCategories as $catalogCategory) {
+
             $this->ids[] = $catalogCategory->id;
+
             if($catalogCategories = $catalogCategory->catalogCategories){
                 $this->getCatalogCategories($catalogCategories);
             }

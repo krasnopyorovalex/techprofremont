@@ -125,13 +125,13 @@ class ProductRecordCsv
         $categories = ArrayHelper::merge($product->bindingCategoriesList, [$product->category_id => 1]);
 
         $brands = CatalogCategoryBrands::find()
-            ->where(['category_id' => $categories])
+            ->where(['category_id' => array_keys($categories)])
             ->asArray()
             ->indexBy('brand_id')
             ->column();
 
         if (count($brands)) {
-            $product->bindingBrandsList = array_keys($brands);
+            $product->bindingBrandsList = array_values($brands);
         }
     }
 }
