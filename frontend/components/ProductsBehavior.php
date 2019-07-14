@@ -32,10 +32,8 @@ class ProductsBehavior extends Behavior
         $this->getCatalogCategories($catalog->catalogCategories);
 
 
-        if ( !$brand) {
-            foreach ($this->model->productsVia as $product) {
-                $this->productIds[] = $product->id;
-            }
+        foreach ($this->model->productsVia as $product) {
+            $this->productIds[] = $product->id;
         }
 
         $this->ids = array_unique($this->ids);
