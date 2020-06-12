@@ -130,6 +130,7 @@ menu {
     font-weight: bold;
     text-transform: uppercase;  
     color: #282828;
+    padding-top:40%;
   }   
 .content__body .items .item__cat-name a {
     font-family: "Montserrat";
@@ -521,8 +522,14 @@ footer .items .menu ul li a  {
   text-decoration:none;
   color:#282828;
   }
+  .content__body .items .item__image a  {
+  	text-decoration: underline;
+  	text-decoration-color:#282828;
+   } 	
 @media screen and (max-width: 768px) {
+.not__image {
 
+}	
   .content__body .item__row {
     margin: 0px 10px 0px 10px;
 }

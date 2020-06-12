@@ -4,18 +4,50 @@
 <div class="wrapper">
     <div class="breadcrumbs">
         <ul>
-            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
+            <li>
+	            <a href="{{ app.homeUrl }}">
+	            	
+	            		{{ app.params['breadcrumbs_main_name'] }}
+	            
+	            	
+	       		</a>
+    		</li>
             {% if model.category.catalog %}
-                <li><a href="/{{ model.category.catalog.alias }}">{{ model.category.catalog.name }}</a></li>
+                <li>
+                	<a href="/{{ model.category.catalog.alias }}">
+                			{{ model.category.catalog.name }}	
+                </a>
+            </li>
             {% endif %}
             {% if model.category.parent.parent %}
-                <li><a href="/{{ model.category.catalog.alias }}/{{ model.category.parent.parent.alias }}">{{ model.category.parent.parent.name }}</a></li>
+                <li>
+                	<a href="{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}">
+                		{{ model.category.parent.parent.name }}
+                	</a>
+            </li>
             {% endif %}
             {% if model.category.parent %}
-                <li><a href="/{{ model.category.catalog.alias }}/{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}">{{ model.category.parent.name }}</a></li>
+                <li>
+                <a href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}">
+                	
+               		 {{ model.category.parent.name }}
+               		
+                	
+                </a>
+            </li>
             {% endif %}
-            <li><a href="/{{ model.category.catalog.alias }}/{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}/{{ model.category.alias }}">{{ model.category.name }}</a></li>
-            <li>{{ model.name }}</li>
+            <li>
+            	<a href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}/{{ model.category.alias }}">
+            	{{ model.category.name }}
+            	</a>
+        	</li>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            	
+            		{{ model.name }}
+            		
+            
+            	
+            </li>
         </ul>
     </div>
     <!-- /.breadcrumbs -->
@@ -29,12 +61,14 @@
                 {{ sidebar_menu_widget() }}
             </div>
             <!-- /.content__sidebar -->
-            <div class="content__body">
-                <h1>Сервисный центр «{{ model.name }}»</h1>
+            <div itemscope itemtype="http://schema.org/LocalBusiness" class="content__body">
+                <h1>
+                	Сервисный центр «<span itemprop="name">{{ model.name }}</span>»
+                </h1>
                 <div class="item__row">
                     <div class="item__col-left">
                         {% if model.image %}
-                        <img src="/userfiles/products/{{ model.image }}" alt="{{ model.name }}">
+                        <img src="/userfiles/products/{{ model.image }}" itemprop="image" alt="{{ model.name }}">
                         {% else %}
                             <div class="not__image">
                                 <div class="item__name">
@@ -52,13 +86,13 @@
                         <div class="desc">
                             <ul>
 
-                                <li><span>Часы работы:</span> <b>{{ model.working_hours }}</b></li>
-                                <li><span>E-mail:</span> <b><a href="mailto:{{ model.balance }}">{{ model.balance }}</a></b></li>
-                                <li><span>Адрес:</span> <b>{{ model.address }}</b></li>
+                                <li>Часы работы:</span> <b><span itemprop="openingHours">{{ model.working_hours }}</span></b></li>
+                                <li><span>E-mail:</span> <b><a href="mailto:{{ model.balance }}"><span itemprop="email">{{ model.balance }}</span></a></b></li>
+                                <li><span>Адрес:</span> <b><span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{ model.address }}</span></b></li>
                             </ul>
                         </div>
                         <div class="price">
-                            Телефон: <span>{{ model.phone }}</span>
+                            Телефон: <span itemprop="telephone">{{ model.phone }}</span>
                         </div>
 
                         {% for advantage in model.advantages %}
@@ -66,16 +100,16 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="text">
+                <div class="text" itemprop="description">
                    <p> Компания «{{ model.name }}» осуществляет профессиональный постгарантийный ремонт и сервисное обслуживание следующей техники и оборудования: {{ model.category.name }}. 
-                   Дополнительные услуги включают диагностику, установку, пуск и наладку при необходимости, консультации. Адрес, телефон, время работы сервисного центра «{{ model.name }}» в {{ app.params['subdomain_cases']['proposed'] }}. Отзывы о работе сервис-центра «{{ model.name }}».</p>
+                   Дополнительные услуги включают диагностику, установку, пуск и наладку при необходимости, консультации. Адрес, телефон, время работы сервисного центра «{{ model.name }}» в {{ app.params['subdomain_cases']['proposed'] }}. Отзывы о работе.</p>
 
 
                     {{ model.text| raw }}
                     {% if point %}
                         {{ this.registerJsFile('https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;coordorder=longlat') }}
                         <h2 class="map-title">Карта и схема проезда</h2>
-                        <div class="product_map" id="yandex-map" data-point="{{ point.getCoords() }}"></div>
+                        <div itemscope itemprop="hasMap" itemtype="http://schema.org/Map" class="product_map" id="yandex-map" data-point="{{ point.getCoords() }}"></div>
                     {% endif %}
                 </div>
 

@@ -1,12 +1,29 @@
 {{ void(this.beginPage()) }}<!DOCTYPE html>
 <html lang="ru">
 <head>
+	<meta name="yandex-verification" content="0621a6001c7266fd" />
     <meta charset="{{ app.charset }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
     <title>{{ this.title| raw }}</title>
+    <link href="/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     {{ register_asset_bundle('frontend/assets/AppAsset') }}
     {{ html.csrfMetaTags| raw }}
     {{ void(this.head) }}
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(54470851, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+       });
+    </script>
+<noscript><div><img src="https://mc.yandex.ru/watch/54470851" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 </head>
 <body>
 {{ void(this.beginBody()) }}
@@ -22,7 +39,8 @@
                 <!-- /.logo -->
                 <div class="h__contact-menu">
                     <div class="contact__box">
-                        <div class="contact__box-city">
+                       <!-- 
+                       <div class="contact__box-city">
                             <span>Ваш город:</span>
                             <div class="custom__select">
                                 <form action="#">
@@ -33,9 +51,9 @@
                                     </select>
                                 </form>
                             </div>
-                            <!-- /.custom__select -->
-                        </div>
-                        <!-- 
+                        </div> 
+                    -->
+                       
                         <div class="contact__box-address">
                             
                             <div class="value"><a href=""> Добавить сервисный центр</a>
@@ -45,7 +63,7 @@
                         <div class="contact__box-phone">
                            
                         </div>
-                          -->
+                          
                     </div>
                     <!-- /.contact__box -->
                     <menu>
@@ -83,7 +101,7 @@
             </div>
             <div class="items copyright">
                 <div class="left">© 2017-{{ now| date('Y') }}</div>
-                <div class="right"><a href="#">Создание и продвижение сайта</a></div>
+                <div class="right"><a href="https://make-digital.ru/">Создание и продвижение сайта</a></div>
             </div>
         </div>
     </footer>
