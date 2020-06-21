@@ -1,4 +1,6 @@
 <?php
+
+use common\models\Subdomains;
 use yii\helpers\Html;
 ?>
 <!-- Main navbar -->
@@ -11,8 +13,20 @@ use yii\helpers\Html;
     </div>
 
     <div class="navbar-collapse collapse" id="navbar-mobile">
-
         <ul class="nav navbar-nav navbar-right">
+
+            <li>
+                <form action="/_root/change-subdomain" method="post" class="subdomains-list">
+                    <label class="control-label" for="subdomain_id">Выберите сайт</label>
+                    <select name="subdomain" id="subdomain_id">
+                        <?php foreach (Subdomains::find()->all() as $subdomain):?>
+                            <option <?=Yii::$app->getSession()->get('subdomain') === $subdomain->id ? 'selected' : '' ?> value="<?= $subdomain->id?>">
+                                <?= $subdomain->domain_name?>
+                            </option>
+                        <?php endforeach;?>
+                    </select>
+                </form>
+            </li>
 
             <li class="dropdown dropdown-user">
                 <a class="dropdown-toggle" data-toggle="dropdown">

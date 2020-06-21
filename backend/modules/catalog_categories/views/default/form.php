@@ -4,6 +4,7 @@
 /* @var $catalog common\models\Catalog */
 /* @var array $brands common\models\Brands */
 
+use backend\assets\AddEditorAsset;
 use backend\assets\SingleEditorAsset;
 use backend\assets\SelectAsset;
 use yii\bootstrap\ActiveForm;
@@ -12,6 +13,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 SingleEditorAsset::register($this);
+AddEditorAsset::register($this);
 SelectAsset::register($this);
 
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => Url::toRoute(['/catalog'])];
@@ -61,6 +63,12 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                 <div class="col-md-12">
                                     <?= $form->field($model, 'text')->textarea([
                                         'id' => 'editor-full',
+                                        'placeholder' => 'Введите текст...'
+                                    ]) ?>
+                                </div>
+                                <div class="col-md-12">
+                                    <?= $form->field($model, 'text_seo')->textarea([
+                                        'id' => 'editor-full-add',
                                         'placeholder' => 'Введите текст...'
                                     ]) ?>
                                 </div>

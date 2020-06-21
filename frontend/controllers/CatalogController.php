@@ -38,7 +38,9 @@ class CatalogController extends SiteController
          */
         $catalogCategory = CatalogCategories::find()
             ->where(['alias' => $category])
-            ->with(['brands', 'productsVia', 'catalogCategoryBrands','catalogCategories' => static function (ActiveQuery $query){
+            ->with(['brands', 'productsVia' => function (ActiveQuery $query) {
+                return $query->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id]);
+            }, 'catalogCategoryBrands','catalogCategories' => static function (ActiveQuery $query){
                 return $query->with(['brands','catalogCategories']);
             }, 'catalog' => static function(ActiveQuery $query) {
                 return $query->with(['catalogCategories' => static function (ActiveQuery $query){

@@ -295,3 +295,11 @@ li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
     min-width: 120px;
     display: inline-block;
 }
+.subdomains-list {
+    color: #000;
+    padding-top: 6.5px;
+    padding-bottom: 6.5px;
+}
+.subdomains-list label {
+    color: #fff;
+}

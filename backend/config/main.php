@@ -55,7 +55,7 @@ return [
             'enableStrictParsing' => true,
             'rules' => [
                 '/' => 'site/index',
-                '<action:(login|logout|upload-ckeditor|multiupload)>' => 'site/<action>',
+                '<action:(login|logout|upload-ckeditor|multiupload|change-subdomain)>' => 'site/<action>',
                 '<_m:[\wd-]+>/<action:(update-pos-items)>' => '<_m>/items/<action>',
                 '<_m:[\wd-]+>/<action:(items|add-item|edit-item|delete-item)>/<id:\d+>' => '<_m>/items/<action>',
                 '<_m:[\wd-]+>' => '<_m>/default/index',

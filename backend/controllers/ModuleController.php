@@ -2,8 +2,10 @@
 
 namespace backend\controllers;
 
+use common\models\Subdomains;
 use Yii;
 use backend\interfaces\ModelProviderInterface;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use backend\components\FileHelper as FH;
 
@@ -79,4 +81,23 @@ class ModuleController extends SiteController
         return false;
     }
 
+    public function beforeAction($action): bool
+    {
+        try {
+            if (!parent::beforeAction($action)) {
+                return false;
+            }
+            $session = Yii::$app->getSession();
+
+            $subdomain = Subdomains::findOne(['id' => (int) $session->get('subdomain')]);
+            if( !$subdomain) {
+                $subdomain = Subdomains::findOne(['is_main' => Subdomains::IS_MAIN]);
+                $session->set('subdomain', $subdomain->id);
+            }
+        } catch (BadRequestHttpException $e) {
+            return false;
+        }
+
+        return true;
+    }
 }

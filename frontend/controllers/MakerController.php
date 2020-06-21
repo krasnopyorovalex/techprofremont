@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Makers;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\web\NotFoundHttpException;
 
@@ -21,7 +22,11 @@ class MakerController extends SiteController
     {
         $maker = Makers::find()->where(['alias' => $alias])->with([
             'catalogCategories' => static function (ActiveQuery $query) {
-                return $query->with(['products', 'productsVia']);
+                return $query->with(['products' => function (ActiveQuery $query) {
+                    return $query->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id]);
+                }, 'productsVia' => function (ActiveQuery $query) {
+                    return $query->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id]);
+                }]);
             }
         ])->limit(1)->one();
 

@@ -6,6 +6,7 @@ use yii\helpers\Url;
 
 /* @var $dataProvider common\models\CatalogCategories */
 /* @var $catalog common\models\Catalog */
+/* @var $subdomains common\models\Subdomains */
 /* @var $this yii\web\View */
 
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => Url::toRoute(['/catalog'])];

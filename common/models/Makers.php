@@ -37,6 +37,7 @@ class Makers extends ActiveRecord
         return [
             [['name', 'alias'], 'required'],
             [['name'], 'string', 'max' => 128],
+            [['text'], 'string'],
             [['alias'], 'string', 'max' => 255],
             [['alias'], 'unique'],
             [['bindingCategoriesList'], 'safe']
@@ -52,6 +53,7 @@ class Makers extends ActiveRecord
             'id' => 'ID',
             'name' => 'Название',
             'alias' => 'Alias',
+            'text' => 'Текстовый блок',
         ];
     }
 

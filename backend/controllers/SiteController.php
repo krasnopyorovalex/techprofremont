@@ -34,7 +34,18 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'upload-ckeditor', 'multiupload', 'add', 'update', 'delete', 'remove-image', 'update-pos'],
+                        'actions' => [
+                            'logout',
+                            'index',
+                            'upload-ckeditor',
+                            'multiupload',
+                            'add',
+                            'update',
+                            'delete',
+                            'remove-image',
+                            'update-pos',
+                            'change-subdomain'
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -47,7 +58,8 @@ class SiteController extends Controller
                     'multiupload' => ['post'],
                     'remove-image' => ['post'],
                     'update-pos' => ['post'],
-                    'upload' => ['post']
+                    'upload' => ['post'],
+                    'change-subdomain' => ['post']
                 ],
             ],
         ];
@@ -67,7 +79,7 @@ class SiteController extends Controller
             ],
             'multiupload' => [
                 'class' => 'backend\components\Multiupload'
-            ],
+            ]
         ];
     }
 
@@ -118,5 +130,12 @@ class SiteController extends Controller
             return $this->redirect(Yii::$app->homeUrl . $this->module->id);
         }
         return false;
+    }
+
+    public function actionChangeSubdomain()
+    {
+        Yii::$app->getSession()->set('subdomain', (int) Yii::$app->request->post('subdomain'));
+
+        return $this->redirect(Yii::$app->request->referrer);
     }
 }

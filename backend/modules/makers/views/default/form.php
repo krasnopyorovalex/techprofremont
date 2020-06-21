@@ -4,10 +4,12 @@
 /* @var $catalogCategory common\models\CatalogCategories */
 
 use backend\assets\SelectAsset;
+use backend\assets\SingleEditorAsset;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
 SelectAsset::register($this);
+SingleEditorAsset::register($this);
 
 $this->params['breadcrumbs'][] = ['label' => $this->context->module->params['name'], 'url' => Url::toRoute(['/'.$this->context->module->id])];
 $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action->id];
@@ -36,6 +38,10 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
                                         'autocomplete' => 'off',
                                         'class' => 'form-control',
                                         'id' => 'to__generate'
+                                    ]) ?>
+                                    <?= $form->field($model, 'text')->textarea([
+                                        'id' => 'editor-full',
+                                        'placeholder' => 'Введите текст...'
                                     ]) ?>
                                 </div>
                             </div>

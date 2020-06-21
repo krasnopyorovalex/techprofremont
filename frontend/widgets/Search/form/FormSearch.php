@@ -2,16 +2,16 @@
 
 namespace frontend\widgets\Search\form;
 
-use common\models\Products;
+use yii\db\ActiveRecord;
 
 /**
  * Class FormSearch
  * @package frontend\widgets\Search\form
  */
-class FormSearch extends Products
+class FormSearch extends ActiveRecord
 {
-    private const TYPE_ARTICUL = 'articul';
-    private const TYPE_NAME = 'name';
+    private const TYPE_CATEGORY = 'category';
+    private const TYPE_MAKER = 'maker';
 
     public $type;
     public $keyword;
@@ -23,27 +23,15 @@ class FormSearch extends Products
     {
         return [
             [['type', 'keyword'], 'required'],
-            ['type', 'in', 'range' => [self::TYPE_ARTICUL, self::TYPE_NAME]]
+            ['type', 'in', 'range' => [self::TYPE_CATEGORY, self::TYPE_MAKER]]
         ];
     }
 
-    public function search($params)
+    /**
+     * @return bool
+     */
+    public function isCategory(): bool
     {
-        $query = Products::find();
-
-        $this->load($params);
-
-        if ( ! $this->validate()) {
-            $query->where('0=1');
-        }
-
-        if($this->type === self::TYPE_NAME){
-            $query->andFilterWhere([
-                'name' => $this->keyword
-            ]);
-        }
-
-        return $query->asArray()->all();
+        return $this->type === self::TYPE_CATEGORY;
     }
-
 }

@@ -103,6 +103,13 @@ jQuery(function() {
     eventTarget.on('click', function () {
         toGenerate.val(transliterate(fromGenerate.val()));
     });
+
+    var selectSubdomain = jQuery('#subdomain_id');
+    if (selectSubdomain.length) {
+        selectSubdomain.on('change', function () {
+            return jQuery(this).closest('form').submit();
+        });
+    }
 });
 
 function transliterate(text) {

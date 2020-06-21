@@ -2,32 +2,43 @@
 
 namespace frontend\controllers;
 
-use common\models\Pages;
+use core\services\SearchService;
 use frontend\widgets\Search\form\FormSearch;
-use yii\web\NotFoundHttpException;
 
 /**
  * Search controller
  */
 class SearchController extends SiteController
 {
+    /**
+     * @var SearchService
+     */
+    private $searchService;
 
+    /**
+     * SearchController constructor.
+     * @param $id
+     * @param $module
+     * @param SearchService $searchService
+     * @param array $config
+     */
+    public function __construct($id, $module, SearchService $searchService, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->searchService = $searchService;
+    }
     /**
      * @param string $alias
      * @return string
-     * @throws NotFoundHttpException
      */
-    public function actionIndex($alias = 'search')
+    public function actionIndex($alias = 'search'): string
     {
-        if( !$model = Pages::find()->where(['alias' => $alias])->one() ){
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-
         $searchModel = new FormSearch();
-        $products = $searchModel->search(\Yii::$app->request->queryParams);
+        $searchModel->load(\Yii::$app->request->queryParams);
+
+        $products = $this->searchService->search($searchModel);
 
         return $this->render('search.twig',[
-            'model' => $model,
             'products' => $products
         ]);
     }

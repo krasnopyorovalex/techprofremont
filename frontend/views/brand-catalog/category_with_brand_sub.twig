@@ -14,6 +14,14 @@
                     'category': model.parent.alias,
                     'page': 0
                 }) }}">{{ model.parent.name }}</a></li>
+            <li>
+                <a itemprop="item" href="{{ path('catalog/show-sub-category', {
+                    'catalog': model.catalog.alias,
+                    'category': model.parent.alias,
+                    'subcategory': model.alias,
+                    'page': 0
+                }) }}">{{ model.name }}</a>
+            </li>
             <li>{{ model.name ~ ' ' ~ brands.name }}</li>
         </ul>
     </div>

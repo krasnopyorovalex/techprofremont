@@ -5,8 +5,8 @@
                 <div class="find__by">
                     <span>Искать по:</span>
                     <ul>
-                        <li class="active" data-type="articul">типу техники</li>
-                        <li data-type="name">производителю</li>
+                        <li {% if model.type != 'maker' %}class="active"{% endif %} data-type="category">типу техники</li>
+                        <li {% if model.type == 'maker' %}class="active"{% endif %} data-type="maker">производителю</li>
                     </ul>
                 </div>
                 <!-- /.find__by -->
@@ -33,7 +33,7 @@
                         'name': 'type'
                     },
                     'template': '{input}'
-                }).hiddenInput({'value': 'articul','class': 'type__input'}).label(false)| raw }}
+                }).hiddenInput({'value': 'category','class': 'type__input'}).label(false)| raw }}
                 <i class="icon__search" title="Найти"></i>
                 {{ active_form_end() }}
 

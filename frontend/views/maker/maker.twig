@@ -34,6 +34,10 @@
                 </div>
                 <!-- /.items -->
 
+                <div class="seo-text">
+                    {{ model.text|raw }}
+                </div>
+
                 {{ use('frontend/widgets/FormOrder/FormOrder') }}
                 {{ form_order_widget() }}
 

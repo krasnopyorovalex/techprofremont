@@ -76,12 +76,23 @@ class DefaultController extends ModuleController
     {
         Url::remember();
 
-        return $this->render('index',[
-            'dataProvider' => CatalogCategories::find()->where(['parent_id' => null, 'catalog_id' => $id])->with(['products', 'catalogCategories' => static function(ActiveQuery $query){
-                return $query->with(['products', 'catalogCategories' => static function(ActiveQuery $query){
-                    return $query->with(['products', 'catalogCategories']);
+        $subdomain = (int) Yii::$app->getSession()->get('subdomain');
+
+        $dataProvider = CatalogCategories::find()->where(['parent_id' => null, 'catalog_id' => $id])
+            ->with(['products' => function (ActiveQuery $query) use ($subdomain) {
+                return $query->andWhere(['subdomain_id' => $subdomain]);
+            }, 'brands', 'catalogCategories' => function(ActiveQuery $query) use ($subdomain) {
+                return $query->with(['products' => function (ActiveQuery $query) use ($subdomain) {
+                    return $query->andWhere(['subdomain_id' => $subdomain]);
+                }, 'brands', 'catalogCategories' => static function(ActiveQuery $query) use ($subdomain) {
+                    return $query->with(['products' => function (ActiveQuery $query) use ($subdomain) {
+                        return $query->andWhere(['subdomain_id' => $subdomain]);
+                    }, 'catalogCategories']);
                 }]);
-            }])->all(),
+        }])->all();
+
+        return $this->render('index',[
+            'dataProvider' => $dataProvider,
             'catalog' => Catalog::findOne($id)
         ]);
     }
@@ -167,7 +178,13 @@ class DefaultController extends ModuleController
     public function actionList(int $id): string
     {
         Url::remember();
-        $products = Products::find()->where(['category_id' => $id])->with(['category']);
+
+        $subdomain = Yii::$app->getSession()->get('subdomain');
+
+        $products = Products::find()
+            ->where(['category_id' => $id])
+            ->andWhere(['subdomain_id' => $subdomain])
+            ->with(['category']);
 
         return $this->render('products_list', [
             'dataProvider' => $this->findData($products),

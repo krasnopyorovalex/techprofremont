@@ -35,4 +35,3 @@ phpunit.phar
 /.vagrant
 
 .htaccess
-Будет удалено .gitignore
