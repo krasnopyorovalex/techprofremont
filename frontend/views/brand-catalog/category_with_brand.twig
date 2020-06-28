@@ -24,10 +24,16 @@
             </div>
             <!-- /.content__sidebar -->
             <div class="content__body">
-                <h1>{{ model.h1 ? model.h1 : model.name }}  {{ brand.name }}</h1>
+                <h1>{{ model.h1 ? model.h1 : model.name }}  {{ brand.name }}+++++</h1>
 
                 {{ use('frontend/widgets/Brands/Brands') }}
                 {{ brands_widget() }}
+
+                {% if model.text %}
+                <div class="seo-text">
+                    {{ model.text| raw }}
+                </div>
+                {% endif %}
 
                 <div class="items">
                     {{ use('frontend/widgets/ProductsListForCategory/ProductsListForCategory') }}
@@ -40,9 +46,11 @@
                 {{ use('frontend/widgets/PaginateBtn/PaginateBtn') }}
                 {{ paginate_btn_widget({'count': count}) }}
 
-                <div class="text">
-                    {{ model.text| raw }}
+                {% if model.text_seo %}
+                <div class="seo-text">
+                    {{ model.text_seo| raw }}
                 </div>
+                {% endif %}
 
                 {{ use('frontend/widgets/FormOrder/FormOrder') }}
                 {{ form_order_widget() }}

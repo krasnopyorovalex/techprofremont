@@ -2,8 +2,8 @@
 
 namespace core\services;
 
+use common\models\Brands;
 use common\models\CatalogCategories;
-use common\models\Makers;
 use common\models\Products;
 use frontend\widgets\Search\form\FormSearch;
 use Yii;
@@ -20,7 +20,7 @@ class SearchService
     {
         $id = $formSearch->isCategory()
             ? $this->findByCategory($formSearch)
-            : $this->findByMaker($formSearch);
+            : $this->findByBrand($formSearch);
 
         return Products::find()->where(['id' => $id])->limit(50)->all();
     }
@@ -29,35 +29,23 @@ class SearchService
      * @param FormSearch $formSearch
      * @return array
      */
-    private function findByMaker(FormSearch $formSearch): array
+    private function findByBrand(FormSearch $formSearch): array
     {
-        $makers = Makers::find()->where(['like', 'name', $formSearch->keyword])
-            ->with([
-                'catalogCategories' => static function (ActiveQuery $query) {
-                    return $query->with(['products' => function (ActiveQuery $query) {
-                        return $query->select('id')
-                            ->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id])
-                            ->asArray();
-                    }, 'productsVia' => function (ActiveQuery $query) {
-                        return $query->select('id')
-                            ->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id])
-                            ->asArray();
-                    }])->asArray();
-                }
-            ])
+        $brands = Brands::find()
+            ->select(['id'])
+            ->where(['like', 'name', $formSearch->keyword])
+            ->with(['products' => function (ActiveQuery $query) {
+                return $query->select(['id'])
+                    ->andWhere(['subdomain_id' => Yii::$app->params['subdomain']->id]);
+            }])
             ->asArray()
             ->all();
 
         $idArray = [];
-        foreach ($makers as $maker) {
-            if ($maker['catalogCategories']) {
-                foreach ($maker['catalogCategories'] as $catalogCategory) {
-                    foreach ($catalogCategory['products'] as $product) {
-                        $idArray[] = $product['id'];
-                    }
-                    foreach ($catalogCategory['productsVia'] as $product) {
-                        $idArray[] = $product['id'];
-                    }
+        foreach ($brands as $brand) {
+            if ($brand['products']) {
+                foreach ($brand['products'] as $product) {
+                    $idArray[] = $product['id'];
                 }
             }
         }

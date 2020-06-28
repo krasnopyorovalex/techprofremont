@@ -3,8 +3,10 @@
 namespace frontend\controllers;
 
 use common\models\CatalogCategories;
+use Exception;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use frontend\components\ProductsBehavior;
 
@@ -20,9 +22,9 @@ class CatalogController extends SiteController
      */
     public function behaviors(): array
     {
-        return [
+        return ArrayHelper::merge(parent::behaviors(),[
             'class' => ProductsBehavior::class
-        ];
+        ]);
     }
 
     /**
@@ -54,7 +56,12 @@ class CatalogController extends SiteController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $this->getProducts($catalogCategory, $page);
+        try {
+            $this->getProducts($catalogCategory, $page);
+            $this->parse($catalogCategory);
+        } catch (Exception $e) {
+            $catalogCategory->text = $e->getMessage();
+        }
 
         if (Yii::$app->request->isPost) {
             return $this->json();
@@ -80,7 +87,12 @@ class CatalogController extends SiteController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $this->getProducts($model, $page);
+        try {
+            $this->getProducts($model, $page);
+            $this->parse($model);
+        } catch (Exception $e) {
+            $model->text = $e->getMessage();
+        }
 
         if (Yii::$app->request->isPost) {
             return $this->json();

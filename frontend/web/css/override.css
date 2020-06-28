@@ -169,7 +169,6 @@ menu {
 .content__body h1{
     font-size: 1.9rem;
     font-weight: 700;
-    margin-left: 30px;
     margin-bottom: 10px;
 }
 
@@ -301,12 +300,13 @@ menu {
     padding: .5em 27px;
 } 
 .content__body .text {
-  margin:2em 0 1em 30px;
-   } 
+  margin: 2em 0 1em 0;
+}
 .content__body .text p {
-  margin-bottom:15px;
-  font-size: 15px;
-     }      
+    margin-bottom:15px;
+    text-align: justify;
+    font-size: 15px;
+}
 .content__body .text h2 {
     margin:20px 0 5px;
      }  
@@ -736,4 +736,10 @@ footer .items .menu ul li a  {
 }
 .seo-text p {
     margin-bottom: 15px;
+}
+.content__body.search {
+    background: none;
+}
+.content__body .brands__widget .items .item {
+    line-height: 0;
 }

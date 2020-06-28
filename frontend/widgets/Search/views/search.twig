@@ -33,7 +33,7 @@
                         'name': 'type'
                     },
                     'template': '{input}'
-                }).hiddenInput({'value': 'category','class': 'type__input'}).label(false)| raw }}
+                }).hiddenInput({'value': model.type ?: 'category','class': 'type__input'}).label(false)| raw }}
                 <i class="icon__search" title="Найти"></i>
                 {{ active_form_end() }}
 

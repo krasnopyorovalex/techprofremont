@@ -63,7 +63,7 @@ class SiteController extends Controller
         }
 
         try {
-            $model->text = $this->parse($model);
+            $this->parse($model);
         } catch (Exception $e) {
             $model->text = $e->getMessage();
         }
