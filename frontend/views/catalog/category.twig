@@ -53,7 +53,7 @@
                 {{ use('frontend/widgets/PaginateBtn/PaginateBtn') }}
                 {{ paginate_btn_widget({'count': count}) }}
 
-                {% if model.text %}
+                {% if model.text_seo %}
                     <div class="seo-text">
                         {{ model.text_seo| raw }}
                     </div>

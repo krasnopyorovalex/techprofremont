@@ -32,7 +32,9 @@
                     }) }}
                     {% endfor %}
                 </div>
-                <!-- /.items -->
+
+                {{ use('frontend/widgets/PaginateBtn/PaginateBtn') }}
+                {{ paginate_btn_widget({'count': count}) }}
 
                 <div class="seo-text">
                     {{ model.text|raw }}

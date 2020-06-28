@@ -6,6 +6,7 @@ use common\models\CatalogCategories;
 use frontend\components\ProductsBehavior;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use Exception;
 
@@ -22,9 +23,9 @@ class BrandCatalogController extends SiteController
      */
     public function behaviors(): array
     {
-        return [
+        return ArrayHelper::merge(parent::behaviors(),[
             'class' => ProductsBehavior::class
-        ];
+        ]);
     }
 
     /**
@@ -75,7 +76,7 @@ class BrandCatalogController extends SiteController
         /**
          * @var $catalog CatalogCategories
          */
-        $catalogCategories = CatalogCategories::find()->where(['alias' => $subcategory])->with([
+        $catalogCategory = CatalogCategories::find()->where(['alias' => $subcategory])->with([
             'parent',
             'catalogCategories',
             'brands' => static function(ActiveQuery $query) {
@@ -83,12 +84,17 @@ class BrandCatalogController extends SiteController
             }
         ])->limit(1)->one();
 
-        if ( !$catalogCategories && !in_array($brand, $catalogCategories->brands, true)) {
+        if ( !$catalogCategory && !in_array($brand, $catalogCategory->brands, true)) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $page = is_numeric($brand) ? $brand : $page;
-        $this->getProducts($catalogCategories, $page, $brand);
+        try {
+            $page = is_numeric($brand) ? $brand : $page;
+            $this->getProducts($catalogCategory, $page, $brand);
+            $this->parse($catalogCategory);
+        } catch (Exception $e) {
+            $catalogCategory->text = $e->getMessage();
+        }
 
         if (Yii::$app->request->isPost) {
             return $this->json();
