@@ -18,6 +18,7 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+                {% if item.menuItems and app.request.url != item.link %}<span class="icon-down"></span>{% endif %}
             </li>
         {% endfor %}
     </ul>

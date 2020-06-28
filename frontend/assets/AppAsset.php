@@ -18,6 +18,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/app.min.js',
+        'js/menu.js',
         'js/yandex.js'
     ];
     public $depends = [
