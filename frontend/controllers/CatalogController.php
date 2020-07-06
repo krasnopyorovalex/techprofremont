@@ -117,7 +117,12 @@ class CatalogController extends SiteController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $this->getProducts($model, $page);
+        try {
+            $this->getProducts($model, $page);
+            $this->parse($model);
+        } catch (Exception $e) {
+            $model->text = $e->getMessage();
+        }
 
         if (Yii::$app->request->isPost) {
             return $this->json();
