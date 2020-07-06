@@ -7,7 +7,7 @@ return [
     'success_send_form' => 'Ваша заявка принята. Мы свяжемся с Вами в ближайшее время',
     'per_page' => 12,
     'breadcrumbs_main_name' => 'Главная',
-    'server_protocol' => 'http://',
+    'server_protocol' => 'https://',
     'site_domain' => 'techprofremont.ru',
     'default_subdomain' => 'moscow'
 ];
