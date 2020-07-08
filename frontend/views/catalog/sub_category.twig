@@ -55,7 +55,7 @@
                 {{ brands_widget({'brands': model.brands}) }}
                 {% if model.text %}
                 <div class="seo-text">
-                    {{ model.text| raw }}
+                    {{ model.text| replace({'{brand}': ''})| raw }}
                 </div>
                 {% endif %}
 
@@ -72,7 +72,7 @@
 
                 {% if model.text_seo %}
                     <div class="seo-text">
-                        {{ model.text_seo| raw }}
+                        {{ model.text_seo|replace({'{brand}': ''})|raw }}
                     </div>
                 {% endif %}
 

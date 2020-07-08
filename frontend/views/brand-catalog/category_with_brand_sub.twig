@@ -40,7 +40,7 @@
                 <h1>{{ model.h1 ? model.h1 : model.name }}  {{ brands.name }}</h1>
                 {% if model.text %}
                     <div class="seo-text">
-                        {{ model.text| raw }}
+                        {{ model.text| replace({'{brand}': brands.name})| raw }}
                     </div>
                 {% endif %}
                 {{ use('frontend/widgets/Brands/Brands') }}
@@ -59,7 +59,7 @@
 
                 {% if model.text_seo %}
                     <div class="seo-text">
-                        {{ model.text_seo| raw }}
+                        {{ model.text_seo| replace({'{brand}': brands.name})| raw }}
                     </div>
                 {% endif %}
 
