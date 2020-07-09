@@ -31,11 +31,13 @@ class ParserBehavior extends Behavior
             }
         }
 
-        preg_match_all("/{subdomain_cases\|[a-z]+}/", $model->text_seo, $matches);
-        if (isset($matches[0]) && count($matches[0])) {
-            foreach ($matches[0] as $item){
-                [$key, $value] = explode('|', str_replace(['{','}'], '', $item));
-                $model->text_seo = str_replace($item, Yii::$app->params[$key][$value], $model->text_seo);
+        if (isset($model->text_seo)) {
+            preg_match_all("/{subdomain_cases\|[a-z]+}/", $model->text_seo, $matches);
+            if (isset($matches[0]) && count($matches[0])) {
+                foreach ($matches[0] as $item){
+                    [$key, $value] = explode('|', str_replace(['{','}'], '', $item));
+                    $model->text_seo = str_replace($item, Yii::$app->params[$key][$value], $model->text_seo);
+                }
             }
         }
 
