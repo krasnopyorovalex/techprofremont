@@ -49,6 +49,7 @@ class Products extends MainModel
     public $bindingCategoriesList = [];
     public $bindingBrandsList;
     public $makers;
+    public $filesGallery;
 
     /**
      * @return array
@@ -170,6 +171,14 @@ class Products extends MainModel
     public function getBrands(): ActiveQuery
     {
         return $this->hasMany(Brands::className(), ['id' => 'brand_id'])->viaTable('{{%product_brands}}', ['product_id' => 'id']);
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    public function getImages(): ActiveQuery
+    {
+        return $this->hasMany(ProductImages::className(), ['product_id' => 'id']);
     }
 
     /**

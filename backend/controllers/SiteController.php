@@ -44,7 +44,11 @@ class SiteController extends Controller
                             'delete',
                             'remove-image',
                             'update-pos',
-                            'change-subdomain'
+                            'change-subdomain',
+                            'upload',
+                            'delete-image',
+                            'loaded',
+                            'update-pos'
                         ],
                         'allow' => true,
                         'roles' => ['@'],
@@ -59,7 +63,9 @@ class SiteController extends Controller
                     'remove-image' => ['post'],
                     'update-pos' => ['post'],
                     'upload' => ['post'],
-                    'change-subdomain' => ['post']
+                    'change-subdomain' => ['post'],
+                    'delete-image' => ['post'],
+                    'loaded' => ['post'],
                 ],
             ],
         ];

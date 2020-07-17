@@ -6,6 +6,7 @@
 /* @var array $subdomains common\models\Subdomains */
 
 use backend\assets\CheckboxListAsset;
+use backend\assets\FileUploaderAsset;
 use backend\assets\SingleEditorAsset;
 use backend\assets\SelectBootstrapAsset;
 use backend\assets\SelectAsset;
@@ -19,6 +20,7 @@ SelectBootstrapAsset::register($this);
 TagsInputAsset::register($this);
 SelectAsset::register($this);
 CheckboxListAsset::register($this);
+FileUploaderAsset::register($this);
 
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => Url::toRoute(['/catalog'])];
 
@@ -182,5 +184,25 @@ $this->params['breadcrumbs'][] = $this->context->actions[$this->context->action-
         </div>
 
         <?php ActiveForm::end(); ?>
+
+        <?php if(! $model->isNewRecord):?>
+            <div class="row">
+                <div class="col-md-12">
+                    <?= $form->field($model, 'filesGallery')->fileInput([
+                        'multiple' => 'multiple',
+                        'class' => 'file-input-ajax',
+                        'accept' => "image/*"
+                    ])->label(false) ?>
+                </div>
+            </div>
+            <div class="row" id="_images_box">
+                <div class="col-md-12">
+                    <?= $this->render('_images_box',[
+                        'model' => $model
+                    ])?>
+                </div>
+            </div>
+            <hr>
+        <?php endif;?>
     </div>
 </div>

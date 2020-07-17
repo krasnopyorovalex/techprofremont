@@ -5,47 +5,47 @@
     <div class="breadcrumbs">
         <ul itemscope itemtype="http://schema.org/BreadcrumbList">
             <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-	            <a itemprop="item" href="{{ app.homeUrl }}">
-		            <span itemprop="name">{{ app.params['breadcrumbs_main_name'] }}</span>
-		            <meta itemprop="position" content="1" />	
-	       		</a>
-    		</li>
+                <a itemprop="item" href="{{ app.homeUrl }}">
+                    <span itemprop="name">{{ app.params['breadcrumbs_main_name'] }}</span>
+                    <meta itemprop="position" content="1" />
+                </a>
+            </li>
             {% if model.category.catalog %}
                 <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                	<a itemprop="item" href="/{{ model.category.catalog.alias }}">
-                		<span itemprop="name">{{ model.category.catalog.name }}</span>
-		            	<meta itemprop="position" content="2" />		
-                	</a>
-            	</li>
+                    <a itemprop="item" href="/{{ model.category.catalog.alias }}">
+                        <span itemprop="name">{{ model.category.catalog.name }}</span>
+                        <meta itemprop="position" content="2" />
+                    </a>
+                </li>
             {% endif %}
             {% if model.category.parent.parent %}
                 <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                	<a itemprop="item" href="{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}">
-                		<span itemprop="name">{{ model.category.parent.parent.name }}</span>
-		            	<meta itemprop="position" content="3" />		
-                	</a>
-            </li>
+                    <a itemprop="item" href="{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}">
+                        <span itemprop="name">{{ model.category.parent.parent.name }}</span>
+                        <meta itemprop="position" content="3" />
+                    </a>
+                </li>
             {% endif %}
             {% if model.category.parent %}
                 <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                <a itemprop="item" href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}">
-                	<span itemprop="name"> {{ model.category.parent.name }}</span>
-               		<meta itemprop="position" content="4" />
-                </a>
-            </li>
+                    <a itemprop="item" href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}">
+                        <span itemprop="name"> {{ model.category.parent.name }}</span>
+                        <meta itemprop="position" content="4" />
+                    </a>
+                </li>
             {% endif %}
             <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            	<a itemprop="item" href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}/{{ model.category.alias }}">
-            	<span itemprop="name">{{ model.category.name }}</span>
-            	<meta itemprop="position" content="5" />
-            	</a>
-        	</li>
+                <a itemprop="item" href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}/{{ model.category.alias }}">
+                    <span itemprop="name">{{ model.category.name }}</span>
+                    <meta itemprop="position" content="5" />
+                </a>
+            </li>
             <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-            	
-            	<span itemprop="name">{{ model.name }}</span>
-            	<meta itemprop="position" content="6" />
-            
-            	
+
+                <span itemprop="name">{{ model.name }}</span>
+                <meta itemprop="position" content="6" />
+
+
             </li>
         </ul>
     </div>
@@ -105,6 +105,17 @@
 
 
                     {{ model.text| raw }}
+
+                    {% if model.images %}
+                        <div class="owl-carousel owl-theme">
+                            {% for img in model.images %}
+                                <div class="item">
+                                    <img src="{{ img.getPath() }}" alt="">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                     {% if point %}
                         {{ this.registerJsFile('https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;coordorder=longlat') }}
                         <h2 class="map-title">Карта и схема проезда</h2>

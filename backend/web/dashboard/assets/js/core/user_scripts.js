@@ -83,9 +83,9 @@ jQuery(function() {
                 url: _this.parent('a').attr('href'),
                 type: "POST",
                 success: function () {
-                    return _this.closest('li').fadeOut() && jQuery.jGrowl('Изображение галереи удалено успешно', {
+                    return _this.closest('.image-thumb').remove() && jQuery.jGrowl('Изображение удалено успешно', {
                             theme: 'bg-slate-700',
-                            header: 'Сообщение из конторы'
+                            header: 'Сообщение'
                         });
                 }
             });

@@ -14,10 +14,13 @@ class AppAsset extends AssetBundle
     public $css = [
         'https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800&amp;subset=cyrillic',
         'css/app.min.css',
-        'css/override.css'
+        'css/owl.carousel.min.css',
+        'css/owl.theme.default.min.css',
+        'css/override.css',
     ];
     public $js = [
         'js/app.min.js',
+        'js/owl.carousel.min.js',
         'js/menu.js',
         'js/yandex.js'
     ];

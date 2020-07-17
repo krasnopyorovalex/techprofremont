@@ -20,7 +20,7 @@ class ProductsRepository
      */
     public function get($id): ActiveRecord
     {
-        $product = Products::find()->where(['id' => $id])->with(['productCategories', 'category' => static function(ActiveQuery $query) {
+        $product = Products::find()->where(['id' => $id])->with(['productCategories', 'images', 'category' => static function(ActiveQuery $query) {
             return $query->with(['parent']);
         }])->limit(1)->one();
 

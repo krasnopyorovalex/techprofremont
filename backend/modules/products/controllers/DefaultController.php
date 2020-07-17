@@ -2,9 +2,11 @@
 
 namespace backend\modules\products\controllers;
 
+use backend\components\UploadInterface;
 use backend\controllers\SiteController;
 use common\models\Brands;
 use common\models\CatalogCategories;
+use common\models\ProductImages;
 use common\models\Products;
 use common\models\Subdomains;
 use core\repositories\ProductsRepository;
@@ -24,18 +26,24 @@ class DefaultController extends SiteController
 {
 
     private $repository;
+    /**
+     * @var UploadInterface
+     */
+    private $uploader;
 
     /**
      * DefaultController constructor.
      * @param $id
      * @param $module
      * @param ProductsRepository $repository
+     * @param UploadInterface $uploader
      * @param array $config
      */
-    public function __construct($id, $module, ProductsRepository $repository, $config = [])
+    public function __construct($id, $module, ProductsRepository $repository, UploadInterface $uploader, $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->repository = $repository;
+        $this->uploader = $uploader;
     }
 
     /**
@@ -143,5 +151,34 @@ class DefaultController extends SiteController
         }
 
         return false;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function actionUpload($id)
+    {
+        if($image = $this->uploader->upload($id))
+        {
+            $newImage = new ProductImages();
+            $newImage->basename = $image['name'];
+            $newImage->ext = $image['ext'];
+            $newImage->product_id = $id;
+            return $newImage->save();
+        }
+        return false;
+    }
+
+    public function actionDeleteImage($id)
+    {
+        return ProductImages::findOne($id)->delete();
+    }
+
+    public function actionLoaded($id)
+    {
+        return $this->renderAjax('_images_box', [
+            'model' => Products::find()->where(['id' => $id])->with(['images'])->limit(1)->one()
+        ]);
     }
 }
