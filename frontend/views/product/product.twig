@@ -3,48 +3,47 @@
 
 <div class="wrapper">
     <div class="breadcrumbs">
-        <ul>
-            <li>
-	            <a href="{{ app.homeUrl }}">
-	            	
-	            		{{ app.params['breadcrumbs_main_name'] }}
-	            
-	            	
+        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+	            <a itemprop="item" href="{{ app.homeUrl }}">
+		            <span itemprop="name">{{ app.params['breadcrumbs_main_name'] }}</span>
+		            <meta itemprop="position" content="1" />	
 	       		</a>
     		</li>
             {% if model.category.catalog %}
-                <li>
-                	<a href="/{{ model.category.catalog.alias }}">
-                			{{ model.category.catalog.name }}	
-                </a>
-            </li>
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                	<a itemprop="item" href="/{{ model.category.catalog.alias }}">
+                		<span itemprop="name">{{ model.category.catalog.name }}</span>
+		            	<meta itemprop="position" content="2" />		
+                	</a>
+            	</li>
             {% endif %}
             {% if model.category.parent.parent %}
-                <li>
-                	<a href="{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}">
-                		{{ model.category.parent.parent.name }}
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                	<a itemprop="item" href="{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}">
+                		<span itemprop="name">{{ model.category.parent.parent.name }}</span>
+		            	<meta itemprop="position" content="3" />		
                 	</a>
             </li>
             {% endif %}
             {% if model.category.parent %}
-                <li>
-                <a href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}">
-                	
-               		 {{ model.category.parent.name }}
-               		
-                	
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <a itemprop="item" href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}">
+                	<span itemprop="name"> {{ model.category.parent.name }}</span>
+               		<meta itemprop="position" content="4" />
                 </a>
             </li>
             {% endif %}
-            <li>
-            	<a href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}/{{ model.category.alias }}">
-            	{{ model.category.name }}
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            	<a itemprop="item" href="/{{ model.category.catalog.alias }}{{ model.category.parent.parent.alias }}/{{ model.category.parent.alias }}/{{ model.category.alias }}">
+            	<span itemprop="name">{{ model.category.name }}</span>
+            	<meta itemprop="position" content="5" />
             	</a>
         	</li>
             <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
             	
-            		{{ model.name }}
-            		
+            	<span itemprop="name">{{ model.name }}</span>
+            	<meta itemprop="position" content="6" />
             
             	
             </li>
@@ -68,7 +67,7 @@
                 <div class="item__row">
                     <div class="item__col-left">
                         {% if model.image %}
-                        <img src="/userfiles/products/{{ model.image }}" itemprop="image" alt="{{ model.name }}">
+                        <img src="/userfiles/products/{{ model.image }}" itemprop="image" alt="Логотип кампании {{ model.name }}">
                         {% else %}
                             <div class="not__image">
                                 <div class="item__name">
@@ -86,7 +85,7 @@
                         <div class="desc">
                             <ul>
 
-                                <li>Часы работы:</span> <b><span itemprop="openingHours">{{ model.working_hours }}</span></b></li>
+                                <li><span>Часы работы:</span></span> <b><span itemprop="openingHours">{{ model.working_hours }}</span></b></li>
                                 <li><span>E-mail:</span> <b><a href="mailto:{{ model.balance }}"><span itemprop="email">{{ model.balance }}</span></a></b></li>
                                 <li><span>Адрес:</span> <b><span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{ model.address }}</span></b></li>
                             </ul>

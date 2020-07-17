@@ -88,7 +88,9 @@ menu {
     font-size: 0.9rem;  
     font-weight: 500;
 } 
-
+.breadcrumbs ul li {
+    font-size: .9rem;
+}
 
 .brands {
     padding: 2.5em 0;
@@ -297,7 +299,7 @@ menu {
     font-size: .9rem;
     font-weight: 500;
     font-family: "Montserrat";
-    padding: .5em 27px;
+    padding: .5em 23px;
 } 
 .content__body .text {
   margin: 2em 0 1em 0;
@@ -513,7 +515,7 @@ footer .items .menu ul li a  {
   	text-decoration-color:#282828;
    }
 .seo-text {
-    text-align: justify;
+    text-align: left;
     font-size: 15px;
     color: #282828;
     font-weight: 500;
@@ -523,6 +525,15 @@ footer .items .menu ul li a  {
 .seo-text p {
     margin-bottom: 15px;
 }
+.seo-text h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.1em;
+}
+
+
+
 .content__body.search {
     background: none;
 }

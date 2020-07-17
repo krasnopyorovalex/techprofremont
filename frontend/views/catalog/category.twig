@@ -20,7 +20,10 @@
                     <meta itemprop="position" content="2" />
                 </a>
             </li>
-            <li>{{ model.name }}</li>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <span itemprop="name">{{ model.name }}</span>    
+                <meta itemprop="position" content="3" />
+            </li>
         </ul>
     </div>
     <!-- /.breadcrumbs -->

@@ -6,10 +6,23 @@
 
 <div class="wrapper">
     <div class="breadcrumbs">
-        <ul>
-            <li><a href="{{ app.homeUrl }}">{{ app.params['breadcrumbs_main_name'] }}</a></li>
-            <li><a href="{{ path('site/page', {'alias': model.catalog.alias}) }}">{{ model.catalog.name }}</a></li>
-            <li>{{ model.name }}</li>
+        <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <a itemprop="item" href="{{ app.homeUrl }}">
+                    <span itemprop="name">{{ app.params['breadcrumbs_main_name'] }}</span>
+                    <meta itemprop="position" content="1" />
+                </a>
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                <a itemprop="item" href="{{ path('site/page', {'alias': model.catalog.alias}) }}">
+                    <span itemprop="name">{{ model.catalog.name }}</span>
+                    <meta itemprop="position" content="2" />
+                </a>
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+               <span itemprop="name"> {{ model.name }}</span>
+               <meta itemprop="position" content="3" />
+            </li>
         </ul>
     </div>
     <!-- /.breadcrumbs -->

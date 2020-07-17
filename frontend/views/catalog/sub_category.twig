@@ -32,8 +32,9 @@
                 <meta itemprop="position" content="3" />
             </a>
             </li>
-            <li>
-                 {{ model.name }}
+            <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                 <span itemprop="name"> {{ model.name }}</span>
+                 <meta itemprop="position" content="4" />
             </li>
         </ul>
     </div>
